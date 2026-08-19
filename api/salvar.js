@@ -1,37 +1,48 @@
+// /api/salvar.js
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    // Permite apenas requisições POST
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Método não permitido' });
+    }
 
-    if (req.method === 'OPTIONS') return res.status(200).end();
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Método não permitido' });
+    const { nomeArquivo, conteudoBase64 } = req.body;
 
-    const { dados, nomeArquivo } = req.body;
-    const token = process.env.GITHUB_TOKEN;
+    // O Token é lido de forma 100% segura das variáveis da Vercel
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    const OWNER = "suportevitalsig-droid";
+    const REPO = "Vitalsig";
+    const PATH = "fichas_pdf"; // Pasta onde os PDFs vão ficar
 
-    const url = `https://api.github.com/repos/suportevitalsig-droid/Vitalsig/contents/fichas-atendimento/${nomeArquivo}`;
-    const conteudoJson = JSON.stringify(dados, null, 2);
-    const conteudoBase64 = Buffer.from(conteudoJson).toString('base64');
+    if (!GITHUB_TOKEN) {
+        return res.status(500).json({ error: "Token de segurança não configurado no servidor." });
+    }
+
+    const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}/${nomeArquivo}`;
 
     try {
-        const response = await fetch(url, {
+        const githubResponse = await fetch(url, {
             method: 'PUT',
             headers: {
-                'Authorization': `token ${token}`,
+                'Authorization': `Bearer ${GITHUB_TOKEN}`,
                 'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github.v3+json',
                 'User-Agent': 'Vitalsig-App'
             },
             body: JSON.stringify({
-                message: `Nova ficha registrada: ${nomeArquivo}`,
-                content: conteudoBase64
+                message: `Upload de ficha em PDF: ${nomeArquivo}`,
+                content: conteudoBase64,
+                branch: "main"
             })
         });
 
-        if (response.ok) return res.status(200).json({ success: true, message: 'Salvo com sucesso!' });
-        
-        const err = await response.json();
-        return res.status(500).json({ error: err.message });
+        const data = await githubResponse.json();
+
+        if (githubResponse.ok) {
+            return res.status(200).json({ success: true, data });
+        } else {
+            return res.status(githubResponse.status).json({ error: data });
+        }
     } catch (error) {
-        return res.status(500).json({ error: 'Erro de conexão com o GitHub' });
+        return res.status(500).json({ error: error.message });
     }
 }
