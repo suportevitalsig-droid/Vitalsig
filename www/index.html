@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="icon" type="image/png" href="meu-logo.PNG">
 
     <!-- Script para Registrar o Service Worker PWA -->
     <script>
@@ -27,14 +27,11 @@
     <!-- 1. Leaflet CSS -->
     <link rel="stylesheet" href="lib/leaflet.css">
     
-    <!-- 2. XLSX -->
-    <script src="lib/xlsx.full.min.js"></script>
-    
-    <!-- 3. jsPDF (Principal + Plugin AutoTable) -->
+    <!-- 2. jsPDF (Principal + Plugin AutoTable) -->
     <script src="lib/jspdf.umd.min.js"></script>
     <script src="lib/jspdf.plugin.autotable.min.js"></script>
     
-    <!-- 4. Leaflet JS -->
+    <!-- 3. Leaflet JS -->
     <script src="lib/leaflet.js"></script>
 
     <style>
@@ -161,27 +158,24 @@
         .actions-grid {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             margin-top: 15px;
         }
 
-        .btn-action {
+        .btn-action-single {
             border: none;
-            padding: 12px;
+            padding: 15px;
             border-radius: 6px;
-            font-size: 0.95em;
+            font-size: 1.05em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease;
             color: white;
             text-align: center;
+            background: #006847; 
+            border-bottom: 4px solid #004d34;
         }
-
-        .btn-pdf { 
-            background: var(--verde-principal); 
-            border-bottom: 4px solid var(--verde-escuro); 
-        }
-        .btn-pdf:hover { background: var(--verde-escuro); }
+        .btn-action-single:hover { background: #004d34; }
 
         .btn-gps {
             background: #059669;
@@ -276,10 +270,87 @@
         footer a { color: var(--verde-principal); text-decoration: none; font-weight: bold; }
         footer a:hover { text-decoration: underline; }
 
+        /* REGRAS DE IMPRESSÃO NATIVA (FORÇA CABER EM EXATAMENTE 1 FOLHA A4) */
         @media print {
-            body { background: white; }
-            .actions-grid, .btn-gps, .cronometro-wrapper, #map-container { display: none !important; }
-            .form-card { box-shadow: none; max-width: 100%; }
+            @page {
+                size: A4 portrait;
+                margin: 4mm 6mm;
+            }
+            html, body {
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 9pt !important;
+                width: 100%;
+                height: 100%;
+                overflow: hidden !important;
+            }
+            .form-card {
+                box-shadow: none !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+            }
+            .form-header-title {
+                padding: 5px !important;
+                margin-bottom: 6px !important;
+                gap: 4px !important;
+            }
+            .form-header-title img {
+                max-width: 120px !important;
+            }
+            .header-text-title {
+                font-size: 1.1em !important;
+                letter-spacing: 2px !important;
+            }
+            fieldset {
+                margin-bottom: 5px !important;
+                padding: 4px 6px !important;
+            }
+            legend {
+                font-size: 0.75em !important;
+                padding: 1px 5px !important;
+            }
+            .flex-row {
+                margin-bottom: 4px !important;
+                gap: 4px !important;
+            }
+            label {
+                font-size: 0.75em !important;
+                margin-bottom: 1px !important;
+            }
+            input, select {
+                height: 22px !important;
+                padding: 1px 3px !important;
+                font-size: 9pt !important;
+            }
+            .sv-grid {
+                gap: 2px !important;
+                margin-bottom: 2px !important;
+            }
+            .sv-grid select {
+                height: 20px !important;
+                font-size: 8pt !important;
+            }
+            .ref-val {
+                font-size: 0.7em !important;
+            }
+            .advertencia-box {
+                padding: 5px !important;
+                margin: 5px 0 !important;
+                font-size: 0.75em !important;
+            }
+            footer {
+                margin-top: 5px !important;
+                padding-top: 4px !important;
+                font-size: 8pt !important;
+                line-height: 1.2 !important;
+            }
+            /* Esconde elementos dispensáveis do papel */
+            .actions-grid, .btn-gps, .cronometro-wrapper, #map-container, .map-instructions {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -287,7 +358,7 @@
     
     <div class="form-card">
         <div class="form-header-title">
-            <img id="logo-img" src="meu-logo" alt="v">
+            <img id="logo-img" src="meu-logo.PNG" alt="v">
             <h1 class="header-text-title">S I N A I S &nbsp; V I T A I S</h1>
         </div>
 
@@ -584,10 +655,10 @@
                 <strong>O Ministério da Saúde adverte:</strong> A triagem de sinais vitais e as orientações automáticas são de caráter exclusivamente educativo e não substituem a consulta com seu médico, o diagnóstico ou o tratamento especializado.
             </div>
 
-            <!-- PAINEL DE AÇÃO UNIFICADA -->
+            <!-- BOTAO UNICO DE AÇÃO -->
             <div class="actions-grid">
-                <button type="button" class="btn-action btn-pdf" onclick="processarAcaoUnificada()">
-                    📄 EXPORTAR E SALVAR FICHA
+                <button type="button" class="btn-action-single" onclick="processarEnvioCompleto()">
+                    📄 EXPORTAR E SALVAR
                 </button>
             </div>
         </form>
@@ -908,7 +979,6 @@
                 imc: document.getElementById('imc')
             };
 
-            // Reset do estilo visual padrão para todos os elementos envolvidos
             Object.values(campos).forEach(el => {
                 if (el) {
                     el.style.borderColor = "var(--verde-principal)";
@@ -937,7 +1007,6 @@
 
             let sugestoes = [];
 
-            // 1. Pressão Arterial
             if (!isNaN(pas) && !isNaN(pad)) {
                 const resultado = classificarPA(pas, pad, idadeAnos);
                 sugestoes.push(resultado.mensagem);
@@ -947,7 +1016,6 @@
                 }
             }
 
-            // 2. Glicemia em Jejum
             if (!isNaN(gluc)) {
                 if (gluc < 70) {
                     marcarAlterado(campos.gluc);
@@ -963,7 +1031,6 @@
                 }
             }
 
-            // 3. Glicemia Pós-Prandial
             if (!isNaN(glucPost)) {
                 if (glucPost < 140) {
                     sugestoes.push("Glicemia Pós-Prandial normal (< 140 mg/dL).");
@@ -976,7 +1043,6 @@
                 }
             }
 
-            // 4. Temperatura
             if (!isNaN(temp)) {
                 if (temp < 35.5) {
                     marcarAlterado(campos.temp);
@@ -995,7 +1061,6 @@
                 }
             }
 
-            // 5. Frequência Cardíaca
             if (!isNaN(fc) && fc > 0) {
                 const [fcMin, fcMax] = tabelasReferencia[faixa].fc.split('-').map(Number);
                 if (fc > fcMax) {
@@ -1009,7 +1074,6 @@
                 }
             }
 
-            // 6. Frequência Respiratória
             if (!isNaN(fr) && fr > 0) {
                 const [frMin, frMax] = tabelasReferencia[faixa].fr.split('-').map(Number);
                 if (fr > frMax) {
@@ -1023,7 +1087,6 @@
                 }
             }
 
-            // 7. Saturação SpO2
             if (!isNaN(sat) && sat > 0) {
                 if (sat < 90) {
                     marcarAlterado(campos.sat);
@@ -1036,7 +1099,6 @@
                 }
             }
 
-            // 8. IMC
             if (!isNaN(imc) && imc > 0) {
                 if (imc < 18.5) {
                     marcarAlterado(campos.imc);
@@ -1202,59 +1264,12 @@
             }
         }
 
-        /* CAPTURA E ESTRUTURAÇÃO DE DADOS */
-        function obterDadosFormulario() {
-            const fatores = [];
-            document.querySelectorAll('input[name="fatores"]:checked').forEach(cb => fatores.push(cb.value));
-
-            const eco = [];
-            document.querySelectorAll('input[name="eco"]:checked').forEach(cb => eco.push(cb.value));
-
-            return {
-                paciente: {
-                    data_atendimento: document.getElementById('dataMatricula')?.value || '',
-                    iniciais: document.getElementById('iniciais')?.value || '',
-                    nome: document.getElementById('nome')?.value || '',
-                    pais: document.getElementById('pais')?.value || '',
-                    estado: document.getElementById('estado')?.value || '',
-                    cidade: document.getElementById('cidade')?.value || '',
-                    sexo: document.getElementById('biologico')?.value || '',
-                    data_nascimento: document.getElementById('fnac')?.value || '',
-                    idade: document.getElementById('edad')?.value || '',
-                    repouso: document.getElementById('minutosRepouso')?.value || '',
-                    jejum: document.getElementById('tempoJejum')?.value || '',
-                    posicao: document.getElementById('posicaoCorpo')?.value || '',
-                    peso: document.getElementById('peso')?.value || '',
-                    altura: document.getElementById('altura')?.value || '',
-                    imc: document.getElementById('imc')?.value || ''
-                },
-                sinais_vitais: {
-                    pa_sistolica: document.getElementById('pa_sis')?.value || '',
-                    pa_diastolica: document.getElementById('pa_dia')?.value || '',
-                    glicemia_jejum: document.getElementById('gluc')?.value || '',
-                    glicemia_pos_prandial: document.getElementById('gluc_post')?.value || '',
-                    temperatura: document.getElementById('temp')?.value || '',
-                    frequencia_cardiaca: document.getElementById('fc')?.value || '',
-                    frequencia_respiratoria: document.getElementById('fr')?.value || '',
-                    saturacao_spo2: document.getElementById('sat')?.value || ''
-                },
-                contexto: {
-                    fatores_interferentes: fatores,
-                    entorno_ecologico: eco,
-                    geolocalizacao: {
-                        latitude: document.getElementById('latitude')?.value || '',
-                        longitude: document.getElementById('longitude')?.value || ''
-                    }
-                }
-            };
-        }
-
-        /* LÓGICA DE FILA OFF-LINE E SINCRONIZAÇÃO AUTOMÁTICA COM O GITHUB */
+        /* LÓGICA DE FILA OFF-LINE */
         function salvarFilaPendentes(payload) {
             try {
-                const pendentes = JSON.parse(localStorage.getItem('vitalsig_pendentes') || '[]');
+                const pendentes = JSON.parse(localStorage.getItem('vitalsig_pendentes_pdf') || '[]');
                 pendentes.push(payload);
-                localStorage.setItem('vitalsig_pendentes', JSON.stringify(pendentes));
+                localStorage.setItem('vitalsig_pendentes_pdf', JSON.stringify(pendentes));
             } catch (e) {
                 console.error("Erro ao armazenar cópia pendente localmente:", e);
             }
@@ -1263,7 +1278,7 @@
         async function sincronizarPendentes() {
             if (!navigator.onLine) return;
             try {
-                const pendentes = JSON.parse(localStorage.getItem('vitalsig_pendentes') || '[]');
+                const pendentes = JSON.parse(localStorage.getItem('vitalsig_pendentes_pdf') || '[]');
                 if (pendentes.length === 0) return;
 
                 const pendentesRestantes = [];
@@ -1279,7 +1294,7 @@
                         pendentesRestantes.push(item);
                     }
                 }
-                localStorage.setItem('vitalsig_pendentes', JSON.stringify(pendentesRestantes));
+                localStorage.setItem('vitalsig_pendentes_pdf', JSON.stringify(pendentesRestantes));
             } catch (e) {
                 console.error("Erro ao sincronizar registros pendentes:", e);
             }
@@ -1288,112 +1303,7 @@
         window.addEventListener('online', sincronizarPendentes);
         window.addEventListener('DOMContentLoaded', sincronizarPendentes);
 
-        /* AÇÃO UNIFICADA DO BOTÃO ÚNICO */
-        async function processarAcaoUnificada() {
-            const dados = obterDadosFormulario();
-            const timestamp = Date.now();
-            const initials = dados.paciente.iniciais.trim() || 'paciente';
-            const nomeArquivo = `ficha_${initials}_${timestamp}.json`;
-            const payload = { dados, nomeArquivo };
-
-            // 1. Gera e baixa o documento PDF
-            await exportarPDF();
-
-            // 2. Exporta e baixa o arquivo XML
-            exportarXML();
-
-            // 3. Copia a estrutura XML modelo para a área de transferência
-            copiarXMLModelo();
-
-            // 4. Envio remoto para API / GitHub (Online/Off-line)
-            if (navigator.onLine) {
-                try {
-                    const response = await fetch("/api/salvar", {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (response.ok) {
-                        alert("Processo concluído com sucesso:\n- Realizado com sucesso!\n- Estrutura copiada.\n- Dados salvos!");
-                    } else {
-                        salvarFilaPendentes(payload);
-                        alert("Reazliado com sucesso!\nA conexão oscilou: a cópia foi salva localmente e deverá ser sincronizada automaticamente assim que reconectar.");
-                    }
-                } catch (error) {
-                    salvarFilaPendentes(payload);
-                    alert("Realizado com sucesso!\nFalha de rede: a cópia foi salva localmente e deverá ser sincronizada automaticamente.");
-                }
-            } else {
-                salvarFilaPendentes(payload);
-                alert("Modo Off-line:\n- realizado com sucesso.\n- A cópia ficou armazenada em fila local e deverpa ser enviada quando a internet retornar.");
-            }
-        }
-
-        /* EXPORTAÇÃO XML DA SESSÃO */
-        function exportarXML() {
-            const data = obterDadosFormulario();
-            
-            const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-<vitalsig>
-  <paciente>
-    <nome>${data.paciente.nome}</nome>
-    <iniciais>${data.paciente.iniciais}</iniciais>
-    <data_nascimento>${data.paciente.data_nascimento}</data_nascimento>
-    <idade>${data.paciente.idade}</idade>
-    <sexo>${data.paciente.sexo}</sexo>
-    <localizacao>
-      <cidade>${data.paciente.cidade}</cidade>
-      <estado>${data.paciente.estado}</estado>
-      <pais>${data.paciente.pais}</pais>
-    </localizacao>
-  </paciente>
-  <sinais_vitais>
-    <pa_sistolica unidade="mmHg">${data.sinais_vitais.pa_sistolica}</pa_sistolica>
-    <pa_diastolica unidade="mmHg">${data.sinais_vitais.pa_diastolica}</pa_diastolica>
-    <frequencia_cardiaca unidade="bpm">${data.sinais_vitais.frequencia_cardiaca}</frequencia_cardiaca>
-    <frequencia_respiratoria unidade="rpm">${data.sinais_vitais.frequencia_respiratoria}</frequencia_respiratoria>
-    <saturacao_oxigenio unidade="%">${data.sinais_vitais.saturacao_spo2}</saturacao_oxigenio>
-    <temperatura unidade="°C">${data.sinais_vitais.temperatura}</temperatura>
-    <glicemia_jejum unidade="mg/dL">${data.sinais_vitais.glicemia_jejum}</glicemia_jejum>
-  </sinais_vitais>
-  <geolocalizacao>
-    <latitude>${data.contexto.geolocalizacao.latitude}</latitude>
-    <longitude>${data.contexto.geolocalizacao.longitude}</longitude>
-  </geolocalizacao>
-</vitalsig>`;
-
-            const blob = new Blob([xmlContent], { type: 'application/xml' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `VitalSig_${data.paciente.iniciais || 'Ficha'}_${Date.now()}.xml`;
-            link.click();
-        }
-
-        /* COPIAR XML MODELO BASE */
-        function copiarXMLModelo() {
-            const xmlModelo = `<?xml version="1.0" encoding="UTF-8"?>
-<vitalsig>
-  <paciente>
-    <nome>NOME COMPLETO</nome>
-    <iniciais>N.C.</iniciais>
-    <idade>00</idade>
-  </paciente>
-  <sinais_vitais>
-    <pa_sistolica unidade="mmHg">120</pa_sistolica>
-    <pa_diastolica unidade="mmHg">80</pa_diastolica>
-    <frequencia_cardiaca unidade="bpm">70</frequencia_cardiaca>
-    <saturacao_oxigenio unidade="%">98</saturacao_oxigenio>
-    <temperatura unidade="°C">36.5</temperatura>
-  </sinais_vitais>
-</vitalsig>`;
-
-            navigator.clipboard.writeText(xmlModelo).catch(err => {
-                console.error("Erro ao copiar XML:", err);
-            });
-        }
-
-        /* FUNÇÃO AUXILIAR PARA OBTENÇÃO DA IMAGEM EM BASE64 PARA O PDF */
+        /* AUXILIAR: IMAGEM BASE64 */
         function obterBase64Imagem(imgElement) {
             return new Promise((resolve) => {
                 if (!imgElement || !imgElement.src) return resolve(null);
@@ -1417,13 +1327,22 @@
             });
         }
 
-        /* EXPORTAÇÃO PDF */
-        async function exportarPDF() {
+        /* 1 CLIQUE: GERA O PDF COM NOME PADRONIZADO, ENVIA AO GITHUB E FAZ O DOWNLOAD */
+        async function processarEnvioCompleto() {
+            const btn = document.querySelector('.btn-action-single');
+            const textoOriginal = btn ? btn.innerHTML : '';
+
+            if (btn) {
+                btn.disabled = true;
+                btn.style.opacity = "0.7";
+                btn.innerHTML = "⏳ GERANDO PDF E SALVANDO NO GITHUB...";
+            }
+
             try {
                 const { jsPDF } = window.jspdf || {};
                 
                 if (!jsPDF) {
-                    alert("Modo de impressão nativo acionado para salvar seu PDF.");
+                    alert("Acionando impressão nativa para salvar o PDF.");
                     window.print();
                     return;
                 }
@@ -1434,7 +1353,9 @@
                 const dataFormatada = dataMatricula ? dataMatricula.split('-').reverse().join('/') : 'Não informada';
                 
                 const nome = document.getElementById('nome')?.value.trim() || 'Não informado';
-                const iniciais = document.getElementById('iniciais')?.value.trim() || 'Não informada';
+                const iniciaisInput = document.getElementById('iniciais')?.value.trim() || 'XX';
+                const iniciaisLimpa = iniciaisInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() || 'XX';
+
                 const pais = document.getElementById('pais')?.value || 'Não informado';
                 const estado = document.getElementById('estado')?.value || 'Não informado';
                 const cidade = document.getElementById('cidade')?.value || 'Não informado';
@@ -1504,14 +1425,12 @@
                     sugestoesStr = "Nenhum sinal vital alterado para gerar sugestões.";
                 }
 
-                // Desenhando o PDF
                 doc.setFillColor(0, 104, 71); 
                 doc.rect(0, 0, 210, 32, 'F');
                 
                 doc.setFillColor(46, 204, 113); 
                 doc.rect(0, 32, 210, 3, 'F');
 
-                // Carregar e desenhar a imagem do logo no cabeçalho do PDF
                 const imgLogo = document.getElementById('logo-img');
                 const base64Logo = await obterBase64Imagem(imgLogo);
                 if (base64Logo) {
@@ -1530,7 +1449,7 @@
 
                 const dadosPessoais = [
                     ['Nome Completo', nome],
-                    ['Iniciais', iniciais],
+                    ['Iniciais', iniciaisInput],
                     ['Localidade', `${cidade} / ${estado} / ${pais}`],
                     ['Sexo / Idade / Nascimento', `${sexo} | ${idadeTexto} | Nasc: ${fnac}`],
                     ['Condições do Exame', `Repouso: ${repouso} | Jejum: ${jejum} | Posição: ${posicao}`],
@@ -1599,13 +1518,49 @@
                 doc.text("Todos os direitos de autoria reservados a TRAVASSOS, L.R.; 2026.", 105, paginaAltura - 10, { align: "center" });
                 doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 7, { align: "center" });
 
-                const nomeArquivo = `Sinais_Vitais_${iniciais || 'Ficha'}.pdf`;
+                // Nomenclatura Padronizada: FICHA_VitalSig_YYYYMMDD-HHmm_INICIAIS.pdf
+                const agora = new Date();
+                const ano = agora.getFullYear();
+                const mes = String(agora.getMonth() + 1).padStart(2, '0');
+                const dia = String(agora.getDate()).padStart(2, '0');
+                const hora = String(agora.getHours()).padStart(2, '0');
+                const minuto = String(agora.getMinutes()).padStart(2, '0');
+
+                const nomeArquivo = `FICHA_VitalSig_${ano}${mes}${dia}-${hora}${minuto}_${iniciaisLimpa}.pdf`;
+
+                // Obter string em Base64 do PDF
+                const pdfBase64 = doc.output('datauristring').split(',')[1];
+                const payload = { nomeArquivo, pdfBase64 };
+
+                // Tentar enviar para a Vercel/GitHub
+                if (navigator.onLine) {
+                    try {
+                        await fetch("/api/salvar", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                    } catch (err) {
+                        console.warn("Off-line ou falha de conexão.", err);
+                        salvarFilaPendentes(payload);
+                    }
+                } else {
+                    salvarFilaPendentes(payload);
+                }
+
+                // Download local imediato no dispositivo
                 doc.save(nomeArquivo);
 
             } catch (error) {
-                console.error("Erro ao gerar PDF com jsPDF:", error);
-                alert("Redirecionando para impressão nativa do dispositivo para salvar seu PDF...");
+                console.error("Erro ao gerar PDF:", error);
+                alert("Redirecionando para impressão para salvar seu PDF...");
                 window.print();
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = "1";
+                    btn.innerHTML = textoOriginal;
+                }
             }
         }
     </script>
