@@ -10,8 +10,8 @@
     <meta name="theme-color" content="#006847">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon-meu-logo.png">
+    <link rel="icon" type="image/png" href="icon-meu-logo.png">
 
     <!-- Script para Registrar o Service Worker PWA -->
     <script>
@@ -24,17 +24,13 @@
         }
     </script>
 
-    <!-- 1. Leaflet CSS -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
-    <!-- 2. XLSX -->
+    <!-- Bibliotecas JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <!-- 3. jsPDF (Principal + Plugin AutoTable) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-
-    <!-- 4. Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <style>
@@ -43,6 +39,8 @@
             --verde-escuro: #004d34;
             --verde-claro-destaque: #2ECC71;
             --vermelho-sangue: #8B0000;
+            --vermelho-alerta-bg: #fee2e2;
+            --vermelho-alerta-border: #dc2626;
             --cor-texto: #000000;
             --fundo-cinza: #f8f9fa;
         }
@@ -133,15 +131,14 @@
             height: 32px; 
             color: var(--cor-texto); 
             background: white;
+            transition: all 0.2s ease;
         }
         input:focus, select:focus { 
             outline: 2px solid var(--verde-claro-destaque); 
             background: #f0fff6; 
         }
 
-        input[readonly] {
-            background-color: #e9ecef;
-        }
+        input[readonly] { background-color: #e9ecef; }
         
         .imc-status { font-size: 11px; font-weight: bold; margin-top: 4px; min-height: 14px; display: block; }
         
@@ -207,7 +204,17 @@
         }
         .sv-grid span { font-weight: bold; font-size: 0.9em; }
         .sv-grid select { height: 28px; padding: 2px 4px; font-size: 12px; }
-        .ref-val { font-size: 0.85em; color: #666; font-style: italic; text-align: center; }
+        
+        /* Paleta padrão para as Referências OMS */
+        .ref-val { font-size: 0.85em; color: #666666; font-style: italic; text-align: center; }
+
+        /* Classe de Alerta para Campos Alterados */
+        .campo-alterado {
+            border-color: var(--vermelho-alerta-border) !important;
+            background-color: var(--vermelho-alerta-bg) !important;
+            color: var(--vermelho-sangue) !important;
+            font-weight: bold;
+        }
 
         #map-container {
             margin-top: 8px;
@@ -216,14 +223,7 @@
             overflow: hidden;
             position: relative;
         }
-        #map {
-            height: 250px;
-            width: 100%;
-            background: #e5e3df;
-        }
-        .leaflet-tile-container img {
-            text-indent: -10000px;
-        }
+        #map { height: 250px; width: 100%; background: #e5e3df; }
         .offline-banner {
             position: absolute;
             top: 10px;
@@ -560,7 +560,7 @@
                     <div id="map"></div>
                 </div>
                 <div class="map-instructions">
-                    * O GPS físico do celular funciona sem internet. A visualização gráfica do mapa exige conexão, mas o registro de coordenadas no PDF funcionará 100% off-line.
+                    * O GPS físico do celular funciona sem internet. A visualização gráfica do mapa exige conexão para o registro de coordenadas.
                 </div>
             </fieldset>
 
@@ -568,7 +568,7 @@
                 <strong>O Ministério da Saúde adverte:</strong> A triagem de sinais vitais e as orientações automáticas são de caráter exclusivamente educativo e não substituem a consulta médica, o diagnóstico ou o tratamento especializado. Evite a automedicação e procure sempre um profissional de saúde qualificado.
             </div>
 
-            <button type="button" class="btn-pdf" onclick="exportarPDF()">📄 EXPORTAR OU SALVAR FICHA PDF</button>
+            <button type="button" class="btn-pdf" onclick="exportarPDF()">📄 EXPORTAR E SALVAR</button>
         </form>
     </div>
 
@@ -856,17 +856,35 @@
             if (peso > 0 && altura > 0) {
                 const imc = (peso / (altura * altura)).toFixed(1);
                 imcField.value = imc;
-                if (imc < 18.5) { legenda.textContent = "Abaixo do peso"; legenda.style.color = "#d97706"; }
-                else if (imc < 24.9) { legenda.textContent = "Eutrófico (Peso Normal)"; legenda.style.color = "#059669"; }
-                else if (imc < 29.9) { legenda.textContent = "Sobrepeso"; legenda.style.color = "#d97706"; }
-                else { legenda.textContent = "Obesidade"; legenda.style.color = "#dc2626"; }
+                
+                // Reseta a classe de alerta do IMC antes de validar
+                imcField.classList.remove('campo-alterado');
+                
+                if (imc < 18.5) { 
+                    legenda.textContent = "Abaixo do peso"; 
+                    legenda.style.color = "#d97706"; 
+                    imcField.classList.add('campo-alterado');
+                } else if (imc < 24.9) { 
+                    legenda.textContent = "Eutrófico (Peso Normal)"; 
+                    legenda.style.color = "#059669"; 
+                } else if (imc < 29.9) { 
+                    legenda.textContent = "Sobrepeso"; 
+                    legenda.style.color = "#d97706"; 
+                    imcField.classList.add('campo-alterado');
+                } else { 
+                    legenda.textContent = "Obesidade"; 
+                    legenda.style.color = "#dc2626"; 
+                    imcField.classList.add('campo-alterado');
+                }
             } else {
                 imcField.value = "--";
                 legenda.textContent = "";
+                imcField.classList.remove('campo-alterado');
             }
             validarSinais();
         }
 
+        /* LÓGICA DE VALIDAÇÃO DE SINAIS VITAIS COM DESTAQUE EM VERMELHO APENAS QUANDO ALTERADO */
         function validarSinais() {
             const lista = document.getElementById('lista-sugestoes');
             lista.innerHTML = "";
@@ -877,78 +895,130 @@
             
             const selectSis = document.getElementById('pa_sis');
             const selectDia = document.getElementById('pa_dia');
-            
+            const selectGluc = document.getElementById('gluc');
+            const selectGlucPost = document.getElementById('gluc_post');
+            const selectTemp = document.getElementById('temp');
+            const selectFc = document.getElementById('fc');
+            const selectFr = document.getElementById('fr');
+            const selectSat = document.getElementById('sat');
+
             const pas = parseInt(selectSis.value);
             const pad = parseInt(selectDia.value);
-
-            const gluc = parseFloat(document.getElementById('gluc').value);
-            const glucPost = parseFloat(document.getElementById('gluc_post').value);
-            const temp = parseFloat(document.getElementById('temp').value);
-            const fc = parseInt(document.getElementById('fc').value);
-            const fr = parseInt(document.getElementById('fr').value);
-            const sat = parseInt(document.getElementById('sat').value);
+            const gluc = parseFloat(selectGluc.value);
+            const glucPost = parseFloat(selectGlucPost.value);
+            const temp = parseFloat(selectTemp.value);
+            const fc = parseInt(selectFc.value);
+            const fr = parseInt(selectFr.value);
+            const sat = parseInt(selectSat.value);
             const imc = parseFloat(document.getElementById('imc').value);
 
             let sugestoes = [];
 
-            selectSis.style.borderColor = "var(--verde-principal)";
-            selectDia.style.borderColor = "var(--verde-principal)";
-            selectSis.style.backgroundColor = "white";
-            selectDia.style.backgroundColor = "white";
+            // Reseta visual padrão de todos os campos
+            const todosCampos = [selectSis, selectDia, selectGluc, selectGlucPost, selectTemp, selectFc, selectFr, selectSat];
+            todosCampos.forEach(el => el.classList.remove('campo-alterado'));
 
+            // 1. Pressão Arterial
             if (!isNaN(pas) && !isNaN(pad)) {
                 const resultado = classificarPA(pas, pad, idadeAnos);
                 sugestoes.push(resultado.mensagem);
 
                 if (resultado.alterado) {
-                    selectSis.style.borderColor = "#dc2626";
-                    selectDia.style.borderColor = "#dc2626";
-                    selectSis.style.backgroundColor = "#fee2e2";
-                    selectDia.style.backgroundColor = "#fee2e2";
+                    selectSis.classList.add('campo-alterado');
+                    selectDia.classList.add('campo-alterado');
                 }
             }
 
+            // 2. Glicemia em Jejum
             if (!isNaN(gluc)) {
-                if (gluc < 70) sugestoes.push("🚨 Hipoglicemia (< 70 mg/dL): Risco imediato. Ofertar carboidratos simples se consciente.");
-                else if (gluc <= 99) sugestoes.push("Glicemia em Jejum normal (70–99 mg/dL).");
-                else if (gluc <= 125) sugestoes.push("⚠️ Glicemia de Jejum Alterada / Pré-diabetes (100–125 mg/dL): Recomenda-se orientação nutricional.");
-                else sugestoes.push("🚨 Glicemia de Jejum Elevada (≥ 126 mg/dL): Compatível com rastreio positivo para Diabetes Mellitus.");
+                if (gluc < 70) {
+                    sugestoes.push("🚨 Hipoglicemia (< 70 mg/dL): Risco imediato. Ofertar carboidratos simples se consciente.");
+                    selectGluc.classList.add('campo-alterado');
+                } else if (gluc <= 99) {
+                    sugestoes.push("Glicemia em Jejum normal (70–99 mg/dL).");
+                } else if (gluc <= 125) {
+                    sugestoes.push("⚠️ Glicemia de Jejum Alterada / Pré-diabetes (100–125 mg/dL): Recomenda-se orientação nutricional.");
+                    selectGluc.classList.add('campo-alterado');
+                } else {
+                    sugestoes.push("🚨 Glicemia de Jejum Elevada (≥ 126 mg/dL): Compatível com rastreio positivo para Diabetes Mellitus.");
+                    selectGluc.classList.add('campo-alterado');
+                }
             }
 
+            // 3. Glicemia Pós-Prandial
             if (!isNaN(glucPost)) {
-                if (glucPost < 140) sugestoes.push("Glicemia Pós-Prandial normal (< 140 mg/dL).");
-                else if (glucPost <= 199) sugestoes.push("Tolerância à Glicose Diminuída (140–199 mg/dL): Reduzir consumo de açúcares de rápida absorção.");
-                else sugestoes.push("Glicemia Pós-Prandial Elevada (≥ 200 mg/dL): Necessita de confirmação diagnóstica.");
+                if (glucPost < 140) {
+                    sugestoes.push("Glicemia Pós-Prandial normal (< 140 mg/dL).");
+                } else if (glucPost <= 199) {
+                    sugestoes.push("Tolerância à Glicose Diminuída (140–199 mg/dL): Reduzir consumo de açúcares de rápida absorção.");
+                    selectGlucPost.classList.add('campo-alterado');
+                } else {
+                    sugestoes.push("Glicemia Pós-Prandial Elevada (≥ 200 mg/dL): Necessita de confirmação diagnóstica.");
+                    selectGlucPost.classList.add('campo-alterado');
+                }
             }
 
+            // 4. Temperatura
             if (!isNaN(temp)) {
-                if (temp < 35.5) sugestoes.push("Hipotermia (< 35.5 °C): Promover reaquecimento do paciente.");
-                else if (temp <= 37.2) sugestoes.push("Temperatura corporal normotérmica (36.1–37.2 °C).");
-                else if (temp <= 37.7) sugestoes.push("Estado Febril / Subfebril (37.3–37.7 °C): Monitorar e manter hidratação.");
-                else if (temp <= 39.0) sugestoes.push("Febre (37.8–39.0 °C): Hidratação rigorosa e controle térmico.");
-                else sugestoes.push("Hipertermia Severa (> 39.0 °C): Atenção médica urgente.");
+                if (temp < 35.5) {
+                    sugestoes.push("Hipotermia (< 35.5 °C): Promover reaquecimento do paciente.");
+                    selectTemp.classList.add('campo-alterado');
+                } else if (temp <= 37.2) {
+                    sugestoes.push("Temperatura corporal normotérmica (36.1–37.2 °C).");
+                } else if (temp <= 37.7) {
+                    sugestoes.push("Estado Febril / Subfebril (37.3–37.7 °C): Monitorar e manter hidratação.");
+                    selectTemp.classList.add('campo-alterado');
+                } else if (temp <= 39.0) {
+                    sugestoes.push("Febre (37.8–39.0 °C): Hidratação rigorosa e controle térmico.");
+                    selectTemp.classList.add('campo-alterado');
+                } else {
+                    sugestoes.push("Hipertermia Severa (> 39.0 °C): Atenção médica urgente.");
+                    selectTemp.classList.add('campo-alterado');
+                }
             }
 
+            // 5. Frequência Cardíaca
             if (!isNaN(fc) && fc > 0) {
                 const [fcMin, fcMax] = tabelasReferencia[faixa].fc.split('-').map(Number);
-                if (fc > fcMax) sugestoes.push(`Taquicardia (> ${fcMax} bpm): Avaliar ansiedade, dor, febre ou uso de estimulantes.`);
-                else if (fc < fcMin) sugestoes.push(`Bradicardia (< ${fcMin} bpm): Avaliar padrão metabólico e condicionamento.`);
-                else sugestoes.push("Frequência Cardíaca normal.");
+                if (fc > fcMax) {
+                    sugestoes.push(`Taquicardia (> ${fcMax} bpm): Avaliar ansiedade, dor, febre ou uso de estimulantes.`);
+                    selectFc.classList.add('campo-alterado');
+                } else if (fc < fcMin) {
+                    sugestoes.push(`Bradicardia (< ${fcMin} bpm): Avaliar padrão metabólico e condicionamento.`);
+                    selectFc.classList.add('campo-alterado');
+                } else {
+                    sugestoes.push("Frequência Cardíaca normal.");
+                }
             }
 
+            // 6. Frequência Respiratória
             if (!isNaN(fr) && fr > 0) {
                 const [frMin, frMax] = tabelasReferencia[faixa].fr.split('-').map(Number);
-                if (fr > frMax) sugestoes.push(`Taquipneia (> ${frMax} rpm): Observar esforço respiratório e padrão de expansão.`);
-                else if (fr < frMin) sugestoes.push(`Bradipneia (< ${frMin} rpm): Requer monitoramento ventilatório.`);
-                else sugestoes.push("Frequência Respiratória normal.");
+                if (fr > frMax) {
+                    sugestoes.push(`Taquipneia (> ${frMax} rpm): Observar esforço respiratório e padrão de expansão.`);
+                    selectFr.classList.add('campo-alterado');
+                } else if (fr < frMin) {
+                    sugestoes.push(`Bradipneia (< ${frMin} rpm): Requer monitoramento ventilatório.`);
+                    selectFr.classList.add('campo-alterado');
+                } else {
+                    sugestoes.push("Frequência Respiratória normal.");
+                }
             }
 
+            // 7. Saturação O2
             if (!isNaN(sat) && sat > 0) {
-                if (sat < 90) sugestoes.push("Hipoxia / Alerta (< 89%): Necessita de avaliação médica e suporte de oxigênio.");
-                else if (sat <= 94) sugestoes.push("Saturação Limítrofe / Hipoxia Leve (90–94%): Monitorar oxigenação e vias aéreas.");
-                else sugestoes.push("Saturação de Oxigênio normal (95–100%).");
+                if (sat < 90) {
+                    sugestoes.push("Hipoxia / Alerta (< 89%): Necessita de avaliação médica e suporte de oxigênio.");
+                    selectSat.classList.add('campo-alterado');
+                } else if (sat <= 94) {
+                    sugestoes.push("Saturação Limítrofe / Hipoxia Leve (90–94%): Monitorar oxigenação e vias aéreas.");
+                    selectSat.classList.add('campo-alterado');
+                } else {
+                    sugestoes.push("Saturação de Oxigênio normal (95–100%).");
+                }
             }
 
+            // 8. IMC
             if (!isNaN(imc) && imc > 0) {
                 if (imc < 18.5) sugestoes.push("Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.");
                 else if (imc <= 24.9) sugestoes.push("Eutrofia / Peso Normal (IMC 18.5–24.9).");
