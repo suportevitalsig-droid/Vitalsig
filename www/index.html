@@ -205,10 +205,8 @@
         .sv-grid span { font-weight: bold; font-size: 0.9em; }
         .sv-grid select { height: 28px; padding: 2px 4px; font-size: 12px; }
         
-        /* Paleta padrão para as Referências OMS */
         .ref-val { font-size: 0.85em; color: #666666; font-style: italic; text-align: center; }
 
-        /* Classe de Alerta para Campos Alterados */
         .campo-alterado {
             border-color: var(--vermelho-alerta-border) !important;
             background-color: var(--vermelho-alerta-bg) !important;
@@ -284,7 +282,6 @@
 
         <form id="formMed">
             
-            <!-- INFORMAÇÕES PESSOAIS -->
             <fieldset>
                 <legend>Informações Pessoais</legend>
                 <div class="form-group" style="margin-bottom: 10px;">
@@ -401,7 +398,6 @@
                 </div>
             </fieldset>
 
-            <!-- SINAIS VITAIS -->
             <fieldset>
                 <legend>Sinais Vitais</legend>
                 <div class="sv-grid"><strong>Dato</strong><strong>Valor</strong><strong>Ref. OMS</strong></div>
@@ -452,7 +448,7 @@
                         <span>Normal: 36.1 - 37.2</span>
                         <span>Subfebril: 37.3 - 37.7</span>
                         <span>Febre: 37.8 - 39.0</span>
-                        <span>Emergência: > 39.0</span>
+                        <span>Emergência: &gt; 39.0</span>
                     </div>
                 </div>
 
@@ -462,9 +458,9 @@
                         <option value="">Selecione</option>
                     </select>
                     <div class="ref-val" id="ref-fc" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;">
-                        <span>Bradicardia: < 60</span>
+                        <span>Bradicardia: &lt; 60</span>
                         <span>Normal: 60 - 100</span>
-                        <span>Taquicardia: > 100</span>
+                        <span>Taquicardia: &gt; 100</span>
                     </div>
                  </div>
                 
@@ -489,12 +485,11 @@
                     <div class="ref-val" id="ref-sat" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;">
                         <span>Normal: 95 - 100%</span>
                         <span>Limítrofe: 90 - 94%</span>
-                        <span>Alerta/Hipoxia: < 90%</span>
+                        <span>Alerta/Hipoxia: &lt; 90%</span>
                     </div>
                 </div>
             </fieldset>
 
-            <!-- CRONÔMETRO -->
             <fieldset>
                 <legend>Cronômetro de Freqüência (1 Minuto)</legend>
                 <div class="cronometro-wrapper">
@@ -507,7 +502,6 @@
                 </div>
             </fieldset>
 
-            <!-- FATORES INTERFERENTES -->
             <fieldset>
                 <legend>Outros Fatores Interferentes</legend>
                 <div class="eco-row"><input type="checkbox" name="fatores" value="Ativ. física recente"> <span>Ativ. física recente</span></div>
@@ -519,7 +513,6 @@
                 <div class="eco-row"><input type="checkbox" name="fatores" value="Med. Colesterol"> <span>Med. colesteróis</span></div>
             </fieldset>
             
-            <!-- ENTORNO ECOLÓGICO -->
             <fieldset>
                 <legend>Entorno Ecológico</legend>
                 <div class="eco-row"><input type="checkbox" name="eco" value="Ambiente Saudável (Arborizado)"> <span>Ambiente Saudável (Arborizado)</span></div>
@@ -527,7 +520,6 @@
                 <div class="eco-row"><input type="checkbox" name="eco" value="Focos de infecção/Águas estancadas"> <span>Focos de infecção/Águas estancadas</span></div>
             </fieldset>
 
-            <!-- SUGESTÕES -->
             <fieldset>
                 <legend>Sugestões</legend>
                 <div id="bloco-sugestoes" style="background: #fff; padding: 12px; border-radius: 4px; border: 1px solid #ccc; line-height: 1.5;">
@@ -538,7 +530,6 @@
                 </div>
             </fieldset>
 
-            <!-- GEOLOCALIZAÇÃO E MAPA -->
             <fieldset>
                 <legend>Georreferenciamento & Localização</legend>
                 
@@ -581,7 +572,6 @@
     </footer>
     
     <script>
-        /* DADOS GEOGRÁFICOS */
         const BrasilEstadosNomes = {
             "AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia",
             "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás",
@@ -643,7 +633,6 @@
             return 'adulto';
         }
 
-        /* TABELAS DE REFERÊNCIA (OMS) */
         const tabelasReferencia = {
             lactente: { fc: "100 - 160", fr: "30 - 60", pa: "70-100/50-65", temp: "36.5 - 37.5" },
             preEscolarPequeno: { fc: "90 - 140", fr: "24 - 40", pa: "80-105/55-70", temp: "36.1 - 37.2" },
@@ -690,7 +679,8 @@
             validarSinais();
 
             const hoje = new Date().toISOString().split('T')[0];
-            document.getElementById('dataMatricula').value = hoje;
+            const dataMatricula = document.getElementById('dataMatricula');
+            if (dataMatricula) dataMatricula.value = hoje;
             
             initMapa();
             atualizarStatusRede();
@@ -698,6 +688,7 @@
 
         function atualizarStatusRede() {
             const statusEl = document.getElementById('status-rede');
+            if (!statusEl) return;
             if (navigator.onLine) {
                 statusEl.textContent = "Online";
                 statusEl.style.background = "rgba(5, 150, 105, 0.8)";
@@ -857,7 +848,6 @@
                 const imc = (peso / (altura * altura)).toFixed(1);
                 imcField.value = imc;
                 
-                // Reseta a classe de alerta do IMC antes de validar
                 imcField.classList.remove('campo-alterado');
                 
                 if (imc < 18.5) { 
@@ -884,9 +874,9 @@
             validarSinais();
         }
 
-        /* LÓGICA DE VALIDAÇÃO DE SINAIS VITAIS COM DESTAQUE EM VERMELHO APENAS QUANDO ALTERADO */
         function validarSinais() {
             const lista = document.getElementById('lista-sugestoes');
+            if (!lista) return;
             lista.innerHTML = "";
             
             const edadInput = document.getElementById('edad').value;
@@ -914,11 +904,9 @@
 
             let sugestoes = [];
 
-            // Reseta visual padrão de todos os campos
             const todosCampos = [selectSis, selectDia, selectGluc, selectGlucPost, selectTemp, selectFc, selectFr, selectSat];
-            todosCampos.forEach(el => el.classList.remove('campo-alterado'));
+            todosCampos.forEach(el => el && el.classList.remove('campo-alterado'));
 
-            // 1. Pressão Arterial
             if (!isNaN(pas) && !isNaN(pad)) {
                 const resultado = classificarPA(pas, pad, idadeAnos);
                 sugestoes.push(resultado.mensagem);
@@ -929,7 +917,6 @@
                 }
             }
 
-            // 2. Glicemia em Jejum
             if (!isNaN(gluc)) {
                 if (gluc < 70) {
                     sugestoes.push("🚨 Hipoglicemia (< 70 mg/dL): Risco imediato. Ofertar carboidratos simples se consciente.");
@@ -945,7 +932,6 @@
                 }
             }
 
-            // 3. Glicemia Pós-Prandial
             if (!isNaN(glucPost)) {
                 if (glucPost < 140) {
                     sugestoes.push("Glicemia Pós-Prandial normal (< 140 mg/dL).");
@@ -958,7 +944,6 @@
                 }
             }
 
-            // 4. Temperatura
             if (!isNaN(temp)) {
                 if (temp < 35.5) {
                     sugestoes.push("Hipotermia (< 35.5 °C): Promover reaquecimento do paciente.");
@@ -977,7 +962,6 @@
                 }
             }
 
-            // 5. Frequência Cardíaca
             if (!isNaN(fc) && fc > 0) {
                 const [fcMin, fcMax] = tabelasReferencia[faixa].fc.split('-').map(Number);
                 if (fc > fcMax) {
@@ -991,7 +975,6 @@
                 }
             }
 
-            // 6. Frequência Respiratória
             if (!isNaN(fr) && fr > 0) {
                 const [frMin, frMax] = tabelasReferencia[faixa].fr.split('-').map(Number);
                 if (fr > frMax) {
@@ -1005,10 +988,9 @@
                 }
             }
 
-            // 7. Saturação O2
             if (!isNaN(sat) && sat > 0) {
                 if (sat < 90) {
-                    sugestoes.push("Hipoxia / Alerta (< 89%): Necessita de avaliação médica e suporte de oxigênio.");
+                    sugestoes.push("Hipoxia / Alerta (< 89%): Necessita de avaliação médica especializada e suporte de oxigênio.");
                     selectSat.classList.add('campo-alterado');
                 } else if (sat <= 94) {
                     sugestoes.push("Saturação Limítrofe / Hipoxia Leve (90–94%): Monitorar oxigenação e vias aéreas.");
@@ -1018,7 +1000,6 @@
                 }
             }
 
-            // 8. IMC
             if (!isNaN(imc) && imc > 0) {
                 if (imc < 18.5) sugestoes.push("Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.");
                 else if (imc <= 24.9) sugestoes.push("Eutrofia / Peso Normal (IMC 18.5–24.9).");
@@ -1037,7 +1018,6 @@
             }
         }
 
-        /* LÓGICA DO CRONÔMETRO */
         let tempoRestante = 60;
         let timerInterval = null;
 
@@ -1077,7 +1057,6 @@
             document.getElementById('displayCronometro').textContent = `00:${seg}`;
         }
 
-        /* LÓGICA DO MAPA E GEOLOCALIZAÇÃO AUTOMÁTICA */
         var map = null;
         var userMarker = null;
         var gpsMarker = null;
@@ -1176,13 +1155,12 @@
             }
         }
 
-        /* EXPORTAÇÃO PDF SEM JANELA DE IMPRESSÃO NATIVA */
         async function exportarPDF() {
             try {
                 const { jsPDF } = window.jspdf || {};
                 
                 if (!jsPDF) {
-                    alert("A biblioteca jsPDF não pôde ser carregada. Por favor, verifique a sua conexão.");
+                    alert("A biblioteca não pôde ser carregada. Por favor, verifique a sua conexão.");
                     return;
                 }
 
@@ -1263,7 +1241,6 @@
                     sugestoesStr = "Nenhum sinal vital alterado para gerar sugestões.";
                 }
 
-                // Desenhando o PDF Exatamente igual ao Modelo Solicitado
                 doc.setFillColor(0, 104, 71); 
                 doc.rect(0, 0, 210, 25, 'F');
 
