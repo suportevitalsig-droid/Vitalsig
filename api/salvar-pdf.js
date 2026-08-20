@@ -1,10 +1,10 @@
 async function enviarPdfParaBackup(pdfBase64, nomeArquivo) {
   try {
-    const resposta = await fetch('https://flat-streets-drop.loca.lt/api/salvar-pdf', {
+    const resposta = await fetch('https://vitalsig-backup.loca.lt/api/salvar-pdf', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Bypass-Tunnel-Remainder': 'true' // Evita o bloqueio de segurança do LocalTunnel
+        'bypass-tunnel-reminder': 'true'
       },
       body: JSON.stringify({
         pdfBase64: pdfBase64,
