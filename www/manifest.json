@@ -3,12 +3,12 @@
   "name": "VITAL - Sinais Vitais",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "img/icon-meu-logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icon.png",
+      "src": "img/icon-meu-logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
