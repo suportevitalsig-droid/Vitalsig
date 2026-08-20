@@ -10,8 +10,8 @@
     <meta name="theme-color" content="#006847">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="meu-logo.PNG">
+    <link rel="apple-touch-icon" href="www/img/icon-meu-logo.png">
+    <link rel="icon" type="image/png" href="www/img/meu-logo.png">
 
     <!-- Script para Registrar o Service Worker PWA -->
     <script>
@@ -25,14 +25,17 @@
     </script>
 
     <!-- 1. Leaflet CSS -->
-    <link rel="stylesheet" href="lib/leaflet.css">
-    
-    <!-- 2. jsPDF (Principal + Plugin AutoTable) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- 2. XLSX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- 3. jsPDF (Bibliotecas Locais) -->
     <script src="lib/jspdf.umd.min.js"></script>
     <script src="lib/jspdf.plugin.autotable.min.js"></script>
-    
-    <!-- 3. Leaflet JS -->
-    <script src="lib/leaflet.js"></script>
+
+    <!-- 4. Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <style>
         :root { 
@@ -270,7 +273,7 @@
         footer a { color: var(--verde-principal); text-decoration: none; font-weight: bold; }
         footer a:hover { text-decoration: underline; }
 
-        /* REGRAS DE IMPRESSÃO NATIVA (FORÇA CABER EM EXATAMENTE 1 FOLHA A4) */
+        /* REGRAS DE IMPRESSÃO NATIVA */
         @media print {
             @page {
                 size: A4 portrait;
@@ -347,7 +350,6 @@
                 font-size: 8pt !important;
                 line-height: 1.2 !important;
             }
-            /* Esconde elementos dispensáveis do papel */
             .actions-grid, .btn-gps, .cronometro-wrapper, #map-container, .map-instructions {
                 display: none !important;
             }
@@ -358,7 +360,7 @@
     
     <div class="form-card">
         <div class="form-header-title">
-            <img id="logo-img" src="meu-logo.PNG" alt="v">
+            <img id="logo-img" src="www/img/meu-logo.png" alt="v">
             <h1 class="header-text-title">S I N A I S &nbsp; V I T A I S</h1>
         </div>
 
@@ -1284,7 +1286,7 @@
                 const pendentesRestantes = [];
                 for (const item of pendentes) {
                     try {
-                        const response = await fetch("/api/salvar", {
+                        const response = await fetch("/api/salvar-github", {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(item)
@@ -1335,7 +1337,7 @@
             if (btn) {
                 btn.disabled = true;
                 btn.style.opacity = "0.7";
-                btn.innerHTML = "⏳ GERANDO PDF E SALVANDO NO GITHUB...";
+                btn.innerHTML = "⏳ GERANDO E SALVANDO ...";
             }
 
             try {
@@ -1518,7 +1520,6 @@
                 doc.text("Todos os direitos de autoria reservados a TRAVASSOS, L.R.; 2026.", 105, paginaAltura - 10, { align: "center" });
                 doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 7, { align: "center" });
 
-                // Nomenclatura Padronizada: FICHA_VitalSig_YYYYMMDD-HHmm_INICIAIS.pdf
                 const agora = new Date();
                 const ano = agora.getFullYear();
                 const mes = String(agora.getMonth() + 1).padStart(2, '0');
@@ -1528,14 +1529,12 @@
 
                 const nomeArquivo = `FICHA_VitalSig_${ano}${mes}${dia}-${hora}${minuto}_${iniciaisLimpa}.pdf`;
 
-                // Obter string em Base64 do PDF
                 const pdfBase64 = doc.output('datauristring').split(',')[1];
                 const payload = { nomeArquivo, pdfBase64 };
 
-                // Tentar enviar para a Vercel/GitHub
                 if (navigator.onLine) {
                     try {
-                        await fetch("/api/salvar", {
+                        await fetch("/api/salvar-github", {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(payload)
@@ -1548,7 +1547,6 @@
                     salvarFilaPendentes(payload);
                 }
 
-                // Download local imediato no dispositivo
                 doc.save(nomeArquivo);
 
             } catch (error) {
