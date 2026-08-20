@@ -1,43 +1,24 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
-  }
-
-  const { pdfBase64, nomeDoArquivo } = req.body;
-
-  if (!pdfBase64 || !nomeDoArquivo) {
-    return res.status(400).json({ error: 'Dados incompletos' });
-  }
-
-  const TOKEN = process.env.GITHUB_TOKEN;
-  const REPO = 'suportevitalsig-droid/Vitalsig';
-  const PATH = `fichas_pdf/${nomeDoArquivo}.pdf`;
-
-  // Remove o cabeçalho base64 se presente
-  const conteudoClean = pdfBase64.replace(/^data:application\/pdf;base64,/, "");
-
+async function enviarPdfParaBackup(pdfBase64, nomeArquivo) {
   try {
-    const response = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${TOKEN}`,
+    const resposta = await fetch('https://flat-streets-drop.loca.lt/api/salvar-pdf', {
+      method: 'POST',
+      headers: { 
         'Content-Type': 'application/json',
-        'User-Agent': 'Vercel-Serverless-Function'
+        'Bypass-Tunnel-Remainder': 'true' // Evita o bloqueio de segurança do LocalTunnel
       },
       body: JSON.stringify({
-        message: `Backup ficha PDF: ${nomeDoArquivo}`,
-        content: conteudoClean,
-        branch: 'main'
+        pdfBase64: pdfBase64,
+        nomeDoArquivo: nomeArquivo
       })
     });
 
-    if (response.ok) {
-      return res.status(200).json({ success: true, message: 'PDF salvo no GitHub!' });
+    const resultado = await resposta.json();
+    if (resposta.ok) {
+      console.log('Backup do PDF realizado com sucesso!');
     } else {
-      const errorData = await response.json();
-      return res.status(500).json({ error: 'Erro ao salvar no GitHub', details: errorData });
+      console.error('Falha no backup:', resultado);
     }
-  } catch (error) {
-    return res.status(500).json({ error: 'Erro interno no servidor', details: error.message });
+  } catch (erro) {
+    console.error('Erro de rede ao enviar PDF:', erro);
   }
 }
