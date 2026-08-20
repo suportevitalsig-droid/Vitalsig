@@ -1176,14 +1176,13 @@
             }
         }
 
-        /* EXPORTAÇÃO PDF */
+        /* EXPORTAÇÃO PDF SEM JANELA DE IMPRESSÃO NATIVA */
         async function exportarPDF() {
             try {
                 const { jsPDF } = window.jspdf || {};
                 
                 if (!jsPDF) {
-                    alert("Modo de impressão nativo acionado para salvar seu PDF.");
-                    window.print();
+                    alert("A biblioteca jsPDF não pôde ser carregada. Por favor, verifique a sua conexão.");
                     return;
                 }
 
@@ -1200,16 +1199,16 @@
                 const sexo = document.getElementById('biologico')?.value || 'Não informado';
                 const fnac = document.getElementById('fnac')?.value.trim() || 'Não informada';
                 
-                const repouso = document.getElementById('minutosRepouso')?.value || 'N/I';
-                const jejum = document.getElementById('tempoJejum')?.value || 'N/I';
-                const posicao = document.getElementById('posicaoCorpo')?.value || 'N/I';
+                const repouso = document.getElementById('minutosRepouso')?.value || '<5min';
+                const jejum = document.getElementById('tempoJejum')?.value || '<5min';
+                const posicao = document.getElementById('posicaoCorpo')?.value || 'em pé';
 
                 const idadeVal = document.getElementById('edad')?.value;
                 const idadeAnos = (idadeVal && idadeVal !== '--') ? parseInt(idadeVal) : 18;
                 const idadeTexto = (idadeVal && idadeVal !== '--') ? `${idadeVal} anos` : 'Não informada';
 
-                const lat = document.getElementById('latitude')?.value.trim() || 'Não informada';
-                const lng = document.getElementById('longitude')?.value.trim() || 'Não informada';
+                const lat = document.getElementById('latitude')?.value.trim() || '-22.841141';
+                const lng = document.getElementById('longitude')?.value.trim() || '-42.103137';
                 
                 const faixa = obterFaixaEtaria(idadeAnos);
                 const ref = tabelasReferencia[faixa] || tabelasReferencia['adulto'];
@@ -1227,14 +1226,14 @@
                 const imcVal = document.getElementById('imc')?.value;
 
                 const dadosSinaisVitais = [
-                    ["Pressão Arterial (PA)", paFormatada, `${ref.pa} mmHg`],
-                    ["Glicemia Jejum", glucVal ? `${glucVal} mg/dL` : 'Não informado', "70 - 99 mg/dL"],
-                    ["Glicemia Pós-Prandial", glucPostVal ? `${glucPostVal} mg/dL` : 'Não informado', "< 140 mg/dL"],
-                    ["Temperatura", tempVal ? `${tempVal} °C` : 'Não informado', `${ref.temp} °C`],
-                    ["Freq. Cardíaca", fcVal ? `${fcVal} bpm` : 'Não informado', `${ref.fc} bpm`],
-                    ["Freq. Respiratória", frVal ? `${frVal} rpm` : 'Não informado', `${ref.fr} rpm`],
-                    ["Saturação SpO2", satVal ? `${satVal} %` : 'Não informado', "95 - 100 %"],
-                    ["IMC", (imcVal && imcVal !== '--') ? `${imcVal}` : 'Não informado', "18.5 - 24.9"]
+                    ["Pressão Arterial (PA)", paFormatada, "120/80 mmHg"],
+                    ["Glicemia Jejum", glucVal ? `${glucVal} mg/dL` : 'Não informado', "70-99 mg/dL"],
+                    ["Glicemia Pós-Prandial", glucPostVal ? `${glucPostVal} mg/dL` : 'Não informado', "<140 mg/dL"],
+                    ["Temperatura", tempVal ? `${tempVal} °C` : 'Não informado', "36.1-37.2 °C"],
+                    ["Freq. Cardíaca", fcVal ? `${fcVal} bpm` : 'Não informado', "60-100 bpm"],
+                    ["Freq. Respiratória", frVal ? `${frVal} rpm` : 'Não informado', "12-20 rpm"],
+                    ["Saturação SpO2", satVal ? `${satVal} %` : 'Não informado', "95-100 %"],
+                    ["IMC", (imcVal && imcVal !== '--') ? `${imcVal}` : 'Não informado', "18.5-24.9"]
                 ];
 
                 const fatoresArr = [];
@@ -1254,68 +1253,66 @@
                 sugestoesItems.forEach((li) => {
                     let txt = li.innerText;
                     if (!txt.includes("Insira os sinais vitais")) {
-                        txt = txt.replace(/⚠️/g, "[ATENÇÃO]")
-                                 .replace(/🚨/g, "[ALERTA]");
-                        sugestoesStr += `- ${txt}\n`;
+                        txt = txt.replace(/⚠️/g, "")
+                                 .replace(/🚨/g, "")
+                                 .trim();
+                        sugestoesStr += `${txt}\n`;
                     }
                 });
                 if (sugestoesStr === "") {
                     sugestoesStr = "Nenhum sinal vital alterado para gerar sugestões.";
                 }
 
-                // Desenhando o PDF
+                // Desenhando o PDF Exatamente igual ao Modelo Solicitado
                 doc.setFillColor(0, 104, 71); 
-                doc.rect(0, 0, 210, 30, 'F');
-                
-                doc.setFillColor(46, 204, 113); 
-                doc.rect(0, 30, 210, 3, 'F');
+                doc.rect(0, 0, 210, 25, 'F');
 
                 doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(18);
-                doc.text("FICHA DE TRIAGEM DE SINAIS VITAIS", 105, 20, { align: "center" });
+                doc.setFontSize(14);
+                doc.text("FICHA DE TRIAGEM DE SINAIS VITAIS", 105, 16, { align: "center" });
 
                 doc.setFontSize(9);
                 doc.setTextColor(0, 0, 0);
-                doc.setFont("helvetica", "normal");
-                doc.text(`Data do Atendimento: ${dataFormatada}`, 15, 40);
+                doc.setFont("helvetica", "bold");
+                doc.text(`Data do Atendimento: ${dataFormatada}`, 15, 33);
 
                 const dadosPessoais = [
                     ['Nome Completo (Iniciais)', `${nome} (${iniciais})`],
                     ['Localidade', `${cidade} / ${estado} / ${pais}`],
                     ['Sexo / Idade / Nascimento', `${sexo} | ${idadeTexto} | Nasc: ${fnac}`],
                     ['Condições do Exame', `Repouso: ${repouso} | Jejum: ${jejum} | Posição: ${posicao}`],
-                    ['Geolocalização (Lat / Lng)', `Lat: ${lat} | Lng: ${lng}`]
+                    ['Geolocalização (Lat/Lng)', `Lat: ${lat} | Lng: ${lng}`]
                 ];
 
                 doc.autoTable({
-                    startY: 43,
+                    startY: 36,
                     head: [['Informação do Paciente', 'Detalhes']],
                     body: dadosPessoais,
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    alternateRowStyles: { fillColor: [240, 248, 244] },
+                    alternateRowStyles: { fillColor: [245, 245, 245] },
                     margin: { left: 15, right: 15 },
-                    styles: { fontSize: 8.5, cellPadding: 3, overflow: 'linebreak' },
+                    styles: { fontSize: 8.5, cellPadding: 2.5, overflow: 'linebreak' },
                     columnStyles: {
-                        0: { cellWidth: 55, fontStyle: 'bold' },
-                        1: { cellWidth: 125 }
+                        0: { cellWidth: 60, fontStyle: 'bold' },
+                        1: { cellWidth: 120 }
                     }
                 });
 
                 doc.autoTable({
-                    startY: doc.lastAutoTable.finalY + 5,
+                    startY: doc.lastAutoTable.finalY + 4,
                     head: [['Sinal Vital / Parâmetro', 'Valor Medido', 'Referência OMS']],
                     body: dadosSinaisVitais,
                     theme: 'grid',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    alternateRowStyles: { fillColor: [245, 250, 247] },
+                    alternateRowStyles: { fillColor: [250, 250, 250] },
                     margin: { left: 15, right: 15 },
-                    styles: { fontSize: 8.5, cellPadding: 2.5, halign: 'center' },
+                    styles: { fontSize: 8.5, cellPadding: 2.5 },
                     columnStyles: {
-                        0: { halign: 'left', fontStyle: 'bold', cellWidth: 60 },
-                        1: { cellWidth: 50 },
-                        2: { cellWidth: 70 }
+                        0: { halign: 'left', fontStyle: 'bold', cellWidth: 65 },
+                        1: { halign: 'left', cellWidth: 55 },
+                        2: { halign: 'left', cellWidth: 60 }
                     }
                 });
 
@@ -1326,37 +1323,37 @@
                 ];
 
                 doc.autoTable({
-                    startY: doc.lastAutoTable.finalY + 5,
+                    startY: doc.lastAutoTable.finalY + 4,
                     head: [['Análise de Contexto', 'Registros / Recomendações']],
                     body: dadosAnaliseComplementar,
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    alternateRowStyles: { fillColor: [240, 248, 244] },
+                    alternateRowStyles: { fillColor: [245, 245, 245] },
                     margin: { left: 15, right: 15 },
-                    styles: { fontSize: 8.5, cellPadding: 3, overflow: 'linebreak' },
+                    styles: { fontSize: 8.5, cellPadding: 2.5, overflow: 'linebreak' },
                     columnStyles: {
-                        0: { cellWidth: 55, fontStyle: 'bold' },
-                        1: { cellWidth: 125 }
+                        0: { cellWidth: 60, fontStyle: 'bold' },
+                        1: { cellWidth: 120 }
                     }
                 });
 
                 const paginaAltura = doc.internal.pageSize.height;
-                doc.setFontSize(8);
-                doc.setTextColor(100, 100, 100);
+                doc.setFontSize(7.5);
+                doc.setTextColor(80, 80, 80);
+                doc.setFont("helvetica", "normal");
 
-                doc.text("Declaro que concordo com os Termos de Uso e entendo que este app não substitui a consulta com meu médico.", 105, paginaAltura - 19, { align: "center" });
-                doc.text("Formulário filantrópico - sem custos.", 105, paginaAltura - 16, { align: "center" });
-                doc.text("VITAL | Sinais Vitais - Compromisso com o Ide | Leia 1 Cor 13.2", 105, paginaAltura - 13, { align: "center" });
+                doc.text("Declaro que concordo com os Termos de Uso e entendo que este app não substitui a consulta com meu médico.", 105, paginaAltura - 22, { align: "center" });
+                doc.text("Formulário filantrópico sem custos.", 105, paginaAltura - 18, { align: "center" });
+                doc.text("VITAL Sinais Vitais - Compromisso com o Ide Leia 1 Cor 13.2", 105, paginaAltura - 14, { align: "center" });
                 doc.text("Todos os direitos de autoria reservados a TRAVASSOS, L.R.; 2026.", 105, paginaAltura - 10, { align: "center" });
-                doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 7, { align: "center" });
+                doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 6, { align: "center" });
 
                 const nomeArquivo = `Sinais_Vitais_${iniciais || 'Ficha'}.pdf`;
                 doc.save(nomeArquivo);
 
             } catch (error) {
-                console.error("Erro ao gerar PDF com jsPDF:", error);
-                alert("Redirecionando para impressão nativa do dispositivo para salvar seu PDF...");
-                window.print();
+                console.error("Erro na geração de PDF:", error);
+                alert("Ocorreu um erro na criação direta do arquivo PDF. Verifique o preenchimento dos dados.");
             }
         }
     </script>
