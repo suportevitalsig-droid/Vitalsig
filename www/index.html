@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V I T A L  s i g - Sinais Vitais</title>
+    <title>V I T A L - Sinais Vitais</title>
 
     <!-- Configurações PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#006847">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="www/img/icon-meu-logo.png">
-    <link rel="icon" type="image/png" href="www/img/meu-logo.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
 
     <!-- Script para Registrar o Service Worker PWA -->
     <script>
@@ -30,9 +30,9 @@
     <!-- 2. XLSX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-    <!-- 3. jsPDF (Bibliotecas Locais) -->
-    <script src="lib/jspdf.umd.min.js"></script>
-    <script src="lib/jspdf.plugin.autotable.min.js"></script>
+    <!-- 3. jsPDF (Principal + Plugin AutoTable) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <!-- 4. Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -158,27 +158,21 @@
         }
         .advertencia-box strong { color: var(--vermelho-sangue); text-transform: uppercase; }
 
-        .actions-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-action-single {
-            border: none;
-            padding: 15px;
-            border-radius: 6px;
-            font-size: 1.05em;
-            font-weight: bold;
-            cursor: pointer;
+        .btn-pdf { 
+            background: var(--verde-principal); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            width: 100%; 
+            border-radius: 6px; 
+            font-size: 1em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            border-bottom: 4px solid var(--verde-escuro); 
             transition: all 0.2s ease;
-            color: white;
-            text-align: center;
-            background: #006847; 
-            border-bottom: 4px solid #004d34;
         }
-        .btn-action-single:hover { background: #004d34; }
+        .btn-pdf:hover { background: var(--verde-escuro); transform: translateY(-1px); }
 
         .btn-gps {
             background: #059669;
@@ -273,86 +267,10 @@
         footer a { color: var(--verde-principal); text-decoration: none; font-weight: bold; }
         footer a:hover { text-decoration: underline; }
 
-        /* REGRAS DE IMPRESSÃO NATIVA */
         @media print {
-            @page {
-                size: A4 portrait;
-                margin: 4mm 6mm;
-            }
-            html, body {
-                background: #ffffff !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                font-size: 9pt !important;
-                width: 100%;
-                height: 100%;
-                overflow: hidden !important;
-            }
-            .form-card {
-                box-shadow: none !important;
-                max-width: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                border: none !important;
-            }
-            .form-header-title {
-                padding: 5px !important;
-                margin-bottom: 6px !important;
-                gap: 4px !important;
-            }
-            .form-header-title img {
-                max-width: 120px !important;
-            }
-            .header-text-title {
-                font-size: 1.1em !important;
-                letter-spacing: 2px !important;
-            }
-            fieldset {
-                margin-bottom: 5px !important;
-                padding: 4px 6px !important;
-            }
-            legend {
-                font-size: 0.75em !important;
-                padding: 1px 5px !important;
-            }
-            .flex-row {
-                margin-bottom: 4px !important;
-                gap: 4px !important;
-            }
-            label {
-                font-size: 0.75em !important;
-                margin-bottom: 1px !important;
-            }
-            input, select {
-                height: 22px !important;
-                padding: 1px 3px !important;
-                font-size: 9pt !important;
-            }
-            .sv-grid {
-                gap: 2px !important;
-                margin-bottom: 2px !important;
-            }
-            .sv-grid select {
-                height: 20px !important;
-                font-size: 8pt !important;
-            }
-            .ref-val {
-                font-size: 0.7em !important;
-            }
-            .advertencia-box {
-                padding: 5px !important;
-                margin: 5px 0 !important;
-                font-size: 0.75em !important;
-            }
-            footer {
-                margin-top: 5px !important;
-                padding-top: 4px !important;
-                font-size: 8pt !important;
-                line-height: 1.2 !important;
-            }
-            .actions-grid, .btn-gps, .cronometro-wrapper, #map-container, .map-instructions {
-                display: none !important;
-            }
+            body { background: white; }
+            .btn-pdf, .btn-gps, .cronometro-wrapper, #map-container { display: none !important; }
+            .form-card { box-shadow: none; max-width: 100%; }
         }
     </style>
 </head>
@@ -360,8 +278,8 @@
     
     <div class="form-card">
         <div class="form-header-title">
-            <img id="logo-img" src="www/img/meu-logo.png" alt="v">
             <h1 class="header-text-title">S I N A I S &nbsp; V I T A I S</h1>
+            <img src="meu-logo.png" alt="VITAL">
         </div>
 
         <form id="formMed">
@@ -487,8 +405,7 @@
             <fieldset>
                 <legend>Sinais Vitais</legend>
                 <div class="sv-grid"><strong>Dato</strong><strong>Valor</strong><strong>Ref. OMS</strong></div>
-
-                <!-- 1. PRESSÃO ARTERIAL -->
+                
                 <div class="sv-grid">
                     <span>P.A. (Sist / Diast)</span>
                     <div style="display: flex; gap: 4px;">
@@ -501,8 +418,7 @@
                     </div>
                     <div class="ref-val" id="ref-pa" style="display: flex; flex-direction: column; text-align: left; font-size: 0.78em; line-height: 1.2;"></div>
                 </div>
-
-                <!-- 2. GLICEMIA JEJUM -->
+                
                 <div class="sv-grid">
                     <span>Gluc Jejum (mg/dL)</span>
                     <select id="gluc" onchange="validarSinais()">
@@ -515,7 +431,6 @@
                     </div>
                 </div>
                 
-               <!-- 3. GLICEMIA PÓS-PRANDIAL -->
                 <div class="sv-grid">
                     <span>Gluc PPran (mg/dL)</span>
                     <select id="gluc_post" onchange="validarSinais()">
@@ -528,7 +443,6 @@
                     </div>
                 </div>
 
-                <!-- 4. TEMPERATURA -->
                 <div class="sv-grid">
                     <span>Temp (°C)</span>
                     <select id="temp" onchange="validarSinais()">
@@ -542,7 +456,6 @@
                     </div>
                 </div>
 
-                <!-- 5. FREQUÊNCIA CARDÍACA -->
                 <div class="sv-grid">
                     <span>Freq Cardíaca/bpm</span>
                     <select id="fc" onchange="validarSinais()">
@@ -555,7 +468,6 @@
                     </div>
                  </div>
                 
-                <!-- 6. FREQUÊNCIA RESPIRATÓRIA -->
                 <div class="sv-grid">
                     <span>Freq Respiratória/rpm</span>
                     <select id="fr" onchange="validarSinais()">
@@ -569,7 +481,6 @@
                     </div>
                 </div>
                 
-                <!-- 7. SATURAÇÃO SATO2 -->
                 <div class="sv-grid">
                     <span>SatO2 (%)</span>
                     <select id="sat" onchange="validarSinais()">
@@ -589,9 +500,9 @@
                 <div class="cronometro-wrapper">
                     <div class="timer-display" id="displayCronometro">01:00</div>
                     <div class="cronometro-controles">
-                        <button type="button" class="btn-cron btn-cron-play" id="btnPlay" onclick="iniciarCronometro()">▶ Play</button>
-                        <button type="button" class="btn-cron btn-cron-pause" id="btnPause" onclick="pausarCronometro()" disabled>⏸ Pause</button>
-                        <button type="button" class="btn-cron btn-cron-stop" id="btnStop" onclick="pararCronometro()" disabled>⏹ Stop</button>
+                        <button type="button" class="btn-cron btn-cron-play" id="btnPlay" onclick="iniciarCronometro()">Play</button>
+                        <button type="button" class="btn-cron btn-cron-pause" id="btnPause" onclick="pausarCronometro()" disabled>Pause</button>
+                        <button type="button" class="btn-cron btn-cron-stop" id="btnStop" onclick="pararCronometro()" disabled>Stop</button>
                     </div>
                 </div>
             </fieldset>
@@ -654,15 +565,10 @@
             </fieldset>
 
             <div class="advertencia-box">
-                <strong>O Ministério da Saúde adverte:</strong> A triagem de sinais vitais e as orientações automáticas são de caráter exclusivamente educativo e não substituem a consulta com seu médico, o diagnóstico ou o tratamento especializado.
+                <strong>O Ministério da Saúde adverte:</strong> A triagem de sinais vitais e as orientações automáticas são de caráter exclusivamente educativo e não substituem a consulta médica, o diagnóstico ou o tratamento especializado. Evite a automedicação e procure sempre um profissional de saúde qualificado.
             </div>
 
-            <!-- BOTAO UNICO DE AÇÃO -->
-            <div class="actions-grid">
-                <button type="button" class="btn-action-single" onclick="processarEnvioCompleto()">
-                    📄 EXPORTAR E SALVAR
-                </button>
-            </div>
+            <button type="button" class="btn-pdf" onclick="exportarPDF()">📄 EXPORTAR OU SALVAR FICHA PDF</button>
         </form>
     </div>
 
@@ -892,7 +798,7 @@
                 divRefPA.innerHTML = `<span>10-12a: máx. 125/85</span>`;
             } else {
                 divRefPA.innerHTML = `
-                    <span>Normal: < 120/80 mm Hg</span>
+                    <span>Normal: 120–129/80–84</span>
                     <span>Pré-HAS: 130–139/85–89</span>
                     <span>HAS 1: 140–159/90–99</span>
                     <span>HAS 2: 160–179/100–109</span>
@@ -969,151 +875,85 @@
             const idadeAnos = parseInt(edadInput) || 18;
             const faixa = obterFaixaEtaria(idadeAnos);
             
-            const campos = {
-                sis: document.getElementById('pa_sis'),
-                dia: document.getElementById('pa_dia'),
-                gluc: document.getElementById('gluc'),
-                glucPost: document.getElementById('gluc_post'),
-                temp: document.getElementById('temp'),
-                fc: document.getElementById('fc'),
-                fr: document.getElementById('fr'),
-                sat: document.getElementById('sat'),
-                imc: document.getElementById('imc')
-            };
+            const selectSis = document.getElementById('pa_sis');
+            const selectDia = document.getElementById('pa_dia');
+            
+            const pas = parseInt(selectSis.value);
+            const pad = parseInt(selectDia.value);
 
-            Object.values(campos).forEach(el => {
-                if (el) {
-                    el.style.borderColor = "var(--verde-principal)";
-                    el.style.backgroundColor = "white";
-                }
-            });
-
-            function marcarAlterado(...elementos) {
-                elementos.forEach(el => {
-                    if (el) {
-                        el.style.borderColor = "#dc2626";
-                        el.style.backgroundColor = "#fee2e2";
-                    }
-                });
-            }
-
-            const pas = parseInt(campos.sis.value);
-            const pad = parseInt(campos.dia.value);
-            const gluc = parseFloat(campos.gluc.value);
-            const glucPost = parseFloat(campos.glucPost.value);
-            const temp = parseFloat(campos.temp.value);
-            const fc = parseInt(campos.fc.value);
-            const fr = parseInt(campos.fr.value);
-            const sat = parseInt(campos.sat.value);
-            const imc = parseFloat(campos.imc.value);
+            const gluc = parseFloat(document.getElementById('gluc').value);
+            const glucPost = parseFloat(document.getElementById('gluc_post').value);
+            const temp = parseFloat(document.getElementById('temp').value);
+            const fc = parseInt(document.getElementById('fc').value);
+            const fr = parseInt(document.getElementById('fr').value);
+            const sat = parseInt(document.getElementById('sat').value);
+            const imc = parseFloat(document.getElementById('imc').value);
 
             let sugestoes = [];
+
+            selectSis.style.borderColor = "var(--verde-principal)";
+            selectDia.style.borderColor = "var(--verde-principal)";
+            selectSis.style.backgroundColor = "white";
+            selectDia.style.backgroundColor = "white";
 
             if (!isNaN(pas) && !isNaN(pad)) {
                 const resultado = classificarPA(pas, pad, idadeAnos);
                 sugestoes.push(resultado.mensagem);
 
                 if (resultado.alterado) {
-                    marcarAlterado(campos.sis, campos.dia);
+                    selectSis.style.borderColor = "#dc2626";
+                    selectDia.style.borderColor = "#dc2626";
+                    selectSis.style.backgroundColor = "#fee2e2";
+                    selectDia.style.backgroundColor = "#fee2e2";
                 }
             }
 
             if (!isNaN(gluc)) {
-                if (gluc < 70) {
-                    marcarAlterado(campos.gluc);
-                    sugestoes.push("🚨 Hipoglicemia (< 70 mg/dL): Risco imediato. Ofertar carboidratos simples se consciente.");
-                } else if (gluc <= 99) {
-                    sugestoes.push("Glicemia em Jejum normal (70–99 mg/dL).");
-                } else if (gluc <= 125) {
-                    marcarAlterado(campos.gluc);
-                    sugestoes.push("⚠️ Glicemia de Jejum Alterada / Pré-diabetes (100–125 mg/dL): Recomenda-se orientação nutricional.");
-                } else {
-                    marcarAlterado(campos.gluc);
-                    sugestoes.push("🚨 Glicemia de Jejum Elevada (≥ 126 mg/dL): Compatível com rastreio positivo para Diabetes Mellitus.");
-                }
+                if (gluc < 70) sugestoes.push("🚨 Hipoglicemia (< 70 mg/dL): Risco imediato. Ofertar carboidratos simples se consciente.");
+                else if (gluc <= 99) sugestoes.push("Glicemia em Jejum normal (70–99 mg/dL).");
+                else if (gluc <= 125) sugestoes.push("⚠️ Glicemia de Jejum Alterada / Pré-diabetes (100–125 mg/dL): Recomenda-se orientação nutricional.");
+                else sugestoes.push("🚨 Glicemia de Jejum Elevada (≥ 126 mg/dL): Compatível com rastreio positivo para Diabetes Mellitus.");
             }
 
             if (!isNaN(glucPost)) {
-                if (glucPost < 140) {
-                    sugestoes.push("Glicemia Pós-Prandial normal (< 140 mg/dL).");
-                } else if (glucPost <= 199) {
-                    marcarAlterado(campos.glucPost);
-                    sugestoes.push("Tolerância à Glicose Diminuída (140–199 mg/dL): Reduzir consumo de açúcares de rápida absorção.");
-                } else {
-                    marcarAlterado(campos.glucPost);
-                    sugestoes.push("Glicemia Pós-Prandial Elevada (≥ 200 mg/dL): Necessita de confirmação diagnóstica.");
-                }
+                if (glucPost < 140) sugestoes.push("Glicemia Pós-Prandial normal (< 140 mg/dL).");
+                else if (glucPost <= 199) sugestoes.push("Tolerância à Glicose Diminuída (140–199 mg/dL): Reduzir consumo de açúcares de rápida absorção.");
+                else sugestoes.push("Glicemia Pós-Prandial Elevada (≥ 200 mg/dL): Necessita de confirmação diagnóstica.");
             }
 
             if (!isNaN(temp)) {
-                if (temp < 35.5) {
-                    marcarAlterado(campos.temp);
-                    sugestoes.push("Hipotermia (< 35.5 °C): Promover reaquecimento do paciente.");
-                } else if (temp <= 37.2) {
-                    sugestoes.push("Temperatura corporal normotérmica (36.1–37.2 °C).");
-                } else if (temp <= 37.7) {
-                    marcarAlterado(campos.temp);
-                    sugestoes.push("Estado Febril / Subfebril (37.3–37.7 °C): Monitorar e manter hidratação.");
-                } else if (temp <= 39.0) {
-                    marcarAlterado(campos.temp);
-                    sugestoes.push("Febre (37.8–39.0 °C): Hidratação rigorosa e controle térmico.");
-                } else {
-                    marcarAlterado(campos.temp);
-                    sugestoes.push("Hipertermia Severa (> 39.0 °C): Atenção médica urgente.");
-                }
+                if (temp < 35.5) sugestoes.push("Hipotermia (< 35.5 °C): Promover reaquecimento do paciente.");
+                else if (temp <= 37.2) sugestoes.push("Temperatura corporal normotérmica (36.1–37.2 °C).");
+                else if (temp <= 37.7) sugestoes.push("Estado Febril / Subfebril (37.3–37.7 °C): Monitorar e manter hidratação.");
+                else if (temp <= 39.0) sugestoes.push("Febre (37.8–39.0 °C): Hidratação rigorosa e controle térmico.");
+                else sugestoes.push("Hipertermia Severa (> 39.0 °C): Atenção médica urgente.");
             }
 
             if (!isNaN(fc) && fc > 0) {
                 const [fcMin, fcMax] = tabelasReferencia[faixa].fc.split('-').map(Number);
-                if (fc > fcMax) {
-                    marcarAlterado(campos.fc);
-                    sugestoes.push(`Taquicardia (> ${fcMax} bpm): Avaliar ansiedade, dor, febre ou uso de estimulantes.`);
-                } else if (fc < fcMin) {
-                    marcarAlterado(campos.fc);
-                    sugestoes.push(`Bradicardia (< ${fcMin} bpm): Avaliar padrão metabólico e condicionamento.`);
-                } else {
-                    sugestoes.push("Frequência Cardíaca normal.");
-                }
+                if (fc > fcMax) sugestoes.push(`Taquicardia (> ${fcMax} bpm): Avaliar ansiedade, dor, febre ou uso de estimulantes.`);
+                else if (fc < fcMin) sugestoes.push(`Bradicardia (< ${fcMin} bpm): Avaliar padrão metabólico e condicionamento.`);
+                else sugestoes.push("Frequência Cardíaca normal.");
             }
 
             if (!isNaN(fr) && fr > 0) {
                 const [frMin, frMax] = tabelasReferencia[faixa].fr.split('-').map(Number);
-                if (fr > frMax) {
-                    marcarAlterado(campos.fr);
-                    sugestoes.push(`Taquipneia (> ${frMax} rpm): Observar esforço respiratório e padrão de expansão.`);
-                } else if (fr < frMin) {
-                    marcarAlterado(campos.fr);
-                    sugestoes.push(`Bradipneia (< ${frMin} rpm): Requer monitoramento ventilatório.`);
-                } else {
-                    sugestoes.push("Frequência Respiratória normal.");
-                }
+                if (fr > frMax) sugestoes.push(`Taquipneia (> ${frMax} rpm): Observar esforço respiratório e padrão de expansão.`);
+                else if (fr < frMin) sugestoes.push(`Bradipneia (< ${frMin} rpm): Requer monitoramento ventilatório.`);
+                else sugestoes.push("Frequência Respiratória normal.");
             }
 
             if (!isNaN(sat) && sat > 0) {
-                if (sat < 90) {
-                    marcarAlterado(campos.sat);
-                    sugestoes.push("Hipoxia / Alerta (< 89%): Necessita de avaliação médica e suporte de oxigênio.");
-                } else if (sat <= 94) {
-                    marcarAlterado(campos.sat);
-                    sugestoes.push("Saturação Limítrofe / Hipoxia Leve (90–94%): Monitorar oxigenação e vias aéreas.");
-                } else {
-                    sugestoes.push("Saturação de Oxigênio normal (95–100%).");
-                }
+                if (sat < 90) sugestoes.push("Hipoxia / Alerta (< 89%): Necessita de avaliação médica e suporte de oxigênio.");
+                else if (sat <= 94) sugestoes.push("Saturação Limítrofe / Hipoxia Leve (90–94%): Monitorar oxigenação e vias aéreas.");
+                else sugestoes.push("Saturação de Oxigênio normal (95–100%).");
             }
 
             if (!isNaN(imc) && imc > 0) {
-                if (imc < 18.5) {
-                    marcarAlterado(campos.imc);
-                    sugestoes.push("Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.");
-                } else if (imc <= 24.9) {
-                    sugestoes.push("Eutrofia / Peso Normal (IMC 18.5–24.9).");
-                } else if (imc <= 29.9) {
-                    marcarAlterado(campos.imc);
-                    sugestoes.push("Sobrepeso (IMC 25.0–29.9): Recomenda-se orientação de estilo de vida.");
-                } else {
-                    marcarAlterado(campos.imc);
-                    sugestoes.push("Obesidade (IMC ≥ 30.0): Necessita acompanhamento multidisciplinar.");
-                }
+                if (imc < 18.5) sugestoes.push("Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.");
+                else if (imc <= 24.9) sugestoes.push("Eutrofia / Peso Normal (IMC 18.5–24.9).");
+                else if (imc <= 29.9) sugestoes.push("Sobrepeso (IMC 25.0–29.9): Recomenda-se orientação de estilo de vida.");
+                else sugestoes.push("Obesidade (IMC ≥ 30.0): Necessita acompanhamento multidisciplinar.");
             }
 
             if (sugestoes.length === 0) {
@@ -1266,85 +1106,13 @@
             }
         }
 
-        /* LÓGICA DE FILA OFF-LINE */
-        function salvarFilaPendentes(payload) {
-            try {
-                const pendentes = JSON.parse(localStorage.getItem('vitalsig_pendentes_pdf') || '[]');
-                pendentes.push(payload);
-                localStorage.setItem('vitalsig_pendentes_pdf', JSON.stringify(pendentes));
-            } catch (e) {
-                console.error("Erro ao armazenar cópia pendente localmente:", e);
-            }
-        }
-
-        async function sincronizarPendentes() {
-            if (!navigator.onLine) return;
-            try {
-                const pendentes = JSON.parse(localStorage.getItem('vitalsig_pendentes_pdf') || '[]');
-                if (pendentes.length === 0) return;
-
-                const pendentesRestantes = [];
-                for (const item of pendentes) {
-                    try {
-                        const response = await fetch("/api/salvar-github", {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(item)
-                        });
-                        if (!response.ok) pendentesRestantes.push(item);
-                    } catch (err) {
-                        pendentesRestantes.push(item);
-                    }
-                }
-                localStorage.setItem('vitalsig_pendentes_pdf', JSON.stringify(pendentesRestantes));
-            } catch (e) {
-                console.error("Erro ao sincronizar registros pendentes:", e);
-            }
-        }
-
-        window.addEventListener('online', sincronizarPendentes);
-        window.addEventListener('DOMContentLoaded', sincronizarPendentes);
-
-        /* AUXILIAR: IMAGEM BASE64 */
-        function obterBase64Imagem(imgElement) {
-            return new Promise((resolve) => {
-                if (!imgElement || !imgElement.src) return resolve(null);
-                
-                const img = new Image();
-                img.crossOrigin = "Anonymous";
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.naturalWidth || img.width;
-                    canvas.height = img.naturalHeight || img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    try {
-                        resolve(canvas.toDataURL('image/png'));
-                    } catch (e) {
-                        resolve(null);
-                    }
-                };
-                img.onerror = () => resolve(null);
-                img.src = imgElement.src;
-            });
-        }
-
-        /* 1 CLIQUE: GERA O PDF COM NOME PADRONIZADO, ENVIA AO GITHUB E FAZ O DOWNLOAD */
-        async function processarEnvioCompleto() {
-            const btn = document.querySelector('.btn-action-single');
-            const textoOriginal = btn ? btn.innerHTML : '';
-
-            if (btn) {
-                btn.disabled = true;
-                btn.style.opacity = "0.7";
-                btn.innerHTML = "⏳ GERANDO E SALVANDO ...";
-            }
-
+        /* EXPORTAÇÃO PDF */
+        async function exportarPDF() {
             try {
                 const { jsPDF } = window.jspdf || {};
                 
                 if (!jsPDF) {
-                    alert("Acionando impressão nativa para salvar o PDF.");
+                    alert("Modo de impressão nativo acionado para salvar seu PDF.");
                     window.print();
                     return;
                 }
@@ -1355,9 +1123,7 @@
                 const dataFormatada = dataMatricula ? dataMatricula.split('-').reverse().join('/') : 'Não informada';
                 
                 const nome = document.getElementById('nome')?.value.trim() || 'Não informado';
-                const iniciaisInput = document.getElementById('iniciais')?.value.trim() || 'XX';
-                const iniciaisLimpa = iniciaisInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() || 'XX';
-
+                const iniciais = document.getElementById('iniciais')?.value.trim() || 'Não informada';
                 const pais = document.getElementById('pais')?.value || 'Não informado';
                 const estado = document.getElementById('estado')?.value || 'Não informado';
                 const cidade = document.getElementById('cidade')?.value || 'Não informado';
@@ -1427,31 +1193,25 @@
                     sugestoesStr = "Nenhum sinal vital alterado para gerar sugestões.";
                 }
 
+                // Desenhando o PDF
                 doc.setFillColor(0, 104, 71); 
-                doc.rect(0, 0, 210, 32, 'F');
+                doc.rect(0, 0, 210, 30, 'F');
                 
                 doc.setFillColor(46, 204, 113); 
-                doc.rect(0, 32, 210, 3, 'F');
-
-                const imgLogo = document.getElementById('logo-img');
-                const base64Logo = await obterBase64Imagem(imgLogo);
-                if (base64Logo) {
-                    doc.addImage(base64Logo, 'PNG', 15, 4, 24, 24);
-                }
+                doc.rect(0, 30, 210, 3, 'F');
 
                 doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(16);
-                doc.text("FICHA DE TRIAGEM DE SINAIS VITAIS", 115, 19, { align: "center" });
+                doc.setFontSize(18);
+                doc.text("FICHA DE TRIAGEM DE SINAIS VITAIS", 105, 20, { align: "center" });
 
                 doc.setFontSize(9);
                 doc.setTextColor(0, 0, 0);
                 doc.setFont("helvetica", "normal");
-                doc.text(`Data do Atendimento: ${dataFormatada}`, 15, 42);
+                doc.text(`Data do Atendimento: ${dataFormatada}`, 15, 40);
 
                 const dadosPessoais = [
-                    ['Nome Completo', nome],
-                    ['Iniciais', iniciaisInput],
+                    ['Nome Completo (Iniciais)', `${nome} (${iniciais})`],
                     ['Localidade', `${cidade} / ${estado} / ${pais}`],
                     ['Sexo / Idade / Nascimento', `${sexo} | ${idadeTexto} | Nasc: ${fnac}`],
                     ['Condições do Exame', `Repouso: ${repouso} | Jejum: ${jejum} | Posição: ${posicao}`],
@@ -1459,7 +1219,7 @@
                 ];
 
                 doc.autoTable({
-                    startY: 45,
+                    startY: 43,
                     head: [['Informação do Paciente', 'Detalhes']],
                     body: dadosPessoais,
                     theme: 'striped',
@@ -1520,45 +1280,13 @@
                 doc.text("Todos os direitos de autoria reservados a TRAVASSOS, L.R.; 2026.", 105, paginaAltura - 10, { align: "center" });
                 doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 7, { align: "center" });
 
-                const agora = new Date();
-                const ano = agora.getFullYear();
-                const mes = String(agora.getMonth() + 1).padStart(2, '0');
-                const dia = String(agora.getDate()).padStart(2, '0');
-                const hora = String(agora.getHours()).padStart(2, '0');
-                const minuto = String(agora.getMinutes()).padStart(2, '0');
-
-                const nomeArquivo = `FICHA_VitalSig_${ano}${mes}${dia}-${hora}${minuto}_${iniciaisLimpa}.pdf`;
-
-                const pdfBase64 = doc.output('datauristring').split(',')[1];
-                const payload = { nomeArquivo, pdfBase64 };
-
-                if (navigator.onLine) {
-                    try {
-                        await fetch("/api/salvar-github", {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                    } catch (err) {
-                        console.warn("Off-line ou falha de conexão.", err);
-                        salvarFilaPendentes(payload);
-                    }
-                } else {
-                    salvarFilaPendentes(payload);
-                }
-
+                const nomeArquivo = `Sinais_Vitais_${iniciais || 'Ficha'}.pdf`;
                 doc.save(nomeArquivo);
 
             } catch (error) {
-                console.error("Erro ao gerar PDF:", error);
-                alert("Redirecionando para impressão para salvar seu PDF...");
+                console.error("Erro ao gerar PDF com jsPDF:", error);
+                alert("Redirecionando para impressão nativa do dispositivo para salvar seu PDF...");
                 window.print();
-            } finally {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.style.opacity = "1";
-                    btn.innerHTML = textoOriginal;
-                }
             }
         }
     </script>
