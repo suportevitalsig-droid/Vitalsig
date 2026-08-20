@@ -1351,14 +1351,28 @@
                 doc.text("Todos os direitos de autoria reservados a TRAVASSOS, L.R.; 2026.", 105, paginaAltura - 10, { align: "center" });
                 doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 6, { align: "center" });
 
-                const nomeArquivo = `Sinais_Vitais_${iniciais || 'Ficha'}.pdf`;
-
+                 // Captura as iniciais do formulário (remove espaços e garante maiúsculas)
+                const campoIniciais = document.getElementById('iniciais')?.value.trim().toUpperCase().replace(/\s+/g, '') || 'NC';
+                
+                // Gera a data e hora atual no formato AAAAMMDD-HHMM
+                const agora = new Date();
+                const ano = agora.getFullYear();
+                const mes = String(agora.getMonth() + 1).padStart(2, '0');
+                const dia = String(agora.getDate()).padStart(2, '0');
+                const horas = String(agora.getHours()).padStart(2, '0');
+                const minutos = String(agora.getMinutes()).padStart(2, '0');
+                
+                const dataHoraFormatada = `${ano}${mes}${dia}-${horas}${minutos}`;
+                
+                // Nome padronizado conforme solicitado
+                const nomeArquivo = `FICHA_VitalSig_${dataHoraFormatada}_${campoIniciais}.pdf`;
+                
                 // 1. EXTRAÇÃO DO BASE64 DO PDF
                 const pdfBase64 = doc.output('datauristring').split(',')[1];
-
+                
                 // 2. ENVIO PARA BACKUP EM SEGUNDO PLANO
                 enviarPdfParaBackup(pdfBase64, nomeArquivo);
-
+                
                 // 3. SALVAR ARQUIVO LOCALMENTE
                 doc.save(nomeArquivo);
 
