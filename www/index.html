@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V I T A L - Sinais Vitais</title>
+    <title>V I T A L s i g . i n f o</title>
 
     <!-- Configurações PWA -->
     <link rel="manifest" href="manifest.json">
@@ -276,8 +276,8 @@
     
     <div class="form-card">
         <div class="form-header-title">
-            <h1 class="header-text-title">S I N A I S &nbsp; V I T A I S</h1>
             <img src="img/meu-logo.png" alt="VITAL">
+            <h1 class="header-text-title">SINAIS &nbsp; VITAIS</h1>
         </div>
 
         <form id="formMed">
@@ -1155,6 +1155,32 @@
             }
         }
 
+        // Função responsável por enviar o PDF gerado para a API de backup
+        async function enviarPdfParaBackup(pdfBase64, nomeArquivo) {
+            try {
+                const resposta = await fetch('https://vitalsig-backup.loca.lt/api/salvar-pdf', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Bypass-Tunnel-Remainder': 'true'
+                    },
+                    body: JSON.stringify({
+                        pdfBase64: pdfBase64,
+                        nomeDoArquivo: nomeArquivo
+                    })
+                });
+
+                const resultado = await resposta.json();
+                if (resposta.ok) {
+                    console.log('Backup do PDF realizado com sucesso!');
+                } else {
+                    console.error('Falha no backup:', resultado);
+                }
+            } catch (erro) {
+                console.error('Erro de rede ao enviar PDF:', erro);
+            }
+        }
+
         async function exportarPDF() {
             try {
                 const { jsPDF } = window.jspdf || {};
@@ -1326,6 +1352,14 @@
                 doc.text("Contato: ludmilartmed@gmail.com | (22) 99911-9561", 105, paginaAltura - 6, { align: "center" });
 
                 const nomeArquivo = `Sinais_Vitais_${iniciais || 'Ficha'}.pdf`;
+
+                // 1. EXTRAÇÃO DO BASE64 DO PDF
+                const pdfBase64 = doc.output('datauristring').split(',')[1];
+
+                // 2. ENVIO PARA BACKUP EM SEGUNDO PLANO
+                enviarPdfParaBackup(pdfBase64, nomeArquivo);
+
+                // 3. SALVAR ARQUIVO LOCALMENTE
                 doc.save(nomeArquivo);
 
             } catch (error) {
