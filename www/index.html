@@ -68,75 +68,80 @@
         
         .form-header-title { 
             color: white; 
-            background-color: var(--verde-principal); 
+            background-color: #006847; 
             text-align: center; 
-            margin: 0 0 16px 0; 
+            margin: -16px -16px 16px -16px; 
+            padding: 16px; 
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
             border-bottom: 4px solid var(--verde-claro-destaque); 
-            padding: 16px 12px; 
-            border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px; 
-        }
-        .header-text-title {
-            margin: 0;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-transform: uppercase;
-        }
-        .form-header-title img {
-            max-width: 200px; 
-            width: 75%;
-            height: auto;
-            object-fit: contain;
-            background: transparent;
-            padding: 0;
-            margin: 0 auto;
-            display: block;
+            gap: 12px; 
         }
 
-        /* Estilos do Seletor de Idiomas */
+        /* Seletor de idiomas no topo estilo barra */
         .lang-selector-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            margin-bottom: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
             border-radius: 6px;
             width: 100%;
+            max-width: 250px;
         }
+
         .lang-buttons {
             display: flex;
             gap: 6px;
             justify-content: center;
-            flex-wrap: wrap;
         }
+
         .btn-lang {
             background: #ffffff;
-            color: var(--verde-principal);
-            border: 1px solid var(--verde-principal);
-            padding: 4px 8px;
+            color: #006847;
+            border: none;
+            padding: 3px 8px;
             font-size: 0.75rem;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
+
         .btn-lang:hover {
             background: var(--verde-claro-destaque);
             color: white;
         }
+
         #google_translate_element select {
             height: 28px;
             font-size: 0.8rem;
             padding: 2px 4px;
             border-radius: 4px;
+        }
+
+        .form-header-title img {
+            max-width: 180px; 
+            width: 60%;
+            height: auto;
+            object-fit: contain;
+            margin: 8px auto 4px auto;
+            display: block;
+        }
+
+        .header-text-title {
+            margin: 4px 0 0 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: #ffffff;
+            text-transform: uppercase;
         }
         
         fieldset { 
@@ -405,7 +410,7 @@
     
     <div class="form-card">
         <div class="form-header-title">
-            <!-- Seletor de Idioma -->
+            <!-- Seletor de Idioma no Topo -->
             <div class="lang-selector-container">
                 <div id="google_translate_element"></div>
                 <div class="lang-buttons">
@@ -415,8 +420,11 @@
                 </div>
             </div>
 
-            <img src="img/meu-logo.png" alt="VITAL">
-            <h1 class="header-text-title" data-i18n="titulo_header">SINAIS &nbsp; VITAIS</h1>
+            <!-- Logotipo Centralizado -->
+            <img src="img/meu-logo.png" alt="VITAL" onerror="this.style.display='none'">
+
+            <!-- Título Principal -->
+            <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
         </div>
 
         <form id="formMed">
@@ -556,10 +564,10 @@
                     <span data-i18n="lbl_pa">Pressão Arterial (Sist / Diast)</span>
                     <div style="display: flex; gap: 4px;">
                         <select id="pa_sis" onchange="validarSinais()">
-                            <option value="" data-i18n="opt_pas">120</option>
+                            <option value="" data-i18n="opt_pas">PAS</option>
                         </select>
                         <select id="pa_dia" onchange="validarSinais()">
-                            <option value="" data-i18n="opt_pad">80</option>
+                            <option value="" data-i18n="opt_pad">PAD</option>
                         </select>
                     </div>
                     <div class="ref-val" id="ref-pa" style="display: flex; flex-direction: column; text-align: left; font-size: 0.78em; line-height: 1.2;"></div>
@@ -1141,7 +1149,7 @@
         };
 
         function preencherSelectsSinais() {
-            function popularSelect(id, min, max, passo, unidade, valorPadrao, placeholder) {
+            function popularSelect(id, min, max, passo, unidade, placeholder) {
                 const sel = document.getElementById(id);
                 if (!sel) return;
                 sel.innerHTML = `<option value="" selected>${placeholder}</option>`;
@@ -1151,23 +1159,16 @@
                     let label = unidade ? `${val} ${unidade}` : val;
                     sel.appendChild(new Option(label, val));
                 }
-
-                sel.addEventListener('focus', function() {
-                    if (this.value === "") {
-                        this.value = valorPadrao.toString();
-                        validarSinais();
-                    }
-                });
             }
 
-            popularSelect('pa_sis', 40, 300, 1, '', 120, 'PAS');
-            popularSelect('pa_dia', 15, 300, 1, '', 80, 'PAD');
-            popularSelect('gluc', 20, 600, 1, '', 80, 'Selecione');
-            popularSelect('gluc_post', 20, 600, 1, '', 130, 'Selecione');
-            popularSelect('temp', 30, 45, 0.1, '°C', 36.5, 'Selecione');
-            popularSelect('fc', 20, 250, 1, 'bpm', 70, 'Selecione');
-            popularSelect('fr', 5, 60, 1, 'rpm', 12, 'Selecione');
-            popularSelect('sat', 50, 100, 1, '%', 95, 'Selecione');
+            popularSelect('pa_sis', 40, 300, 1, '', 'PAS');
+            popularSelect('pa_dia', 15, 300, 1, '', 'PAD');
+            popularSelect('gluc', 20, 600, 1, '', 'Selecione');
+            popularSelect('gluc_post', 20, 600, 1, '', 'Selecione');
+            popularSelect('temp', 30, 45, 0.1, '°C', 'Selecione');
+            popularSelect('fc', 20, 250, 1, 'bpm', 'Selecione');
+            popularSelect('fr', 5, 60, 1, 'rpm', 'Selecione');
+            popularSelect('sat', 50, 100, 1, '%', 'Selecione');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -1289,22 +1290,19 @@
             const divRefPA = document.getElementById('ref-pa');
 
             if (idadeAnos < 6) {
-                divRefPA.innerHTML = `<span data-i18n="ref_pa_ate_6a">Até 6a: máx. 110/75</span>`;
+                divRefPA.innerHTML = `<span>Até 6a: máx. 110/75</span>`;
             } else if (idadeAnos >= 6 && idadeAnos < 10) {
-                divRefPA.innerHTML = `<span data-i18n="ref_pa_6_10a">6-10a: máx. 120/80</span>`;
+                divRefPA.innerHTML = `<span>6-10a: máx. 120/80</span>`;
             } else if (idadeAnos >= 10 && idadeAnos < 13) {
-                divRefPA.innerHTML = `<span data-i18n="ref_pa_10_12a">10-12a: máx. 125/85</span>`;
+                divRefPA.innerHTML = `<span>10-12a: máx. 125/85</span>`;
             } else {
                 divRefPA.innerHTML = `
-                    <span data-i18n="ref_pa_otima">Ótima: &lt;120/80</span>
-                    <span data-i18n="ref_pa_normal">Normal: 120–129/80–84</span>
-                    <span data-i18n="ref_pa_prehas">Pré-HAS: 130–139/85–89</span>
-                    <span data-i18n="ref_pa_est1">HAS I: 140–159 / 90–99</span>
-                    <span data-i18n="ref_pa_est2">HAS II: 160–179 / 100–109</span>
-                    <span data-i18n="ref_pa_est3">HAS III: &ge;180 / &ge;110</span>
-                    <span data-i18n="ref_pa_hsi">HSI: &ge;140 / &lt;90</span>
-                    <span data-i18n="ref_pa_hdi">HDI: &lt;140 / &ge;90</span>
-                    <span data-i18n="ref_pa_hipotensao">Hipotensão: &le;109 / &le;79</span>
+                    <span>Ótima: &lt;120/80</span>
+                    <span>Normal: 120–129/80–84</span>
+                    <span>Pré-HAS: 130–139/85–89</span>
+                    <span>HAS I: 140–159 / 90–99</span>
+                    <span>HAS II: 160–179 / 100–109</span>
+                    <span>HAS III: &ge;180 / &ge;110</span>
                 `;
             }
 
@@ -1331,7 +1329,7 @@
                 if (pad > maxPad) padAlterada = true;
         
                 if (pasAlterada || padAlterada) {
-                    mensagem = `⚠️ P.A. elevada para a faixa etária (${faixaNome}): Medido ${pas}/${pad} mmHg (Máx. esperado: ${maxPas}/${maxPad} mmHg). SUGESTÃO: Procure seu cardiologista para avaliar o funcionamento e a resistência de seu aparelho circulatório.`;
+                    mensagem = `⚠️ P.A. elevada para a faixa etária (${faixaNome}): Medido ${pas}/${pad} mmHg (Máx. esperado: ${maxPas}/${maxPad} mmHg). SUGESTÃO: Procure seu cardiologista.`;
                     tipo = "aviso";
                 } else {
                     mensagem = `Pressão Arterial adequada para a faixa etária (${faixaNome}: máx. ${maxPas}/${maxPad} mmHg).`;
@@ -1348,39 +1346,22 @@
             if (diaBaixa || pad >= 80) padAlterada = true;
         
             if (sisBaixa && diaBaixa) {
-                mensagem = "🚨 Hipotensão (Pressão Baixa): Sistólica de até 109 mmHg e Diastólica de até 79 mmHg. SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
-                tipo = "alerta";
-            } else if (sisBaixa) {
-                mensagem = "🚨 Hipotensão Sistólica Isolada: Sistólica de até 109 mmHg. SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
-                tipo = "alerta";
-            } else if (diaBaixa) {
-                mensagem = "🚨 Hipotensão Diastólica Isolada: Diastólica de até 79 mmHg. SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
+                mensagem = "🚨 Hipotensão (Pressão Baixa): Sistólica ≤109 mmHg e Diastólica ≤79 mmHg. SUGESTÃO: Procure seu cardiologista.";
                 tipo = "alerta";
             } else if (pas >= 180 || pad >= 110) {
-                mensagem = "Hipertensão Estágio 3 (180 ou mais e/ou 110 ou mais mmHg): Requer atenção médica imediata. SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
+                mensagem = "Hipertensão Estágio 3 (≥180 e/ou ≥110 mmHg): Requer atenção médica imediata. SUGESTÃO: Procure seu cardiologista.";
                 tipo = "alerta";
             } else if (pas >= 160 || pad >= 100) {
-                mensagem = "Hipertensão Estágio 2 (160–179 e/ou 100–109 mmHg). SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
-                tipo = "aviso";
-            } else if (pas >= 140 && pad < 90) {
-                mensagem = "Hipertensão Sistólica Isolada (HSI): Sistólica de 140 ou mais mmHg E Diastólica menor que 90 mmHg. SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
-                tipo = "aviso";
-            } else if (pas < 140 && pad >= 90) {
-                mensagem = "Hipertensão Diastólica Isolada (HDI): Sistólica menor que 140 mmHg E Diastólica de 90 ou mais mmHg. SUGESTÃO: Procure seu cardiologista para avaliar seu aparelho circulatório.";
+                mensagem = "Hipertensão Estágio 2 (160–179 e/ou 100–109 mmHg). SUGESTÃO: Procure seu cardiologista.";
                 tipo = "aviso";
             } else if (pas >= 140 || pad >= 90) {
-                mensagem = "Hipertensão Estágio 1 (140–159 e/ou 90–99 mmHg). SUGESTÃO: Procure seu cardiologista para avaliar o funcionamento e a resistência de seu aparelho circulatório.";
+                mensagem = "Hipertensão Estágio 1 (140–159 e/ou 90–99 mmHg). SUGESTÃO: Procure seu cardiologista.";
                 tipo = "aviso";
             } else if (pas >= 130 || pad >= 85) {
-                mensagem = "Pré-hipertensão (130–139 e/ou 85–89 mmHg). SUGESTÃO: Procure seu cardiologista para avaliar o funcionamento e a resistência de seu aparelho circulatório.";
+                mensagem = "Pré-hipertensão (130–139 e/ou 85–89 mmHg). SUGESTÃO: Acompanhamento regular.";
                 tipo = "aviso";
-            } else if (pas >= 120 || pad >= 80) {
-                mensagem = "Pressão Arterial Normal (120–129 e/ou 80–84 mmHg).";
-                pasAlterada = false;
-                padAlterada = false;
-                tipo = "ok";
             } else {
-                mensagem = "Pressão Arterial Desejável (menor que 120/80 mmHg).";
+                mensagem = "Pressão Arterial Normal / Desejável (< 120/80 mmHg).";
                 pasAlterada = false;
                 padAlterada = false;
                 tipo = "ok";
@@ -1403,28 +1384,23 @@
                 
                 if (imc < 18.5) { 
                     legenda.textContent = "Abaixo do peso"; 
-                    legenda.setAttribute("data-i18n", "imc_abaixo");
                     legenda.style.color = "#d97706"; 
                     imcField.classList.add('campo-alterado');
                 } else if (imc < 24.9) { 
                     legenda.textContent = "Eutrófico (Peso Normal)"; 
-                    legenda.setAttribute("data-i18n", "imc_normal");
                     legenda.style.color = "#059669"; 
                 } else if (imc < 29.9) { 
                     legenda.textContent = "Sobrepeso"; 
-                    legenda.setAttribute("data-i18n", "imc_sobrepeso");
                     legenda.style.color = "#d97706"; 
                     imcField.classList.add('campo-alterado');
                 } else { 
                     legenda.textContent = "Obesidade"; 
-                    legenda.setAttribute("data-i18n", "imc_obesidade");
                     legenda.style.color = "#dc2626"; 
                     imcField.classList.add('campo-alterado');
                 }
             } else {
                 imcField.value = "--";
                 legenda.textContent = "";
-                legenda.removeAttribute("data-i18n");
                 imcField.classList.remove('campo-alterado');
             }
             validarSinais();
@@ -1469,105 +1445,48 @@
 
                 if (resultado.pasAlterada) selectSis.classList.add('campo-alterado');
                 if (resultado.padAlterada) selectDia.classList.add('campo-alterado');
-            } else if (!isNaN(pas)) {
-                if (pas <= 109 || pas >= 130) selectSis.classList.add('campo-alterado');
-            } else if (!isNaN(pad)) {
-                if (pad <= 79 || pad >= 85) selectDia.classList.add('campo-alterado');
             }
 
-            // Validação Glicemia em Jejum
             if (!isNaN(gluc)) {
                 if (gluc < 70) {
-                    sugestoes.push({ texto: "🚨 Hipoglicemia (< 70 mg/dL): Risco imediato. Ofertar carboidratos simples se consciente.", tipo: "alerta" });
+                    sugestoes.push({ texto: "🚨 Hipoglicemia (< 70 mg/dL): Ofertar carboidratos simples.", tipo: "alerta" });
                     selectGluc.classList.add('campo-alterado');
                 } else if (gluc <= 99) {
                     sugestoes.push({ texto: "Glicemia em Jejum normal (70–99 mg/dL).", tipo: "ok" });
                 } else if (gluc <= 125) {
-                    sugestoes.push({ texto: "⚠️ Glicemia de Jejum Alterada / Pré-diabetes (100–125 mg/dL): Recomenda-se orientação nutricional.", tipo: "aviso" });
+                    sugestoes.push({ texto: "⚠️ Glicemia de Jejum Alterada / Pré-diabetes (100–125 mg/dL).", tipo: "aviso" });
                     selectGluc.classList.add('campo-alterado');
                 } else {
-                    sugestoes.push({ texto: "🚨 Glicemia de Jejum Elevada (≥ 126 mg/dL): Compatível com rastreio positivo para Diabetes Mellitus.", tipo: "alerta" });
+                    sugestoes.push({ texto: "🚨 Glicemia de Jejum Elevada (≥ 126 mg/dL): Rastreio positivo para Diabetes.", tipo: "alerta" });
                     selectGluc.classList.add('campo-alterado');
-                }
-            }
-            
-            // Validação Glicemia Pós-Prandial
-            if (!isNaN(glucPost)) {
-                if (glucPost < 70) {
-                    sugestoes.push({ texto: "🚨 Hipoglicemia Pós-Prandial (< 70 mg/dL): Risco imediato.", tipo: "alerta" });
-                    selectGlucPost.classList.add('campo-alterado');
-                } else if (glucPost < 140) {
-                    sugestoes.push({ texto: "Glicemia Pós-Prandial normal (< 140 mg/dL).", tipo: "ok" });
-                } else if (glucPost <= 199) {
-                    sugestoes.push({ texto: "⚠️ Tolerância à Glicose Diminuída / Pré-diabetes (140–199 mg/dL): Reduzir consumo de açúcares simples.", tipo: "aviso" });
-                    selectGlucPost.classList.add('campo-alterado');
-                } else {
-                    sugestoes.push({ texto: "🚨 Glicemia Pós-Prandial Elevada (≥ 200 mg/dL): Necessita de confirmação diagnóstica médica.", tipo: "alerta" });
-                    selectGlucPost.classList.add('campo-alterado');
                 }
             }
 
             if (!isNaN(temp)) {
                 if (temp < 35.9) {
-                    sugestoes.push({ texto: "🚨 Hipotermia (< 35.9 °C): Promover reaquecimento do paciente.", tipo: "alerta" });
+                    sugestoes.push({ texto: "🚨 Hipotermia (< 35.9 °C): Aquecer o paciente.", tipo: "alerta" });
                     selectTemp.classList.add('campo-alterado');
                 } else if (temp <= 37.2) {
-                    sugestoes.push({ texto: "Temperatura corporal normotérmica (36–37.2 °C).", tipo: "ok" });
+                    sugestoes.push({ texto: "Temperatura corporal normal (36–37.2 °C).", tipo: "ok" });
                 } else if (temp <= 37.7) {
-                    sugestoes.push({ texto: "⚠️ Estado Febril / Subfebril (37.3–37.7 °C): Monitorar e manter hidratação.", tipo: "aviso" });
-                    selectTemp.classList.add('campo-alterado');
-                } else if (temp <= 39.0) {
-                    sugestoes.push({ texto: "⚠️ Febre (37.8–39.0 °C): Hidratação rigorosa e controle térmico.", tipo: "aviso" });
+                    sugestoes.push({ texto: "⚠️ Estado Subfebril (37.3–37.7 °C): Monitorar hidratação.", tipo: "aviso" });
                     selectTemp.classList.add('campo-alterado');
                 } else {
-                    sugestoes.push({ texto: "🚨 Hipertermia Severa (> 39.0 °C): Mantenha sua atenção e busque um médico de sua confiança urgente.", tipo: "alerta" });
+                    sugestoes.push({ texto: "🚨 Febre (> 37.8 °C): Controle térmico e avaliação.", tipo: "alerta" });
                     selectTemp.classList.add('campo-alterado');
-                }
-            }
-
-            if (!isNaN(fc) && fc > 0) {
-                const [fcMin, fcMax] = tabelasReferencia[faixa].fc.split('-').map(Number);
-                if (fc > fcMax) {
-                    sugestoes.push({ texto: `⚠️ Taquicardia (> ${fcMax} bpm): Avaliar ansiedade, dor, febre ou uso de estimulantes.`, tipo: "aviso" });
-                    selectFc.classList.add('campo-alterado');
-                } else if (fc < fcMin) {
-                    sugestoes.push({ texto: `⚠️ Bradicardia (< ${fcMin} bpm): Avaliar padrão metabólico e condicionamento.`, tipo: "aviso" });
-                    selectFc.classList.add('campo-alterado');
-                } else {
-                    sugestoes.push({ texto: "Frequência Cardíaca normal.", tipo: "ok" });
-                }
-            }
-
-            if (!isNaN(fr) && fr > 0) {
-                const [frMin, frMax] = tabelasReferencia[faixa].fr.split('-').map(Number);
-                if (fr > frMax) {
-                    sugestoes.push({ texto: `⚠️ Taquipneia (> ${frMax} rpm): Observar esforço respiratório e padrão de expansão.`, tipo: "aviso" });
-                    selectFr.classList.add('campo-alterado');
-                } else if (fr < frMin) {
-                    sugestoes.push({ texto: `⚠️ Bradipneia (< ${frMin} rpm): Requer monitoramento ventilatório.`, tipo: "aviso" });
-                    selectFr.classList.add('campo-alterado');
-                } else {
-                    sugestoes.push({ texto: "Frequência Respiratória normal.", tipo: "ok" });
                 }
             }
 
             if (!isNaN(sat) && sat > 0) {
                 if (sat < 90) {
-                    sugestoes.push({ texto: "🚨 Hipoxia / Alerta (< 89%): Necessita de avaliação médica especializada e suporte de oxigênio.", tipo: "alerta" });
+                    sugestoes.push({ texto: "🚨 Hipoxia Severa (< 90%): Suporte imediato de oxigênio.", tipo: "alerta" });
                     selectSat.classList.add('campo-alterado');
                 } else if (sat <= 94) {
-                    sugestoes.push({ texto: "⚠️ Saturação Limítrofe / Hipoxia Leve (90–94%): Monitorar oxigenação e vias aéreas.", tipo: "aviso" });
+                    sugestoes.push({ texto: "⚠️ Saturação Limítrofe (90–94%): Monitorar vias aéreas.", tipo: "aviso" });
                     selectSat.classList.add('campo-alterado');
                 } else {
                     sugestoes.push({ texto: "Saturação de Oxigênio normal (95–100%).", tipo: "ok" });
                 }
-            }
-
-            if (!isNaN(imc) && imc > 0) {
-                if (imc < 18.5) sugestoes.push({ texto: "Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.", tipo: "aviso" });
-                else if (imc <= 24.9) sugestoes.push({ texto: "Eutrofia / Peso Normal (IMC 18.5–24.9).", tipo: "ok" });
-                else if (imc <= 29.9) sugestoes.push({ texto: "Sobrepeso (IMC 25.0–29.9): Recomenda-se orientação de estilo de vida.", tipo: "aviso" });
-                else sugestoes.push({ texto: "Obesidade (IMC ≥ 30.0): Necessita acompanhamento multidisciplinar.", tipo: "alerta" });
             }
 
             if (sugestoes.length === 0) {
@@ -1596,50 +1515,6 @@
             return audioCtx;
         }
 
-        function tocarBeep() {
-            try {
-                const ctx = obterAudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, ctx.currentTime);
-
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start();
-                osc.stop(ctx.currentTime + 0.15);
-            } catch (e) {
-                console.warn("Não foi possível reproduzir áudio no navegador:", e);
-            }
-        }
-
-        function tocarBeepFinal() {
-            try {
-                const ctx = obterAudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(1200, ctx.currentTime);
-
-                gain.gain.setValueAtTime(0.2, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start();
-                osc.stop(ctx.currentTime + 0.6);
-            } catch (e) {
-                console.warn("Não foi possível reproduzir áudio no navegador:", e);
-            }
-        }
-
         function iniciarCronometro() {
             obterAudioContext();
             document.getElementById('btnPlay').disabled = true;
@@ -1650,16 +1525,9 @@
                 tempoRestante--;
                 atualizarDisplayCronometro();
 
-                if (tempoRestante > 0 && tempoRestante % 10 === 0) {
-                    tocarBeep();
-                }
-
                 if (tempoRestante <= 0) {
                     clearInterval(timerInterval);
-                    tocarBeepFinal();
-                    setTimeout(() => {
-                        alert("Tempo de 1 minuto finalizado!");
-                    }, 100);
+                    alert("Tempo de 1 minuto finalizado!");
                     pararCronometro();
                 }
             }, 1000);
@@ -1687,28 +1555,14 @@
 
         var map = null;
         var userMarker = null;
-        var gpsMarker = null;
 
         function initMapa() {
             const DEFAULT_LAT = -22.8393;
             const DEFAULT_LNG = -42.1025;
-            const DEFAULT_ZOOM = 12;
 
             if (typeof L !== 'undefined') {
-                map = L.map('map', {
-                    zoomControl: true,
-                    fadeAnimation: false
-                }).setView([DEFAULT_LAT, DEFAULT_LNG], DEFAULT_ZOOM);
-
-                var osmUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-                var osmAttrib = '&copy; OpenStreetMap contributors';
-                
-                if (navigator.onLine) {
-                    L.tileLayer(osmUrl, { 
-                        maxZoom: 19, 
-                        attribution: osmAttrib 
-                    }).addTo(map);
-                }
+                map = L.map('map').setView([DEFAULT_LAT, DEFAULT_LNG], 12);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 
                 map.on('click', function(e) {
                     var lat = e.latlng.lat.toFixed(6);
@@ -1718,308 +1572,172 @@
                     document.getElementById('longitude').value = lng;
 
                     if (userMarker) map.removeLayer(userMarker);
-
-                    userMarker = L.marker(e.latlng).addTo(map)
-                        .bindPopup(`Ponto Selecionado:<br><b>Lat:</b> ${lat}<br><b>Lng:</b> ${lng}`)
-                        .openPopup();
+                    userMarker = L.marker(e.latlng).addTo(map).bindPopup(`<b>Lat:</b> ${lat}<br><b>Lng:</b> ${lng}`).openPopup();
                 });
             }
-
             obterGeolocalizacaoRapida();
         }
 
         function obterGeolocalizacaoRapida() {
-            if (!navigator.geolocation) {
-                alert("Geolocalização não é suportada por este dispositivo.");
-                return;
-            }
+            if (!navigator.geolocation) return;
 
-            document.getElementById('latitude').placeholder = "Buscando GPS...";
-            document.getElementById('longitude').placeholder = "Buscando GPS...";
+            navigator.geolocation.getCurrentPosition(pos => {
+                var lat = pos.coords.latitude.toFixed(6);
+                var lng = pos.coords.longitude.toFixed(6);
 
-            navigator.geolocation.getCurrentPosition(
-                function(pos) {
-                    var lat = pos.coords.latitude.toFixed(6);
-                    var lng = pos.coords.longitude.toFixed(6);
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
 
-                    document.getElementById('latitude').value = lat;
-                    document.getElementById('longitude').value = lng;
-
-                    if (map && typeof L !== 'undefined') {
-                        var novaPos = [lat, lng];
-                        if (!gpsMarker) {
-                            gpsMarker = L.marker(novaPos).addTo(map).bindPopup("<b>Posição GPS Capturada</b>").openPopup();
-                        } else {
-                            gpsMarker.setLatLng(novaPos);
-                        }
-                        map.setView(novaPos, 15);
-                    }
-                },
-                function(error) {
-                    console.warn("Aviso de GPS: " + error.message);
-                    document.getElementById('latitude').placeholder = "Digite manualmente";
-                    document.getElementById('longitude').placeholder = "Digite manualmente";
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
+                if (map) {
+                    map.setView([lat, lng], 15);
+                    if (userMarker) map.removeLayer(userMarker);
+                    userMarker = L.marker([lat, lng]).addTo(map).bindPopup("Sua Localização").openPopup();
+                }
+            });
         }
 
         function atualizarMapaPorInput() {
-            var lat = parseFloat(document.getElementById('latitude').value.replace(',', '.'));
-            var lng = parseFloat(document.getElementById('longitude').value.replace(',', '.'));
+            var lat = parseFloat(document.getElementById('latitude').value);
+            var lng = parseFloat(document.getElementById('longitude').value);
 
-            if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-                var novaPosicao = [lat, lng];
-
-                if (map && typeof L !== 'undefined') {
-                    if (userMarker) map.removeLayer(userMarker);
-
-                    userMarker = L.marker(novaPosicao).addTo(map)
-                        .bindPopup(`Ponto Editado Manualmente:<br><b>Lat:</b> ${lat}<br><b>Lng:</b> ${lng}`)
-                        .openPopup();
-
-                    map.setView(novaPosicao, 16);
-                }
+            if (!isNaN(lat) && !isNaN(lng) && map) {
+                map.setView([lat, lng], 15);
+                if (userMarker) map.removeLayer(userMarker);
+                userMarker = L.marker([lat, lng]).addTo(map).openPopup();
             }
         }
 
         async function enviarPdfParaBackup(pdfBase64, nomeArquivo) {
             try {
-                const resposta = await fetch('https://vitalsig-backup.loca.lt/api/salvar-pdf', {
+                await fetch('https://vitalsig-backup.loca.lt/api/salvar-pdf', {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Bypass-Tunnel-Remainder': 'true'
-                    },
-                    body: JSON.stringify({
-                        pdfBase64: pdfBase64,
-                        nomeDoArquivo: nomeArquivo
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Bypass-Tunnel-Remainder': 'true' },
+                    body: JSON.stringify({ pdfBase64, nomeDoArquivo: nomeArquivo })
                 });
-
-                const resultado = await resposta.json();
-                if (resposta.ok) {
-                    console.log('Backup do PDF realizado com sucesso!');
-                } else {
-                    console.error('Falha no backup:', resultado);
-                }
             } catch (erro) {
-                console.error('Erro de rede ao enviar PDF:', erro);
+                console.warn('Erro ao conectar ao servidor de backup:', erro);
             }
         }
 
         async function exportarPDF() {
             try {
                 const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
-                
                 if (!jsPDFClass) {
-                    alert("A biblioteca PDF não pôde ser carregada. Por favor, verifique sua conexão com a internet.");
+                    alert("A biblioteca PDF não pôde ser carregada.");
                     return;
                 }
 
-                const doc = new jsPDFClass({
-                    orientation: 'p',
-                    unit: 'mm',
-                    format: 'a4'
-                });
+                const doc = new jsPDFClass({ orientation: 'p', unit: 'mm', format: 'a4' });
 
-                // Data de atendimento formatada
                 const dataMatricula = document.getElementById('dataMatricula')?.value || '';
                 const dataFormatada = dataMatricula ? dataMatricula.split('-').reverse().join('/') : 'Não informada';
                 const nomePaciente = document.getElementById('nome')?.value.trim() || 'Paciente';
 
-                // 1. Identificação do Paciente & Condições
                 const dadosPessoais = [
                     ['Data do Atendimento', dataFormatada],
-                    ['Nome Completo', document.getElementById('nome')?.value.trim() || 'Não informado'],
+                    ['Nome Completo', nomePaciente],
                     ['Iniciais do Nome', document.getElementById('iniciais')?.value.trim() || 'Não informado'],
                     ['País de Origem', document.getElementById('pais')?.value || 'Brasil'],
                     ['Estado / Departamento', document.getElementById('estado')?.value || 'Não informado'],
                     ['Cidade / Localidade', document.getElementById('cidade')?.value || 'Não informado'],
                     ['Sexo Biológico', document.getElementById('biologico')?.value || 'Não informado'],
                     ['Data de Nascimento', document.getElementById('fnac')?.value.trim() || 'Não informada'],
-                    ['Idade Calculada', document.getElementById('edad')?.value ? `${document.getElementById('edad').value} anos` : 'Não informada'],
-                    ['Tempo de Repouso Prévio', document.getElementById('minutosRepouso')?.value || 'Não informado'],
-                    ['Tempo de Jejum Prévio', document.getElementById('tempoJejum')?.value || 'Não informado'],
-                    ['Posição Corporal no Exame', document.getElementById('posicaoCorpo')?.value || 'Não informado'],
-                    ['Peso Corporal (kg)', document.getElementById('peso')?.value ? `${document.getElementById('peso').value} kg` : 'Não informado'],
-                    ['Altura Corporal (m)', document.getElementById('altura')?.value ? `${document.getElementById('altura').value} m` : 'Não informada'],
-                    ['IMC (Índice de Massa Corporal)', document.getElementById('imc')?.value || 'Não informado'],
-                    ['Latitude (GPS)', document.getElementById('latitude')?.value.trim() || 'Não capturada'],
-                    ['Longitude (GPS)', document.getElementById('longitude')?.value.trim() || 'Não capturada']
+                    ['Idade', document.getElementById('edad')?.value ? `${document.getElementById('edad').value} anos` : 'Não informada'],
+                    ['Repouso Prévio', document.getElementById('minutosRepouso')?.value || 'Não informado'],
+                    ['Jejum Prévio', document.getElementById('tempoJejum')?.value || 'Não informado'],
+                    ['Posição Corporal', document.getElementById('posicaoCorpo')?.value || 'Não informado'],
+                    ['Peso', document.getElementById('peso')?.value ? `${document.getElementById('peso').value} kg` : 'Não informado'],
+                    ['Altura', document.getElementById('altura')?.value ? `${document.getElementById('altura').value} m` : 'Não informada'],
+                    ['IMC', document.getElementById('imc')?.value || 'Não informado'],
+                    ['Latitude', document.getElementById('latitude')?.value.trim() || 'Não capturada'],
+                    ['Longitude', document.getElementById('longitude')?.value.trim() || 'Não capturada']
                 ];
 
-                // 2. Sinais Vitais com Rótulos Amigáveis
                 const dadosSinaisVitais = [
                     ['Pressão Arterial Sistólica (PAS)', document.getElementById('pa_sis')?.value || 'Não informada', 'mmHg', '120 mmHg'],
                     ['Pressão Arterial Diastólica (PAD)', document.getElementById('pa_dia')?.value || 'Não informada', 'mmHg', '80 mmHg'],
-                    ['Glicemia em Jejum (Gluc Jejum)', document.getElementById('gluc')?.value || 'Não informada', 'mg/dL', '70 – 99 mg/dL'],
-                    ['Glicemia Pós-Prandial (Gluc PPran)', document.getElementById('gluc_post')?.value || 'Não informada', 'mg/dL', '< 140 mg/dL'],
-                    ['Temperatura Corporal (Temp)', document.getElementById('temp')?.value || 'Não informada', '°C', '36.1 – 37.2 °C'],
-                    ['Frequência Cardíaca (FC)', document.getElementById('fc')?.value || 'Não informada', 'bpm', '60 – 100 bpm'],
-                    ['Frequência Respiratória (FR)', document.getElementById('fr')?.value || 'Não informada', 'rpm', '12 – 20 rpm'],
-                    ['Saturação de Oxigênio (SatO2)', document.getElementById('sat')?.value || 'Não informada', '%', '95 – 100%']
+                    ['Glicemia em Jejum', document.getElementById('gluc')?.value || 'Não informada', 'mg/dL', '70 – 99 mg/dL'],
+                    ['Glicemia Pós-Prandial', document.getElementById('gluc_post')?.value || 'Não informada', 'mg/dL', '< 140 mg/dL'],
+                    ['Temperatura Corporal', document.getElementById('temp')?.value || 'Não informada', '°C', '36.1 – 37.2 °C'],
+                    ['Frequência Cardíaca', document.getElementById('fc')?.value || 'Não informada', 'bpm', '60 – 100 bpm'],
+                    ['Frequência Respiratória', document.getElementById('fr')?.value || 'Não informada', 'rpm', '12 – 20 rpm'],
+                    ['Saturação de Oxigênio', document.getElementById('sat')?.value || 'Não informada', '%', '95 – 100%']
                 ];
 
-                // 3. Histórico de Vacinação
-                const vacinasIDs = [
-                    { id: 'vac_bcg', nome: 'BCG (Tuberculose)' },
-                    { id: 'vac_dtp', nome: 'DTP / Pentavalente' },
-                    { id: 'vac_polio', nome: 'Poliomielite (VIP/VOP)' },
-                    { id: 'vac_scr', nome: 'Tríplice Viral (SCR)' },
-                    { id: 'vac_hepb', nome: 'Hepatite B' },
-                    { id: 'vac_hpv', nome: 'HPV (Papilomavírus)' },
-                    { id: 'vac_amarela', nome: 'Febre Amarela' },
-                    { id: 'vac_influenza', nome: 'Influenza (Gripe Sazonal)' },
-                    { id: 'vac_pneumo', nome: 'Pneumocócica' },
-                    { id: 'vac_rotavirus', nome: 'Rotavírus' },
-                    { id: 'vac_malaria', nome: 'Malária' },
-                    { id: 'vac_covid', nome: 'Covid-19' }
-                ];
-                const dadosVacinas = vacinasIDs.map(v => [v.nome, document.getElementById(v.id)?.value || 'Não Informado']);
-
-                // 4. Fatores Interferentes
-                const interferentesIDs = [
-                    { id: 'interf_esf_fisico', nome: 'Esforço Físico Recente' },
-                    { id: 'interf_cafeina', nome: 'Consumo de Cafeína / Energético' },
-                    { id: 'interf_alcool', nome: 'Consumo de Bebida Alcoólica' },
-                    { id: 'interf_psicoativos', nome: 'Uso de Psicoativos / Psicotrópicos' },
-                    { id: 'interf_tabagismo', nome: 'Tabagismo' },
-                    { id: 'interf_estresse', nome: 'Estresse / Ansiedade' },
-                    { id: 'interf_alergia', nome: 'Crise Alérgica Ativa' },
-                    { id: 'interf_med_ansioliticos', nome: 'Med. Ansiolíticos' },
-                    { id: 'interf_med_cardio', nome: 'Med. Cardiovasculares' },
-                    { id: 'interf_med_anticoagulantes', nome: 'Med. Anticoagulantes / AAS' },
-                    { id: 'interf_med_colesterol', nome: 'Med. para Colesterol (estatinas/fibratos)' },
-                    { id: 'interf_med_diabetes', nome: 'Med. para Diabetes / Hipoglicemiantes' },
-                    { id: 'interf_med_antialergicos', nome: 'Med. Antialérgicos / Anti-histamínicos' },
-                    { id: 'interf_med_antibioticos', nome: 'Med. Antibióticos' },
-                    { id: 'interf_med_antiinflamatorios', nome: 'Med. Anti-inflamatório / Corticoides' }
-                ];
-                const dadosInterferentes = interferentesIDs.map(i => [i.nome, document.getElementById(i.id)?.value || 'Não informado']);
-
-                // 5. Entorno Ecológico
-                const entornoIDs = [
-                    { id: 'entorno_arborizado', nome: 'Ambiente Saudável (Arborizado)' },
-                    { id: 'entorno_lixo', nome: 'Presença de Lixo / Sem Saneamento' },
-                    { id: 'entorno_particulas', nome: 'Exposição a Partículas em Suspensão' },
-                    { id: 'entorno_focos', nome: 'Focos de Infecção / Águas Estancadas' },
-                    { id: 'entorno_clima', nome: 'Exposição a Efeitos Climáticos Extremos' }
-                ];
-                const dadosEntorno = entornoIDs.map(e => [e.nome, document.getElementById(e.id)?.value || 'Não informado']);
-
-                // Sugestões Automáticas (OMS)
-                const sugestoesItems = document.querySelectorAll('#lista-sugestoes li');
                 let sugestoesStr = "";
-                sugestoesItems.forEach((li) => {
+                document.querySelectorAll('#lista-sugestoes li').forEach(li => {
                     let txt = li.innerText;
                     if (!txt.includes("Insira os sinais vitais")) {
-                        txt = txt.replace(/⚠️/g, "").replace(/🚨/g, "").trim();
-                        sugestoesStr += `- ${txt}\n`;
+                        sugestoesStr += `- ${txt.replace(/⚠️|🚨/g, "").trim()}\n`;
                     }
                 });
-                if (sugestoesStr === "") {
-                    sugestoesStr = "Nenhum sinal vital alterado para gerar sugestões.";
-                }
+                if (!sugestoesStr) sugestoesStr = "Nenhum sinal vital alterado para gerar sugestões.";
 
                 // Cabeçalho PDF
                 doc.setFillColor(0, 104, 71); 
-                doc.rect(0, 0, 210, 28, 'F');
+                doc.rect(0, 0, 210, 25, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(16);
                 doc.setFont('helvetica', 'bold');
                 doc.text("V I T A L s i g . i n f o", 105, 12, { align: "center" });
-                doc.setFontSize(11);
+                doc.setFontSize(10);
                 doc.setFont('helvetica', 'normal');
-                doc.text("Relatório de Triagem de Sinais Vitais & Saúde", 105, 20, { align: "center" });
+                doc.text("Relatório de Triagem de Sinais Vitais & Saúde", 105, 19, { align: "center" });
 
-                let yAtual = 35;
+                let yAtual = 30;
 
-                // Tabela 1 - Informações Pessoais
                 doc.autoTable({
                     startY: yAtual,
                     head: [['Informações Pessoais', 'Detalhes']],
                     body: dadosPessoais,
                     theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    headStyles: { fillColor: [0, 104, 71] },
                     styles: { fontSize: 8, cellPadding: 2 }
                 });
 
                 yAtual = doc.lastAutoTable.finalY + 6;
 
-                // Tabela 2 - Sinais Vitais
                 doc.autoTable({
                     startY: yAtual,
                     head: [['Sinal Vital', 'Valor Medido', 'Unidade', 'Referência OMS']],
                     body: dadosSinaisVitais,
                     theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    headStyles: { fillColor: [0, 104, 71] },
                     styles: { fontSize: 8, cellPadding: 2 }
                 });
 
                 yAtual = doc.lastAutoTable.finalY + 6;
 
-                // Tabela 3 - Vacinas
-                doc.autoTable({
-                    startY: yAtual,
-                    head: [['Histórico de Vacinação', 'Status']],
-                    body: dadosVacinas,
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 8, cellPadding: 2 }
-                });
-
-                yAtual = doc.lastAutoTable.finalY + 6;
-
-                // Tabela 4 - Interferentes
-                doc.autoTable({
-                    startY: yAtual,
-                    head: [['Fator Interferente / Medicamento', 'Informado']],
-                    body: dadosInterferentes,
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 8, cellPadding: 2 }
-                });
-
-                yAtual = doc.lastAutoTable.finalY + 6;
-
-                // Tabela 5 - Entorno
-                doc.autoTable({
-                    startY: yAtual,
-                    head: [['Condição do Entorno Ecológico', 'Informado']],
-                    body: dadosEntorno,
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 8, cellPadding: 2 }
-                });
-
-                yAtual = doc.lastAutoTable.finalY + 6;
-
-                // Seção de Sugestões OMS
                 doc.autoTable({
                     startY: yAtual,
                     head: [['Sugestões e Orientações Automáticas (OMS)']],
                     body: [[sugestoesStr]],
                     theme: 'plain',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    bodyStyles: { fontSize: 8, textColor: [50, 50, 50] },
-                    styles: { cellPadding: 3 }
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255] },
+                    bodyStyles: { fontSize: 8 }
                 });
 
-                // Nome do arquivo PDF limpo
-                const nomeFormatado = nomePaciente.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
-                const nomeArquivoPDF = `relatorio_vitalsig_${nomeFormatado}.pdf`;
+                // Rodapé das páginas
+                const totalPaginas = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= totalPaginas; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(120);
+                    doc.text(`VITALsig - Travassos, L.R. | Página ${i} de ${totalPaginas}`, 105, 290, { align: 'center' });
+                }
 
-                // Salvar localmente
-                doc.save(nomeArquivoPDF);
+                // Salvar local e enviar backup
+                const dataNome = new Date().toISOString().slice(0, 10);
+                const nomeArquivo = `VITALsig_${nomePaciente.replace(/\s+/g, '_')}_${dataNome}.pdf`;
+                
+                doc.save(nomeArquivo);
 
-                // Tentar enviar o backup em Base64
                 const pdfBase64 = doc.output('datauristring').split(',')[1];
-                enviarPdfParaBackup(pdfBase64, nomeArquivoPDF);
+                enviarPdfParaBackup(pdfBase64, nomeArquivo);
 
             } catch (erro) {
-                console.error("Erro ao gerar o PDF:", erro);
-                alert("Ocorreu um erro ao tentar gerar o PDF. Verifique o console do navegador.");
+                console.error("Erro ao gerar PDF:", erro);
+                alert("Erro ao tentar exportar o PDF. Verifique se os dados estão preenchidos corretamente.");
             }
         }
     </script>
