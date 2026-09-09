@@ -553,20 +553,20 @@
                 </div>
                 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_pa">P.A. (Sist / Diast)</span>
+                    <span data-i18n="lbl_pa">Pressão Arterial (Sist / Diast)</span>
                     <div style="display: flex; gap: 4px;">
                         <select id="pa_sis" onchange="validarSinais()">
-                            <option value="" data-i18n="opt_pas">PAS</option>
+                            <option value="" data-i18n="opt_pas">120</option>
                         </select>
                         <select id="pa_dia" onchange="validarSinais()">
-                            <option value="" data-i18n="opt_pad">PAD</option>
+                            <option value="" data-i18n="opt_pad">80</option>
                         </select>
                     </div>
                     <div class="ref-val" id="ref-pa" style="display: flex; flex-direction: column; text-align: left; font-size: 0.78em; line-height: 1.2;"></div>
                 </div>
                 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_gluc_jejum">Gluc Jejum (mg/dL)</span>
+                    <span data-i18n="lbl_gluc_jejum">Glicose Jejum (mg/dL)</span>
                     <select id="gluc" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
@@ -578,7 +578,7 @@
                 </div>
                 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_gluc_ppran">Gluc PPran (mg/dL)</span>
+                    <span data-i18n="lbl_gluc_ppran">Glicose Pós-Prandial (mg/dL)</span>
                     <select id="gluc_post" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
@@ -590,7 +590,7 @@
                 </div>
 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_temp">Temp (°C)</span>
+                    <span data-i18n="lbl_temp">Temperatura (°C)</span>
                     <select id="temp" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
@@ -604,7 +604,7 @@
                 </div>
 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_fc">FC (bpm)</span>
+                    <span data-i18n="lbl_fc">Frequência Cardíaca (bpm)</span>
                     <select id="fc" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
@@ -616,7 +616,7 @@
                  </div>
                 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_sat">SatO2 (%)</span>
+                    <span data-i18n="lbl_sat">Saturação de Oxigênio (%)</span>
                     <select id="sat" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
@@ -628,7 +628,7 @@
                 </div>
                 
                 <div class="sv-grid">
-                    <span data-i18n="lbl_fr">FR (rpm)</span>
+                    <span data-i18n="lbl_fr">Frequência Respiratória (rpm)</span>
                     <select id="fr" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
@@ -854,7 +854,7 @@
                 <div class="category-header">Medicamentos em Uso</div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_ansioliticos" data-i18n="interf_med_ansioliticos">Med. ansiolíticos</label>
+                    <label class="vaccine-label" for="interf_med_ansioliticos" data-i18n="interf_med_ansioliticos">Ansiolíticos</label>
                     <select class="vaccine-select" id="interf_med_ansioliticos" name="interf_med_ansioliticos">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -863,7 +863,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_cardio" data-i18n="interf_med_cardio">Med. cardiovasculares</label>
+                    <label class="vaccine-label" for="interf_med_cardio" data-i18n="interf_med_cardio">Cardiovasculares</label>
                     <select class="vaccine-select" id="interf_med_cardio" name="interf_med_cardio">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -872,7 +872,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_anticoagulantes" data-i18n="interf_med_anticoagulantes">Med. anticoagulantes / AAS</label>
+                    <label class="vaccine-label" for="interf_med_anticoagulantes" data-i18n="interf_med_anticoagulantes">Anticoagulantes / AAS</label>
                     <select class="vaccine-select" id="interf_med_anticoagulantes" name="interf_med_anticoagulantes">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -881,7 +881,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_colesterol" data-i18n="interf_med_colesterol">Med. para colesterol (estatinas/fibratos)</label>
+                    <label class="vaccine-label" for="interf_med_colesterol" data-i18n="interf_med_colesterol">Colesterol (Estatinas/Fibratos)</label>
                     <select class="vaccine-select" id="interf_med_colesterol" name="interf_med_colesterol">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -890,7 +890,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_diabetes" data-i18n="interf_med_diabetes">Med. para diabetes / hipoglicemiantes</label>
+                    <label class="vaccine-label" for="interf_med_diabetes" data-i18n="interf_med_diabetes">Diabetes / Hipoglicemiantes</label>
                     <select class="vaccine-select" id="interf_med_diabetes" name="interf_med_diabetes">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -899,7 +899,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_antialergicos" data-i18n="interf_med_antialergicos">Med. antialérgicos / anti-histamínicos</label>
+                    <label class="vaccine-label" for="interf_med_antialergicos" data-i18n="interf_med_antialergicos">Antialérgicos / Anti-histamínicos</label>
                     <select class="vaccine-select" id="interf_med_antialergicos" name="interf_med_antialergicos">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -908,7 +908,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_antibioticos" data-i18n="interf_med_antibioticos">Med. antibióticos</label>
+                    <label class="vaccine-label" for="interf_med_antibioticos" data-i18n="interf_med_antibioticos">Antibióticos</label>
                     <select class="vaccine-select" id="interf_med_antibioticos" name="interf_med_antibioticos">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -917,7 +917,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_med_antiinflamatorios" data-i18n="interf_med_antiinflamatorios">Med. anti-inflamatório / corticoides</label>
+                    <label class="vaccine-label" for="interf_med_antiinflamatorios" data-i18n="interf_med_antiinflamatorios">Anti-inflamatório / Corticoides</label>
                     <select class="vaccine-select" id="interf_med_antiinflamatorios" name="interf_med_antiinflamatorios">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -1564,10 +1564,10 @@
             }
 
             if (!isNaN(imc) && imc > 0) {
-                if (imc < 18.5) sugestoes.push({ texto: "⚠️ Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.", tipo: "aviso" });
+                if (imc < 18.5) sugestoes.push({ texto: "Baixo Peso (IMC < 18.5): Avaliar risco de desnutrição.", tipo: "aviso" });
                 else if (imc <= 24.9) sugestoes.push({ texto: "Eutrofia / Peso Normal (IMC 18.5–24.9).", tipo: "ok" });
-                else if (imc <= 29.9) sugestoes.push({ texto: "⚠️ Sobrepeso (IMC 25.0–29.9): Recomenda-se orientação de estilo de vida.", tipo: "aviso" });
-                else sugestoes.push({ texto: "🚨 Obesidade (IMC ≥ 30.0): Necessita acompanhamento multidisciplinar.", tipo: "alerta" });
+                else if (imc <= 29.9) sugestoes.push({ texto: "Sobrepeso (IMC 25.0–29.9): Recomenda-se orientação de estilo de vida.", tipo: "aviso" });
+                else sugestoes.push({ texto: "Obesidade (IMC ≥ 30.0): Necessita acompanhamento multidisciplinar.", tipo: "alerta" });
             }
 
             if (sugestoes.length === 0) {
@@ -1924,87 +1924,102 @@
 
                 // Cabeçalho PDF
                 doc.setFillColor(0, 104, 71); 
-                doc.rect(0, 0, 210, 18, 'F');
+                doc.rect(0, 0, 210, 28, 'F');
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(14);
-                doc.setFont("helvetica", "bold");
-                doc.text("RELATÓRIO DE TRIAGEM - SINAIS VITAIS", 105, 12, { align: "center" });
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.text("V I T A L s i g . i n f o", 105, 12, { align: "center" });
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'normal');
+                doc.text("Relatório de Triagem de Sinais Vitais & Saúde", 105, 20, { align: "center" });
 
-                // Estilo padrão das tabelas
-                const tableStyles = {
-                    theme: 'grid',
-                    headStyles: { fillColor: [0, 104, 71], textColor: 255, fontSize: 9, fontStyle: 'bold' },
-                    bodyStyles: { fontSize: 8, textColor: 30 },
-                    alternateRowStyles: { fillColor: [248, 249, 250] },
-                    margin: { left: 14, right: 14 }
-                };
+                let yAtual = 35;
 
-                // Renderização das Tabelas no PDF
+                // Tabela 1 - Informações Pessoais
                 doc.autoTable({
-                    ...tableStyles,
-                    startY: 24,
-                    head: [['Informações Pessoais & Atendimento', 'Valor / Detalhe']],
-                    body: dadosPessoais
+                    startY: yAtual,
+                    head: [['Informações Pessoais', 'Detalhes']],
+                    body: dadosPessoais,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 8, cellPadding: 2 }
                 });
 
+                yAtual = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 2 - Sinais Vitais
                 doc.autoTable({
-                    ...tableStyles,
-                    startY: doc.lastAutoTable.finalY + 6,
-                    head: [['Parâmetro Vital', 'Valor Medido', 'Unidade', 'Referência OMS']],
-                    body: dadosSinaisVitais
+                    startY: yAtual,
+                    head: [['Sinal Vital', 'Valor Medido', 'Unidade', 'Referência OMS']],
+                    body: dadosSinaisVitais,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 8, cellPadding: 2 }
                 });
 
+                yAtual = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 3 - Vacinas
                 doc.autoTable({
-                    ...tableStyles,
-                    startY: doc.lastAutoTable.finalY + 6,
-                    head: [['Histórico Vacinal', 'Status']],
-                    body: dadosVacinas
+                    startY: yAtual,
+                    head: [['Histórico de Vacinação', 'Status']],
+                    body: dadosVacinas,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 8, cellPadding: 2 }
                 });
 
+                yAtual = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 4 - Interferentes
                 doc.autoTable({
-                    ...tableStyles,
-                    startY: doc.lastAutoTable.finalY + 6,
-                    head: [['Fator Interferente', 'Status']],
-                    body: dadosInterferentes
+                    startY: yAtual,
+                    head: [['Fator Interferente / Medicamento', 'Informado']],
+                    body: dadosInterferentes,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 8, cellPadding: 2 }
                 });
 
+                yAtual = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 5 - Entorno
                 doc.autoTable({
-                    ...tableStyles,
-                    startY: doc.lastAutoTable.finalY + 6,
-                    head: [['Entorno Ecológico', 'Status']],
-                    body: dadosEntorno
+                    startY: yAtual,
+                    head: [['Condição do Entorno Ecológico', 'Informado']],
+                    body: dadosEntorno,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 8, cellPadding: 2 }
                 });
 
-                // Bloco de Sugestões da OMS
+                yAtual = doc.lastAutoTable.finalY + 6;
+
+                // Seção de Sugestões OMS
                 doc.autoTable({
-                    ...tableStyles,
-                    startY: doc.lastAutoTable.finalY + 6,
-                    head: [['Sugestões & Orientações Automáticas (OMS)']],
-                    body: [[sugestoesStr]]
+                    startY: yAtual,
+                    head: [['Sugestões e Orientações Automáticas (OMS)']],
+                    body: [[sugestoesStr]],
+                    theme: 'plain',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    bodyStyles: { fontSize: 8, textColor: [50, 50, 50] },
+                    styles: { cellPadding: 3 }
                 });
 
-                // Rodapé de Advertência
-                const yFinal = doc.lastAutoTable.finalY + 8;
-                doc.setFontSize(7);
-                doc.setTextColor(120);
-                doc.setFont("helvetica", "italic");
-                const avisoText = "Aviso: Este documento possui caráter exclusivamente educativo e de triagem, não substituindo o diagnóstico médico oficial.";
-                doc.text(avisoText, 14, yFinal, { maxWidth: 182 });
+                // Nome do arquivo PDF limpo
+                const nomeFormatado = nomePaciente.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+                const nomeArquivoPDF = `relatorio_vitalsig_${nomeFormatado}.pdf`;
 
-                // Nome do arquivo e Salvamento
-                const nomeSanitizado = nomePaciente.replace(/[^a-zA-Z0-9]/g, "_");
-                const nomeArquivo = `Sinais_Vitais_${nomeSanitizado}_${dataFormatada.replace(/\//g, "-")}.pdf`;
+                // Salvar localmente
+                doc.save(nomeArquivoPDF);
 
-                // Gerar PDF Base64 para Backup
+                // Tentar enviar o backup em Base64
                 const pdfBase64 = doc.output('datauristring').split(',')[1];
-                enviarPdfParaBackup(pdfBase64, nomeArquivo);
-
-                // Baixar Arquivo PDF
-                doc.save(nomeArquivo);
+                enviarPdfParaBackup(pdfBase64, nomeArquivoPDF);
 
             } catch (erro) {
-                console.error("Erro ao gerar PDF:", erro);
-                alert("Ocorreu um erro ao tentar exportar o arquivo PDF.");
+                console.error("Erro ao gerar o PDF:", erro);
+                alert("Ocorreu um erro ao tentar gerar o PDF. Verifique o console do navegador.");
             }
         }
     </script>
