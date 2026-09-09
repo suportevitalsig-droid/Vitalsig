@@ -119,13 +119,6 @@
             color: white;
         }
 
-        #google_translate_element select {
-            height: 28px;
-            font-size: 0.8rem;
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-
         .form-header-title img {
             max-width: 180px; 
             width: 60%;
@@ -412,7 +405,6 @@
         <div class="form-header-title">
             <!-- Seletor de Idioma no Topo -->
             <div class="lang-selector-container">
-                <div id="google_translate_element"></div>
                 <div class="lang-buttons">
                     <button class="btn-lang" onclick="trocarIdioma('pt')" data-i18n="btn_pt">PT</button>
                     <button class="btn-lang" onclick="trocarIdioma('es')" data-i18n="btn_es">ES</button>
@@ -602,13 +594,7 @@
                     <select id="temp" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
-                    <div class="ref-val" id="ref-temp" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;">
-                        <span data-i18n="ref_temp_normal">Hipotermia: &lt; 35.9</span>
-                        <span data-i18n="ref_temp_normal">Normal: 36.1 - 37.2</span>
-                        <span data-i18n="ref_temp_subfebril">Subfebril: 37.3 - 37.7</span>
-                        <span data-i18n="ref_temp_febre">Febre: 37.8 - 39.0</span>
-                        <span data-i18n="ref_temp_emergencia">Emergência: &gt; 39.0</span>
-                    </div>
+                    <div class="ref-val" id="ref-temp" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;"></div>
                 </div>
 
                 <div class="sv-grid">
@@ -616,11 +602,7 @@
                     <select id="fc" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
-                    <div class="ref-val" id="ref-fc" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;">
-                        <span data-i18n="ref_fc_bradi">Bradicardia: &lt; 60</span>
-                        <span data-i18n="ref_fc_normal">Normal: 60 - 100</span>
-                        <span data-i18n="ref_fc_taqui">Taquicardia: &gt; 100</span>
-                    </div>
+                    <div class="ref-val" id="ref-fc" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;"></div>
                  </div>
                 
                 <div class="sv-grid">
@@ -640,12 +622,7 @@
                     <select id="fr" onchange="validarSinais()">
                         <option value="" data-i18n="opt_selecione">Selecione</option>
                     </select>
-                    <div class="ref-val" id="ref-fr" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;">
-                        <span data-i18n="ref_fr_rn">RNascido: 30 - 60 rpm</span>
-                        <span data-i18n="ref_fr_criancas">Crianças: 18 - 40 rpm</span>
-                        <span data-i18n="ref_fr_adolescentes">Adolescentes: 12 - 30 rpm</span>
-                        <span data-i18n="ref_fr_adultos">Adultos: 12 - 20 rpm</span>
-                    </div>
+                    <div class="ref-val" id="ref-fr" style="display: flex; flex-direction: column; text-align: left; font-size: 0.8em; line-height: 1.2;"></div>
                 </div>
             </fieldset>
 
@@ -974,7 +951,7 @@
                 </div>
 
                 <div class="vaccine-row">
-                    <label class="vaccine-label" for="entorno_clima" data-i18n="entorno_clima">Exposição a efeitos climáticos extremos (calor / frio)</label>
+                    <label class="vaccine-label" for="entorno_clima" data-i18n="entorno_clima">Exposição a efeitos climáticos externos (calor / frio)</label>
                     <select class="vaccine-select" id="entorno_clima" name="entorno_clima">
                         <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
                         <option value="Sim" data-i18n="opt_sim">Sim</option>
@@ -1035,28 +1012,12 @@
         <strong data-i18n="footer_autor">TRAVASSOS, L.R.; 2026</strong>.<br>
         <span data-i18n="footer_contato">Contato:</span> <a href="mailto:ludmilartmed@gmail.com">ludmilartmed@gmail.com</a> | <a href="https://wa.me/5522999119561" target="_blank">(22) 99911-9561</a>
     </footer>
-    
-    <!-- Scripts Google Translate -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'pt',
-                includedLanguages: 'en,es,pt',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-
-        function trocarIdioma(langCode) {
-            const selectElement = document.querySelector('.goog-te-combo');
-            if (selectElement) {
-                selectElement.value = langCode;
-                selectElement.dispatchEvent(new Event('change'));
-            }
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
+        function trocarIdioma(langCode) {
+            console.log("Idioma selecionado:", langCode);
+        }
+
         const BrasilEstadosNomes = {
             "AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia",
             "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás",
@@ -1413,7 +1374,6 @@
             
             const edadInput = document.getElementById('edad').value;
             const idadeAnos = parseInt(edadInput) || 18;
-            const faixa = obterFaixaEtaria(idadeAnos);
             
             const selectSis = document.getElementById('pa_sis');
             const selectDia = document.getElementById('pa_dia');
@@ -1427,12 +1387,8 @@
             const pas = parseInt(selectSis.value);
             const pad = parseInt(selectDia.value);
             const gluc = parseFloat(selectGluc.value);
-            const glucPost = parseFloat(selectGlucPost.value);
             const temp = parseFloat(selectTemp.value);
-            const fc = parseInt(selectFc.value);
-            const fr = parseInt(selectFr.value);
             const sat = parseInt(selectSat.value);
-            const imc = parseFloat(document.getElementById('imc').value);
 
             let sugestoes = [];
 
