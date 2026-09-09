@@ -66,6 +66,20 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
         }
         
+        /* Container pai (ex: header ou navbar) */
+        .header-container {
+            display: flex;
+            align-items: center; /* Alinha verticalmente ao centro */
+            justify-content: flex-start; /* Ou space-between, dependendo do layout */
+            gap: 15px; /* Espaçamento entre os botões, imagem e título */
+        }
+        
+        /* Ajuste no tamanho do logo para não quebrar a barra */
+        .header-logo {
+            height: 40px; /* Ajuste a altura conforme necessário */
+            width: auto;
+        }
+        
         .form-header-title { 
             color: white; 
             background-color: #006847; 
@@ -412,12 +426,13 @@
                 </div>
             </div>
 
-            <!-- Logotipo Centralizado -->
-            <img src="img/meu_logo.png" alt="VITAL" style="max-width: 180px; width: 100%; height: auto; object-fit: contain; margin: 8px auto 4px auto; display: block;" onerror="this.style.display='none'">
-
-            <!-- Título Principal -->
-            <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
-        </div>
+                  <!-- Logotipo Centralizado -->
+                  <img src="img/meu-logo.png" alt="VITAL" style="max-width: 180px; width: 100%; height: auto; object-fit: contain; margin: 8px auto 4px auto; display: block;" onerror="this.style.display='none'">
+                  
+                  <!-- Título Principal -->
+                  <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
+                  
+             </div>
 
         <form id="formMed">
             
