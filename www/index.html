@@ -2331,32 +2331,37 @@
                 const dataHoraFormatada = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}-${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}`;
                 const nomeArquivo = `VitalSig_${dataHoraFormatada}_${campoIniciais}.pdf`;
 
-// Backup Seguro em Segundo Plano
+                // Backup Seguro em Segundo Plano
                 try {
                     const pdfBlob = doc.output('blob');
                     const pdfFile = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
                     const formData = new FormData();
                     formData.append('file', pdfFile);
-
-                    // Disparo direto para a API do UploadThing sem depender de funções externas
-                    await fetch('/api/uploadthing', {
+                
+                    // Endpoint ajustado para o arquivo /api/salvar-pdf.js
+                    const response = await fetch('/api/salvar-pdf', {
                         method: 'POST',
                         body: formData
                     });
-                    console.log("PDF enviado com sucesso para a nuvem!");
+                
+                    if (response.ok) {
+                        console.log("PDF enviado com sucesso para a nuvem!");
+                    } else {
+                        console.warn("Aviso: Falha na resposta do servidor.", response.status);
+                    }
                 } catch (backupErr) {
                     console.warn("Aviso: Falha ao enviar o backup do PDF.", backupErr);
                 }
-
+                
                 // Download do PDF
                 doc.save(nomeArquivo);
-
-            } catch (err) {
-                console.error("Erro interno ao gerar o PDF:", err);
-                const msgErro = dict?.msg_pdf_erro || "Erro ao exportar o PDF. Verifique se os dados estão completos.";
-                alert(msgErro);
-            }
-        }
-    </script>
-</body>
+                
+                } catch (err) {
+                    console.error("Erro interno ao gerar o PDF:", err);
+                    const msgErro = dict?.msg_pdf_erro || "Erro ao exportar o PDF. Verifique se os dados estão completos.";
+                    alert(msgErro);
+                }
+             }
+          </script>
+    </body>
 </html>
