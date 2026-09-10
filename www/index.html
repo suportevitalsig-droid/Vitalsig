@@ -1022,9 +1022,9 @@
 
     <footer>
         <span data-i18n="footer_linha1">Este aplicativo oferece apenas triagem preliminar e não substitui o diagnóstico ou atendimento com seu profissional médico. Em emergências ou dúvidas, consulte seu médico.</span><br>
-        <span data-i18n="footer_linha2">Formulário filantrópico - sem custos | Leia 1 Cor. 13.2</span><br>
+        <span data-i18n="footer_linha2">Formulário filantrópico - sem custos | Leia 1 Cor. 13.2 +Amor</span><br>
         <span data-i18n="footer_linha3">Todos os direitos de autoria reservados a</span><br>
-        <strong data-i18n="footer_autor">TRAVASSOS, L.R.; 2026</strong>.<br>
+        <strong data-i18n="footer_autor">TRAVASSOS, L.R.; 2026 | Leia I Coríntios 13.2 +Amor</strong>.<br>
         <span data-i18n="footer_contato">Contato:</span> <a href="mailto:ludmilartmed@gmail.com">ludmilartmed@gmail.com</a> | <a href="https://wa.me/5522999119561" target="_blank">(22) 99911-9561</a>
     </footer>
 
@@ -1107,8 +1107,8 @@
                 btn_exportar: "📄 EXPORTAR E SALVAR",
                 footer_linha1: "Este aplicativo oferece apenas triagem preliminar e não substitui o diagnóstico ou atendimento com seu profissional médico. Em emergências ou dúvidas, consulte seu médico.",
                 footer_linha2: "Formulário filantrópico - sem custos | Leia 1 Cor. 13.2",
-                footer_linha3: "Todos os direitos de autoria reservados a", footer_autor: "TRAVASSOS, L.R.; 2026", footer_contato: "Contato:",
-                pdf_titulo_relatorio: "Relatório de Triagem de Sinais Vitais & Saúde",
+                footer_linha3: "Todos os direitos de autoria reservados a", footer_autor: "TRAVASSOS, L.R.; 2026 | Leia I Coríntios 13.2 +Amor", footer_contato: "Contato:",
+                pdf_titulo_relatorio: "Sinais Vitais & Saúde",
                 imc_abaixo: "Abaixo do peso", imc_eutrofico: "Eutrófico (Peso Normal)", imc_sobrepeso: "Sobrepeso", imc_obesidade: "Obesidade",
                 msg_cronometro_fim: "Tempo de 1 minuto finalizado!",
                 msg_pdf_erro: "Erro ao tentar exportar o PDF. Verifique se os dados estão preenchidos corretamente.",
@@ -1189,8 +1189,8 @@
                 btn_exportar: "📄 EXPORTAR Y GUARDAR",
                 footer_linha1: "Esta aplicación ofrece solo triaje preliminar y no reemplaza el diagnóstico o la atención médica. Ante emergencias, consulte a su médico.",
                 footer_linha2: "Formulario filantrópico - sin costo | Lea 1 Cor. 13.2",
-                footer_linha3: "Todos los derechos de autor reservados a", footer_autor: "TRAVASSOS, L.R.; 2026", footer_contato: "Contacto:",
-                pdf_titulo_relatorio: "Informe de Triaje de Signos Vitales y Salud",
+                footer_linha3: "Todos los derechos de autor reservados a", footer_autor: "TRAVASSOS, L.R.; 2026 | Lee 1 Corintios 13:2 + Amor", footer_contato: "Contacto:",
+                pdf_titulo_relatorio: "Signos Vitales y Salud",
                 imc_abaixo: "Bajo peso", imc_eutrofico: "Eutrófico (Peso Normal)", imc_sobrepeso: "Sobrepeso", imc_obesidade: "Obesidad",
                 msg_cronometro_fim: "¡Tiempo de 1 minuto finalizado!",
                 msg_pdf_erro: "Error al exportar el PDF. Verifique que los datos estén completos.",
@@ -1271,8 +1271,8 @@
                 btn_exportar: "📄 EXPORT & SAVE",
                 footer_linha1: "This app provides preliminary screening only and does not replace professional medical diagnosis. Consult a doctor for emergencies.",
                 footer_linha2: "Philanthropic form - free of charge | Read 1 Cor. 13:2",
-                footer_linha3: "All copyrights reserved to", footer_autor: "TRAVASSOS, L.R.; 2026", footer_contato: "Contact:",
-                pdf_titulo_relatorio: "Vital Signs & Health Triage Report",
+                footer_linha3: "All copyrights reserved to", footer_autor: "TRAVASSOS, L.R.; 2026 | Read ICorinthians 13:2 +Love", footer_contato: "Contact:",
+                pdf_titulo_relatorio: "Vital Signs & Health",
                 imc_abaixo: "Underweight", imc_eutrofico: "Eutrophic (Normal Weight)", imc_sobrepeso: "Overweight", imc_obesidade: "Obesity",
                 msg_cronometro_fim: "1-minute timer finished!",
                 msg_pdf_erro: "Error exporting PDF. Check if all required fields are valid.",
@@ -1548,19 +1548,37 @@
                 if (idadeAnos < 6) divRefPA.innerHTML = `<span>Hasta 6a: máx. 110/75</span>`;
                 else if (idadeAnos >= 6 && idadeAnos < 10) divRefPA.innerHTML = `<span>6-10a: máx. 120/80</span>`;
                 else if (idadeAnos >= 10 && idadeAnos < 13) divRefPA.innerHTML = `<span>10-12a: máx. 125/85</span>`;
-                else divRefPA.innerHTML = `<span>Óptima: &lt;120/80</span><span>Normal: 120–129/80–84</span><span>Pre-HTA: 130–139/85–89</span><span>HTA I: 140–159 / 90–99</span><span>HTA II: 160–179 / 100–109</span><span>HTA III: &ge;180 / &ge;110</span>`;
+                else divRefPA.innerHTML = `
+                  <span>Óptima: &lt;120/80</span>
+                  <span>Normal: 120–129/80–84</span>
+                  <span>Pre-HTA: 130–139/85–89</span>
+                  <span>HTA I: 140–159 / 90–99</span>
+                  <span>HTA II: 160–179 / 100–109</span>
+                  <span>HTA III: &ge;180 / &ge;110</span>`;
                 document.getElementById('ref-temp').textContent = `N:${ref.temp} | Fiebre:>37.8`;
             } else if (idiomaAtual === 'en') {
                 if (idadeAnos < 6) divRefPA.innerHTML = `<span>Up to 6yo: max 110/75</span>`;
                 else if (idadeAnos >= 6 && idadeAnos < 10) divRefPA.innerHTML = `<span>6-10yo: max 120/80</span>`;
                 else if (idadeAnos >= 10 && idadeAnos < 13) divRefPA.innerHTML = `<span>10-12yo: max 125/85</span>`;
-                else divRefPA.innerHTML = `<span>Optimal: &lt;120/80</span><span>Normal: 120–129/80–84</span><span>Pre-HTN: 130–139/85–89</span><span>HTN I: 140–159 / 90–99</span><span>HTN II: 160–179 / 100–109</span><span>HTN III: &ge;180 / &ge;110</span>`;
+                else divRefPA.innerHTML = `
+                  <span>Optimal: &lt;120/80</span>
+                  <span>Normal: 120–129/80–84</span>
+                  <span>Pre-HTN: 130–139/85–89</span>
+                  <span>HTN I: 140–159 / 90–99</span>
+                  <span>HTN II: 160–179 / 100–109</span>
+                  <span>HTN III: &ge;180 / &ge;110</span>`;
                 document.getElementById('ref-temp').textContent = `N:${ref.temp} | Fever:>37.8`;
             } else {
                 if (idadeAnos < 6) divRefPA.innerHTML = `<span>Até 6a: máx. 110/75</span>`;
                 else if (idadeAnos >= 6 && idadeAnos < 10) divRefPA.innerHTML = `<span>6-10a: máx. 120/80</span>`;
                 else if (idadeAnos >= 10 && idadeAnos < 13) divRefPA.innerHTML = `<span>10-12a: máx. 125/85</span>`;
-                else divRefPA.innerHTML = `<span>Ótima: &lt;120/80</span><span>Normal: 120–129/80–84</span><span>Pré-HAS: 130–139/85–89</span><span>HAS I: 140–159 / 90–99</span><span>HAS II: 160–179 / 100–109</span><span>HAS III: &ge;180 / &ge;110</span>`;
+                else divRefPA.innerHTML = `
+                  <span>Ótima: &lt;120/80</span>
+                  <span>Normal: 120–129/80–84</span>
+                  <span>Pré-HAS: 130–139/85–89</span>
+                  <span>HAS I: 140–159 / 90–99</span>
+                  <span>HAS II: 160–179 / 100–109</span>
+                  <span>HAS III: &ge;180 / &ge;110</span>`;
                 document.getElementById('ref-temp').textContent = `N:${ref.temp} | Febre:>37.8`;
             }
 
@@ -2077,154 +2095,225 @@
             }
         }
 
-        /* --- Exportação para PDF --- */
-        function exportarPDF() {
+// ---------------informações do documento a ser exportado-----------------
+         
+        async function exportarPDF() {
             try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-                const dict = i18nData[idiomaAtual];
-
-                let y = 15;
-
-                // Cabeçalho PDF
-                doc.setFillColor(0, 104, 71);
-                doc.rect(0, 0, 210, 25, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(16);
-                doc.setFont("helvetica", "bold");
-                doc.text(dict.pdf_titulo_relatorio, 105, 16, { align: "center" });
-
-                y = 35;
-                doc.setTextColor(31, 41, 55);
-                doc.setFontSize(11);
-
-                // Dados Pessoais
-                const dataAtendimento = document.getElementById('dataMatricula').value || '--';
-                const nome = document.getElementById('nome').value || '--';
-                const iniciais = document.getElementById('iniciais').value || '--';
-                const pais = document.getElementById('pais').value || '--';
-                const estado = document.getElementById('estado').value || '--';
-                const cidade = document.getElementById('cidade').value || '--';
-                const sexo = document.getElementById('biologico').value || '--';
-                const fnac = document.getElementById('fnac').value || '--';
-                const idade = document.getElementById('edad').value || '--';
-                const repouso = document.getElementById('minutosRepouso').value || '--';
-                const jejum = document.getElementById('tempoJejum').value || '--';
-                const posicao = document.getElementById('posicaoCorpo').value || '--';
-                const peso = document.getElementById('peso').value || '--';
-                const altura = document.getElementById('altura').value || '--';
-                const imc = document.getElementById('imc').value || '--';
-
-                doc.setFont("helvetica", "bold");
-                doc.text(`1. ${dict.secao_info_pessoais}`, 14, y);
-                y += 6;
-
-                const dadosPessoaisTabela = [
-                    [`${dict.lbl_data_atendimento} ${dataAtendimento}`, `${dict.lbl_nome} ${nome} (${iniciais})`],
-                    [`${dict.lbl_pais} ${pais}`, `${dict.lbl_estado} ${estado} | ${dict.lbl_cidade} ${cidade}`],
-                    [`${dict.lbl_sexo} ${sexo}`, `${dict.lbl_fnac} ${fnac} (${dict.lbl_idade} ${idade})`],
-                    [`${dict.lbl_repouso} ${repouso}`, `${dict.lbl_jejum} ${jejum} | ${dict.lbl_posicao} ${posicao}`],
-                    [`${dict.lbl_peso} ${peso} kg | ${dict.lbl_altura} ${altura} m`, `${dict.lbl_imc} ${imc}`]
-                ];
-
-                doc.autoTable({
-                    startY: y,
-                    body: dadosPessoaisTabela,
-                    theme: 'plain',
-                    styles: { fontSize: 9, cellPadding: 2 },
-                    margin: { left: 14, right: 14 }
-                });
-
-                y = doc.lastAutoTable.finalY + 8;
-
-                // Sinais Vitais
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(11);
-                doc.text(`2. ${dict.secao_sinais_vitais}`, 14, y);
-                y += 4;
-
-                const pas = document.getElementById('pa_sis').value || '--';
-                const pad = document.getElementById('pa_dia').value || '--';
-                const gluc = document.getElementById('gluc').value || '--';
-                const glucPost = document.getElementById('gluc_post').value || '--';
-                const temp = document.getElementById('temp').value || '--';
-                const fc = document.getElementById('fc').value || '--';
-                const sat = document.getElementById('sat').value || '--';
-                const fr = document.getElementById('fr').value || '--';
-
-                const sinaisTabela = [
-                    [dict.lbl_pa, `${pas} / ${pad} mmHg`],
-                    [dict.lbl_gluc_jejum, `${gluc} mg/dL`],
-                    [dict.lbl_gluc_ppran, `${glucPost} mg/dL`],
-                    [dict.lbl_temp, `${temp} °C`],
-                    [dict.lbl_fc, `${fc} bpm`],
-                    [dict.lbl_sat, `${sat} %`],
-                    [dict.lbl_fr, `${fr} rpm`]
-                ];
-
-                doc.autoTable({
-                    startY: y,
-                    head: [[dict.th_dato, dict.th_valor]],
-                    body: sinaisTabela,
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71] },
-                    styles: { fontSize: 9, cellPadding: 2.5 },
-                    margin: { left: 14, right: 14 }
-                });
-
-                y = doc.lastAutoTable.finalY + 8;
-
-                // Sugestões Automáticas
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(11);
-                doc.text(`3. ${dict.secao_sugestoes}`, 14, y);
-                y += 6;
-
-                const elementosSugestao = document.querySelectorAll('#lista-sugestoes li');
-                let sugestoesArray = [];
-                elementosSugestao.forEach(li => {
-                    sugestoesArray.push([li.textContent]);
-                });
-
-                if (sugestoesArray.length === 0) {
-                    sugestoesArray.push([dict.msg_pdf_sem_sugestoes]);
+                const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
+                
+                if (!jsPDFClass) {
+                    alert("A biblioteca PDF não pôde ser carregada. Por favor, verifique sua conexão com a internet.");
+                    return;
                 }
 
-                doc.autoTable({
-                    startY: y,
-                    body: sugestoesArray,
-                    theme: 'grid',
-                    styles: { fontSize: 8.5, cellPadding: 3 },
-                    margin: { left: 14, right: 14 }
+                const doc = new jsPDFClass({
+                    orientation: 'p',
+                    unit: 'mm',
+                    format: 'a4'
                 });
 
-                y = doc.lastAutoTable.finalY + 8;
+                // Dicionário do idioma ativo com fallback seguro
+                const idLang = (typeof idiomaAtual !== 'undefined') ? idiomaAtual : 'pt';
+                const dict = (typeof i18nData !== 'undefined' && i18nData[idLang]) ? i18nData[idLang] : {};
 
-                // Georreferenciamento
-                const lat = document.getElementById('latitude').value || '--';
-                const lng = document.getElementById('longitude').value || '--';
+                // Data de atendimento formatada (DD/MM/YYYY)
+                const dataMatricula = document.getElementById('dataMatricula')?.value || '';
+                const dataFormatada = dataMatricula ? dataMatricula.split('-').reverse().join('/') : (dict.nao_informado || 'Não informada');
 
+                // 1. Informações Pessoais
+                const dadosPessoais = [
+                    [dict.pdf_data_atendimento || 'Data do Atendimento', dataFormatada],
+                    [dict.pdf_nome_completo || 'Nome Completo', document.getElementById('nome')?.value.trim() || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_iniciais || 'Iniciais do Nome', document.getElementById('iniciais')?.value.trim() || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_pais || 'País de Origem', document.getElementById('pais')?.value || 'Brasil'],
+                    [dict.pdf_estado || 'Estado / Departamento', document.getElementById('estado')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_cidade || 'Cidade / Localidade', document.getElementById('cidade')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_sexo || 'Sexo Biológico', document.getElementById('biologico')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_fnac || 'Data de Nascimento', document.getElementById('fnac')?.value.trim() || (dict.nao_informado || 'Não informada')],
+                    [dict.pdf_idade || 'Idade Calculada', document.getElementById('edad')?.value ? `${document.getElementById('edad').value} ${dict.pdf_anos || 'anos'}` : (dict.nao_informado || 'Não informada')],
+                    [dict.pdf_repouso || 'Tempo de Repouso Prévio', document.getElementById('minutosRepouso')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_jejum || 'Tempo de Jejum Prévio', document.getElementById('tempoJejum')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_posicao || 'Posição Corporal no Exame', document.getElementById('posicaoCorpo')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_peso || 'Peso Corporal (kg)', document.getElementById('peso')?.value ? `${document.getElementById('peso').value} kg` : (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_altura || 'Altura Corporal (m)', document.getElementById('altura')?.value ? `${document.getElementById('altura').value} m` : (dict.nao_informado || 'Não informada')],
+                    [dict.pdf_imc || 'IMC (Índice de Massa Corporal)', document.getElementById('imc')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.pdf_latitude || 'Latitude (GPS)', document.getElementById('latitude')?.value.trim() || (dict.pdf_nao_capturada || 'Não capturada')],
+                    [dict.pdf_longitude || 'Longitude (GPS)', document.getElementById('longitude')?.value.trim() || (dict.pdf_nao_capturada || 'Não capturada')]
+                ];
+
+                // 2. Sinais Vitais com Valores e Referências OMS
+                const dadosSinaisVitais = [
+                    [dict.pdf_pas || 'Pressão Arterial Sistólica (PAS)', document.getElementById('pa_sis')?.value || (dict.nao_informado || 'Não informada'), 'mmHg', '120 mmHg'],
+                    [dict.pdf_pad || 'Pressão Arterial Diastólica (PAD)', document.getElementById('pa_dia')?.value || (dict.nao_informado || 'Não informada'), 'mmHg', '80 mmHg'],
+                    [dict.pdf_gluc_jejum || 'Glicemia em Jejum (Gluc Jejum)', document.getElementById('gluc')?.value || (dict.nao_informado || 'Não informada'), 'mg/dL', '70 – 99 mg/dL'],
+                    [dict.pdf_gluc_ppran || 'Glicemia Pós-Prandial (Gluc PPran)', document.getElementById('gluc_post')?.value || (dict.nao_informado || 'Não informada'), 'mg/dL', '< 140 mg/dL'],
+                    [dict.pdf_temp || 'Temperatura Corporal (Temp)', document.getElementById('temp')?.value || (dict.nao_informado || 'Não informada'), '°C', '36.1 – 37.2 °C'],
+                    [dict.pdf_fc || 'Frequência Cardíaca (FC)', document.getElementById('fc')?.value || (dict.nao_informado || 'Não informada'), 'bpm', '60 – 100 bpm'],
+                    [dict.pdf_fr || 'Frequência Respiratória (FR)', document.getElementById('fr')?.value || (dict.nao_informado || 'Não informada'), 'rpm', '12 – 20 rpm'],
+                    [dict.pdf_sat || 'Saturação de Oxigênio (SatO2)', document.getElementById('sat')?.value || (dict.nao_informado || 'Não informada'), '%', '95 – 100%']
+                ];
+
+                // 3. Imunizantes / Vacinas
+                const vacinasIDs = [
+                    { id: 'vac_bcg', nome: dict.vac_bcg || 'BCG (Tuberculose)' },
+                    { id: 'vac_dtp', nome: dict.vac_dtp || 'DTP / Pentavalente' },
+                    { id: 'vac_polio', nome: dict.vac_polio || 'Poliomielite (VIP/VOP)' },
+                    { id: 'vac_scr', nome: dict.vac_scr || 'Tríplice Viral (SCR)' },
+                    { id: 'vac_hepb', nome: dict.vac_hepb || 'Hepatite B' },
+                    { id: 'vac_hpv', nome: dict.vac_hpv || 'HPV (Papilomavírus)' },
+                    { id: 'vac_amarela', nome: dict.vac_amarela || 'Febre Amarela' },
+                    { id: 'vac_influenza', nome: dict.vac_influenza || 'Influenza (Gripe Sazonal)' },
+                    { id: 'vac_pneumo', nome: dict.vac_pneumo || 'Pneumocócica' },
+                    { id: 'vac_rotavirus', nome: dict.vac_rotavirus || 'Rotavírus' },
+                    { id: 'vac_malaria', nome: dict.vac_malaria || 'Malária' },
+                    { id: 'vac_covid', nome: dict.vac_covid || 'Covid-19' }
+                ];
+                const dadosVacinas = vacinasIDs.map(v => [v.nome, document.getElementById(v.id)?.value || (dict.nao_informado || 'Não Informado')]);
+
+                // 4. Fatores Interferentes e Entorno Ecológico
+                const interferentesIDs = [
+                    { id: 'interf_esf_fisico', nome: dict.interf_esf_fisico || 'Esforço Físico Recente' },
+                    { id: 'interf_cafeina', nome: dict.interf_cafeina || 'Consumo de Cafeína / Energético' },
+                    { id: 'interf_alcool', nome: dict.interf_alcool || 'Consumo de Bebida Alcoólica' },
+                    { id: 'interf_psicoativos', nome: dict.interf_psicoativos || 'Uso de Psicoativos / Psicotrópicos' },
+                    { id: 'interf_tabagismo', nome: dict.interf_tabagismo || 'Tabagismo' },
+                    { id: 'interf_estresse', nome: dict.interf_estresse || 'Estresse / Ansiedade' },
+                    { id: 'interf_alergia', nome: dict.interf_alergia || 'Crise Alérgica Ativa' },
+                    { id: 'interf_med_ansioliticos', nome: dict.interf_med_ansioliticos || 'Med. Ansiolíticos' },
+                    { id: 'interf_med_cardio', nome: dict.interf_med_cardio || 'Med. Cardiovasculares' },
+                    { id: 'interf_med_anticoagulantes', nome: dict.interf_med_anticoagulantes || 'Med. Anticoagulantes / AAS' },
+                    { id: 'interf_med_colesterol', nome: dict.interf_med_colesterol || 'Med. para Colesterol (estatinas/fibratos)' },
+                    { id: 'interf_med_diabetes', nome: dict.interf_med_diabetes || 'Med. para Diabetes / Hipoglicemiantes' },
+                    { id: 'interf_med_antialergicos', nome: dict.interf_med_antialergicos || 'Med. Antialérgicos / Anti-histamínicos' },
+                    { id: 'interf_med_antibioticos', nome: dict.interf_med_antibioticos || 'Med. Antibióticos' },
+                    { id: 'interf_med_antiinflamatorios', nome: dict.interf_med_antiinflamatorios || 'Med. Anti-inflamatório / Corticoides' }
+                ];
+                const dadosInterferentes = interferentesIDs.map(i => [i.nome, document.getElementById(i.id)?.value || (dict.nao_informado || 'Não informado')]);
+
+                const entornoIDs = [
+                    { id: 'entorno_arborizado', nome: dict.entorno_arborizado || 'Ambiente Saudável (Arborizado)' },
+                    { id: 'entorno_lixo', nome: dict.entorno_lixo || 'Presença de Lixo / Sem Saneamento' },
+                    { id: 'entorno_particulas', nome: dict.entorno_particulas || 'Exposição a Partículas em Suspensão' },
+                    { id: 'entorno_focos', nome: dict.entorno_focos || 'Focos de Infecção / Águas Estancadas' },
+                    { id: 'entorno_clima', nome: dict.entorno_clima || 'Exposição a Efeitos Climáticos Extremos' }
+                ];
+                const dadosEntorno = entornoIDs.map(e => [e.nome, document.getElementById(e.id)?.value || (dict.nao_informado || 'Não informado')]);
+
+                // Sugestões Automáticas (OMS) Sanitizadas
+                const sugestoesItems = document.querySelectorAll('#lista-sugestoes li');
+                let sugestoesStr = "";
+                sugestoesItems.forEach((li) => {
+                    let txt = li.innerText || li.textContent;
+                    if (!txt.includes("Insira os sinais vitais")) {
+                        txt = txt.replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '')
+                                 .replace(/[^\x00-\x7F\u00C0-\u00FF]/g, '')
+                                 .trim();
+                        if (txt) sugestoesStr += `- ${txt}\n`;
+                    }
+                });
+                if (sugestoesStr === "") {
+                    sugestoesStr = dict.pdf_sem_sugestoes || "Nenhum sinal vital alterado para gerar sugestões.";
+                }
+
+                // Cabeçalho PDF Verde
+                doc.setFillColor(0, 104, 71); 
+                doc.rect(0, 0, 210, 18, 'F');
+                doc.setTextColor(255, 255, 255);
                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(11);
-                doc.text(`4. ${dict.secao_geolocalizacao}`, 14, y);
-                y += 6;
+                doc.setFontSize(12);
+                doc.text(dict.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 105, 12, { align: "center" });
+
+                // Tabela 1: Informações Pessoais
+                doc.autoTable({
+                    startY: 22,
+                    head: [[dict.pdf_th_parametro || 'PARÂMETRO / DADO', dict.pdf_th_registro || 'REGISTRO']],
+                    body: dadosPessoais,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 7, cellPadding: 1.2 },
+                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                });
+
+                // Tabela 2: Sinais Vitais
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 3,
+                    head: [[dict.pdf_th_sinal || 'SINAL VITAL', dict.pdf_th_valor || 'VALOR MEDIDO', dict.pdf_th_unidade || 'UNIDADE', dict.pdf_th_referencia || 'REFERÊNCIA OMS']],
+                    body: dadosSinaisVitais,
+                    theme: 'grid',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 7, cellPadding: 1.2 },
+                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 35 }, 2: { cellWidth: 25 }, 3: { cellWidth: 50 } }
+                });
+
+                // Tabela 3: Histórico de Vacinação
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 3,
+                    head: [[dict.pdf_th_vacina || 'IMUNIZANTE / VACINA', dict.pdf_th_status || 'STATUS DE VACINAÇÃO']],
+                    body: dadosVacinas,
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 7, cellPadding: 1.2 },
+                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                });
+
+                // Tabela 4: Fatores Interferentes, Entorno e Sugestões OMS
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 3,
+                    head: [[dict.pdf_th_interferentes || 'FATORES INTERFERENTES E ENTORNO ECOLÓGICO', dict.pdf_th_detalhes || 'DETALHES']],
+                    body: [
+                        ...dadosInterferentes, 
+                        ...dadosEntorno, 
+                        [dict.pdf_acoes_sugeridas || 'Ações Sugeridas (OMS)', sugestoesStr.trim()]
+                    ],
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 7, cellPadding: 1.2, overflow: 'linebreak' },
+                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                });
+
+                // Rodapé Legal do Documento
+                let y = doc.lastAutoTable.finalY + 6;
+                doc.setFontSize(7);
+                doc.setTextColor(80, 80, 80);
                 doc.setFont("helvetica", "normal");
-                doc.setFontSize(9);
-                doc.text(`GPS: Lat ${lat}, Lng ${lng}`, 14, y);
 
-                y += 12;
+                const advTitulo = dict.adv_titulo || '';
+                const advTexto = dict.adv_texto || 'Declaro que concordo com os Termos de Uso - educativo para o autocuidado na atenção primária - e entendo que este app não substitui a consulta com meu médico.';
+                const footerLinha3 = dict.footer_linha3 || 'Formulário filantrópico www.vitalsig.info - sem custos | Leia 1 Cor. 13.2';
+                const footerAutor = dict.footer_autor || '';
 
-                // Footer Legal
-                doc.setFontSize(7.5);
-                doc.setTextColor(100, 100, 100);
-                doc.text(`${dict.adv_titulo} ${dict.adv_texto}`, 14, y, { maxWidth: 182, align: "justify" });
-                y += 12;
-                doc.text(`${dict.footer_linha3} ${dict.footer_autor}`, 105, y, { align: "center" });
+                if (advTitulo || advTexto) {
+                    doc.text(`${advTitulo} ${advTexto}`.trim(), 105, y, { maxWidth: 180, align: "center" });
+                    y += 6;
+                }
+                
+                if (footerLinha3 || footerAutor) {
+                    doc.text(`${footerLinha3} ${footerAutor}`.trim(), 105, y, { maxWidth: 180, align: "center" });
+                }
 
-                doc.save(`Triagem_VITAL_${iniciais || 'Paciente'}.pdf`);
+                // Nome do Arquivo
+                const campoIniciais = document.getElementById('iniciais')?.value.trim().toUpperCase().replace(/\s+/g, '') || 'NC';
+                const agora = new Date();
+                const dataHoraFormatada = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}-${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}`;
+                const nomeArquivo = `VitalSig_${dataHoraFormatada}_${campoIniciais}.pdf`;
+
+                // Backup Seguro em Segundo Plano
+                try {
+                    if (typeof enviarPdfParaBackup === 'function') {
+                        const pdfBase64 = doc.output('datauristring').split(',')[1];
+                        enviarPdfParaBackup(pdfBase64, nomeArquivo);
+                    }
+                } catch (backupErr) {
+                    console.warn("Aviso: Falha ao enviar o backup do PDF.", backupErr);
+                }
+
+                // Download do PDF
+                doc.save(nomeArquivo);
+
             } catch (err) {
-                console.error(err);
-                alert(i18nData[idiomaAtual].msg_pdf_erro);
+                console.error("Erro interno ao gerar o PDF:", err);
+                const msgErro = dict?.msg_pdf_erro || "Erro ao exportar o PDF. Verifique se os dados estão completos.";
+                alert(msgErro);
             }
         }
     </script>
