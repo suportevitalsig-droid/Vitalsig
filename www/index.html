@@ -2226,7 +2226,7 @@
                 // Tabela 1: Informações Pessoais
                 doc.autoTable({
                     startY: 22,
-                    margin: { left: 15, right: 15 }, // Fixa margens laterais de 15mm (largura total disponível: 180mm)
+                    margin: { left: 15, right: 15 },
                     head: [[dict.pdf_th_parametro || 'PARÂMETRO / DADO', dict.pdf_th_registro || 'REGISTRO']],
                     body: dadosPessoais,
                     theme: 'striped',
@@ -2234,39 +2234,58 @@
                     styles: { 
                         fontSize: 7, 
                         cellPadding: 1.2,
-                        overflow: 'linebreak' // Garante que textos longos dobrem de linha em vez de esticar a coluna
+                        overflow: 'linebreak'
                     },
                     columnStyles: { 
-                        0: { cellWidth: 50, fontStyle: 'bold' }, // Reduzido para 50mm
-                        1: { cellWidth: 125 }                   // 50 + 125 = 175mm (dentro do limite seguro de 180mm)
+                        0: { cellWidth: 50, fontStyle: 'bold' },
+                        1: { cellWidth: 120 } // 50 + 120 = 170mm
                     }
                 });
-
+                
                 // Tabela 2: Sinais Vitais
                 doc.autoTable({
                     startY: doc.lastAutoTable.finalY + 3,
+                    margin: { left: 15, right: 15 },
                     head: [[dict.pdf_th_sinal || 'SINAL VITAL', dict.pdf_th_valor || 'VALOR MEDIDO', dict.pdf_th_unidade || 'UNIDADE', dict.pdf_th_referencia || 'REFERÊNCIA OMS']],
                     body: dadosSinaisVitais,
                     theme: 'grid',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 7, cellPadding: 1.2 },
-                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 30 }, 2: { cellWidth: 25 }, 3: { cellWidth: 55 } }
+                    styles: { 
+                        fontSize: 7, 
+                        cellPadding: 1.2,
+                        overflow: 'linebreak' // Adicionado para impedir estouro
+                    },
+                    columnStyles: { 
+                        0: { cellWidth: 55, fontStyle: 'bold' },
+                        1: { cellWidth: 30 },
+                        2: { cellWidth: 25 },
+                        3: { cellWidth: 60 } // 55 + 30 + 25 + 60 = 170mm
+                    }
                 });
-
+                
                 // Tabela 3: Histórico de Vacinação
                 doc.autoTable({
                     startY: doc.lastAutoTable.finalY + 3,
+                    margin: { left: 15, right: 15 },
                     head: [[dict.pdf_th_vacina || 'IMUNIZANTE / VACINA', dict.pdf_th_status || 'STATUS DE VACINAÇÃO']],
                     body: dadosVacinas,
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 7, cellPadding: 1.2 },
-                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                    styles: { 
+                        fontSize: 7, 
+                        cellPadding: 1.2,
+                        overflow: 'linebreak' // Adicionado para impedir estouro
+                    },
+                    columnStyles: { 
+                        0: { cellWidth: 50, fontStyle: 'bold' },
+                        1: { cellWidth: 120 } // 50 + 120 = 170mm
+                    }
                 });
-
+                
                 // Tabela 4: Fatores Interferentes, Entorno e Sugestões OMS
                 doc.autoTable({
                     startY: doc.lastAutoTable.finalY + 3,
+                    margin: { left: 15, right: 15 },
                     head: [[dict.pdf_th_interferentes || 'FATORES INTERFERENTES E ENTORNO ECOLÓGICO', dict.pdf_th_detalhes || 'DETALHES']],
                     body: [
                         ...dadosInterferentes, 
@@ -2275,8 +2294,15 @@
                     ],
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 7, cellPadding: 1.2, overflow: 'linebreak' },
-                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                    styles: { 
+                        fontSize: 7, 
+                        cellPadding: 1.2, 
+                        overflow: 'linebreak' 
+                    },
+                    columnStyles: { 
+                        0: { cellWidth: 50, fontStyle: 'bold' },
+                        1: { cellWidth: 120 } // 50 + 120 = 170mm
+                    }
                 });
 
                 // Rodapé Legal do Documento
