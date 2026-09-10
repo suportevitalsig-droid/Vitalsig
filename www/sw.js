@@ -1,5 +1,6 @@
-const CACHE_NAME = 'vital-v1';
-// Lista de arquivos que serão salvos em cachê para funcionar offline
+const CACHE_NAME = 'vital-v2'; // Incrementado para forçar a atualização
+
+// Lista de arquivos locais essenciais para o funcionamento offline
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -13,12 +14,19 @@ const ASSETS_TO_CACHE = [
   './lib/jspdf.plugin.autotable.min.js'
 ];
 
-// Instalação do Service Worker e gravação do cachê
+// Instalação do Service Worker com tratamento tolerante a falhas individuais
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log('[Service Worker] Armazenando arquivos em cachê...');
-      return cache.addAll(ASSETS_TO_CACHE);
+      // Promise.allSettled tenta cachear arquivo por arquivo sem quebrar a instalação se um falhar
+      return Promise.allSettled(
+        ASSETS_TO_CACHE.map((url) =>
+          cache.add(url).catch((err) => {
+            console.warn(`[Service Worker] Erro ao carregar ${url}:`, err);
+          })
+        )
+      );
     })
   );
   self.skipWaiting();
@@ -43,6 +51,9 @@ self.addEventListener('activate', (event) => {
 
 // Interceptação de requisições: Tenta buscar do cachê primeiro, se não encontrar vai para a rede
 self.addEventListener('fetch', (event) => {
+  // Ignora requisições que não sejam GET ou chamadas de API externas/UploadThing
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       return response || fetch(event.request);
