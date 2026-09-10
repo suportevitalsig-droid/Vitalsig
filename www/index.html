@@ -2226,12 +2226,20 @@
                 // Tabela 1: Informações Pessoais
                 doc.autoTable({
                     startY: 22,
+                    margin: { left: 15, right: 15 }, // Fixa margens laterais de 15mm (largura total disponível: 180mm)
                     head: [[dict.pdf_th_parametro || 'PARÂMETRO / DADO', dict.pdf_th_registro || 'REGISTRO']],
                     body: dadosPessoais,
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { fontSize: 7, cellPadding: 1.2 },
-                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                    styles: { 
+                        fontSize: 7, 
+                        cellPadding: 1.2,
+                        overflow: 'linebreak' // Garante que textos longos dobrem de linha em vez de esticar a coluna
+                    },
+                    columnStyles: { 
+                        0: { cellWidth: 50, fontStyle: 'bold' }, // Reduzido para 50mm
+                        1: { cellWidth: 125 }                   // 50 + 125 = 175mm (dentro do limite seguro de 180mm)
+                    }
                 });
 
                 // Tabela 2: Sinais Vitais
@@ -2242,7 +2250,7 @@
                     theme: 'grid',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
                     styles: { fontSize: 7, cellPadding: 1.2 },
-                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 35 }, 2: { cellWidth: 25 }, 3: { cellWidth: 50 } }
+                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 30 }, 2: { cellWidth: 25 }, 3: { cellWidth: 55 } }
                 });
 
                 // Tabela 3: Histórico de Vacinação
@@ -2253,7 +2261,7 @@
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
                     styles: { fontSize: 7, cellPadding: 1.2 },
-                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
                 });
 
                 // Tabela 4: Fatores Interferentes, Entorno e Sugestões OMS
@@ -2268,7 +2276,7 @@
                     theme: 'striped',
                     headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
                     styles: { fontSize: 7, cellPadding: 1.2, overflow: 'linebreak' },
-                    columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
+                    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold' }, 1: { cellWidth: 110 } }
                 });
 
                 // Rodapé Legal do Documento
