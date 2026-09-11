@@ -68,6 +68,14 @@
         .btn-process:hover { background-color: #00b8e6; }
         .btn-open-map { background-color: #28a745; color: #ffffff; display: none; text-decoration: none; text-align: center; }
         .btn-open-map:hover { background-color: #218838; }
+        
+        .btn-download {
+            background-color: #6f42c1;
+            color: #ffffff;
+            display: none;
+            margin-top: 10px;
+        }
+        .btn-download:hover { background-color: #59359a; }
 
         /* Área do Mapa */
         #map-container { display: none; margin-top: 30px; position: relative; }
@@ -118,7 +126,7 @@
         }
         .legend-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Força 5 colunas */
+            grid-template-columns: repeat(5, 1fr);
             gap: 12px;
         }
         .legend-item {
@@ -159,7 +167,7 @@
 
         @media (max-width: 850px) {
             .legend-grid {
-                grid-template-columns: repeat(2, 1fr); /* Ajuste dinâmico para telas pequenas */
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -186,6 +194,7 @@
 
             <button id="btn-gerar" class="btn-action btn-process" onclick="processarPlanilha()">2. Clique para Gerar Mapa LUGEO</button>
             <button id="btn-abrir" class="btn-action btn-open-map" onclick="focarNoMapa()">3. Abrir e Visualizar Mapa no Navegador 🚀</button>
+            <button id="btn-salvar" class="btn-action btn-download" onclick="baixarMapaHTML()">💾 Salvar Mapa HTML Final</button>
 
             <div class="footer-credits">
                 <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R.</b><br>
@@ -196,7 +205,6 @@
         <div id="map-container">
             <div id="map"></div>
             
-            <!-- Legenda Externa em 5 Colunas (2 Linhas Max por Item) -->
             <div class="external-legend">
                 <h4>DIMENSIÓN PREVENTIVA</h4>
                 <div class="legend-grid">
@@ -274,6 +282,7 @@
 
                 document.getElementById('btn-gerar').style.display = 'none';
                 document.getElementById('btn-abrir').style.display = 'block';
+                document.getElementById('btn-salvar').style.display = 'block';
                 document.getElementById('map-container').style.display = 'block';
             };
 
@@ -321,7 +330,6 @@
                 mapaLeaflet.remove();
             }
 
-            // NIVEL DE ZOOM GLOBAL INICIAL: Coordenadas [20, 0] com zoom 2 (Exibe o mapa-múndi inteiro)
             mapaLeaflet = L.map('map', { maxZoom: 20 }).setView([20, 0], 2);
 
             const layerSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -342,7 +350,6 @@
                 attribution: 'VITALSig.info | Esri Topo Map'
             });
 
-            // Ativa o Relevo como mapa base inicial
             layerRelevo.addTo(mapaLeaflet);
 
             const baseMaps = {
@@ -413,6 +420,26 @@
         function focarNoMapa() {
             document.getElementById('map-container').scrollIntoView({ behavior: 'smooth' });
             setTimeout(() => { mapaLeaflet.invalidateSize(); }, 300);
+        }
+
+        /* FUNÇÃO PARA SALVAR O MAPA HTML COM NOMENCLATURA DINÂMICA */
+        function baixarMapaHTML() {
+            const agora = new Date();
+            const ano = agora.getFullYear();
+            const mes = String(agora.getMonth() + 1).padStart(2, '0');
+            const dia = String(agora.getDate()).padStart(2, '0');
+            const horas = String(agora.getHours()).padStart(2, '0');
+            const minutos = String(agora.getMinutes()).padStart(2, '0');
+
+            const nomeArquivo = `VitalSig_Lugeo_${ano}${mes}${dia}_${horas}${minutos}.html`;
+            const conteudoHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+
+            const blob = new Blob([conteudoHTML], { type: 'text/html;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = nomeArquivo;
+            link.click();
+            URL.revokeObjectURL(link.href);
         }
     </script>
 </body>
