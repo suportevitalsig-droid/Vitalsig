@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma VITALSig.info</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f2f7f4;
+            color: #2e4a3e;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #ffffff;
+            border-bottom: 2px solid #2e7d32;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo-container img {
+            max-height: 45px;
+            width: auto;
+            display: block;
+        }
+
+        .lang-switch button {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #1b5e20;
+            padding: 6px 14px;
+            margin-left: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .lang-switch button:hover, .lang-switch button.active {
+            background-color: #2e7d32;
+            color: #ffffff;
+            border-color: #2e7d32;
+        }
+
+        main {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+            font-size: 2.2rem;
+        }
+
+        p.subtitle {
+            color: #4c6e5d;
+            margin-bottom: 35px;
+            font-size: 1.05rem;
+        }
+
+        /* Layout responsivo dos botões */
+        .menu-grid {
+            display: flex;
+            flex-direction: column; /* Dispositivos móveis: um sobre o outro */
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .menu-grid {
+                flex-direction: row; /* Computadores: um ao lado do outro */
+                justify-content: center;
+            }
+        }
+
+        .card {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.08);
+            border: 1px solid #c8e6c9;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.18);
+            border-color: #2e7d32;
+        }
+
+        .card h2 {
+            font-size: 1.35rem;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #c8e6c9;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #4c6e5d;
+        }
+
+        footer a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="img/meu-logo.png" alt="VITALSig Logo">
+        </div>
+        <div class="lang-switch">
+            <button onclick="setLanguage('pt')" id="btn-pt" class="active">PT</button>
+            <button onclick="setLanguage('en')" id="btn-en">EN</button>
+            <button onclick="setLanguage('es')" id="btn-es">ES</button>
+        </div>
+    </header>
+
+    <main>
+        <h1 id="main-title">Plataforma VITALSig.info</h1>
+        <p class="subtitle" id="main-subtitle">Selecione o módulo desejado para acessar:</p>
+
+        <div class="menu-grid">
+            <a href="https://www.vitalsig.info/" class="card" target="_blank">
+                <h2>VITALSig</h2>
+                <p id="desc-vitalsig">Sinais Vitais</p>
+            </a>
+
+            <a href="https://www.vitalsig.info/cellprogress" class="card" target="_blank">
+                <h2>CELLPROGRESS</h2>
+                <p id="desc-cellprogress">Planilhamento</p>
+            </a>
+
+            <a href="https://www.vitalsig.info/lugeo" class="card" target="_blank">
+                <h2>LUGEO</h2>
+                <p id="desc-lugeo">Mapeamento</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p><span id="rights">Todos os direitos reservados</span> TRAVASSOS L.R. - <a href="mailto:ludmilartmed@gmail.com">ludmilartmed@gmail.com</a> - 1Cor13.2+Amor</p>
+        <p style="margin-top: 5px;">www.vitalsig.info/app</p>
+    </footer>
+
+    <script>
+        const translations = {
+            pt: {
+                subtitle: "Selecione o módulo desejado para acessar:",
+                vitalsig: "Sinais Vitais",
+                cellprogress: "Planilhamento",
+                lugeo: "Mapeamento",
+                rights: "Todos os direitos reservados"
+            },
+            en: {
+                subtitle: "Select the desired module to access:",
+                vitalsig: "Vital Signs",
+                cellprogress: "Spreadsheets",
+                lugeo: "Mapping",
+                rights: "All rights reserved"
+            },
+            es: {
+                subtitle: "Seleccione el módulo deseado para acceder:",
+                vitalsig: "Signos Vitales",
+                cellprogress: "Hojas de cálculo",
+                lugeo: "Mapeo",
+                rights: "Todos los derechos reservados"
+            }
+        };
+
+        function setLanguage(lang) {
+            document.getElementById('main-subtitle').innerText = translations[lang].subtitle;
+            document.getElementById('desc-vitalsig').innerText = translations[lang].vitalsig;
+            document.getElementById('desc-cellprogress').innerText = translations[lang].cellprogress;
+            document.getElementById('desc-lugeo').innerText = translations[lang].lugeo;
+            document.getElementById('rights').innerText = translations[lang].rights;
+
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
