@@ -34,7 +34,7 @@
         .vitalsig-header .sub-rights { font-size: 11px; color: #cfd8dc; margin-top: 4px; }
 
         /* Estrutura Central */
-        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
         .card { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; }
         
         .file-input-wrapper { margin: 20px 0; }
@@ -73,7 +73,7 @@
         #map-container { display: none; margin-top: 30px; position: relative; }
         #map { height: 75vh; width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
-        /* REMOVE SETAS E SCROLL DO SELETOR DE CAMADAS */
+        /* Seletor de Camadas Expandido sem Scroll */
         .leaflet-control-layers {
             border-radius: 8px !important;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
@@ -96,20 +96,20 @@
             margin-right: 8px !important;
         }
 
-        /* Estilização da Legenda Metodológica no Rodapé */
+        /* Estilização da Legenda Metodológica em 5 Colunas (Máx. 2 linhas) */
         .external-legend {
             background: #ffffff;
             margin-top: 15px;
             padding: 15px 20px;
             font-family: 'Segoe UI', Arial, sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             border-radius: 12px;
             color: #222;
         }
         .external-legend h4 {
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
             font-weight: bold;
             color: #0f2027;
             border-bottom: 2px solid #00d2ff;
@@ -118,20 +118,34 @@
         }
         .legend-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(5, 1fr); /* Força 5 colunas */
+            gap: 12px;
         }
         .legend-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            line-height: 1.25;
         }
         .legend-color {
             width: 14px;
             height: 14px;
             border-radius: 50%;
             margin-right: 8px;
+            margin-top: 2px;
             flex-shrink: 0;
             border: 1px solid rgba(0,0,0,0.3);
+        }
+        .legend-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .legend-text b {
+            color: #0f2027;
+            font-weight: 700;
+        }
+        .legend-text span {
+            color: #555;
+            font-size: 11px;
         }
 
         .footer-credits {
@@ -141,6 +155,12 @@
             border-top: 1px solid #e0e0e0;
             font-size: 12px;
             color: #666;
+        }
+
+        @media (max-width: 850px) {
+            .legend-grid {
+                grid-template-columns: repeat(2, 1fr); /* Ajuste dinâmico para telas pequenas */
+            }
         }
     </style>
 </head>
@@ -176,14 +196,45 @@
         <div id="map-container">
             <div id="map"></div>
             
+            <!-- Legenda Externa em 5 Colunas (2 Linhas Max por Item) -->
             <div class="external-legend">
-                <h4>Dimensión Preventiva</h4>
+                <h4>DIMENSIÓN PREVENTIVA</h4>
                 <div class="legend-grid">
-                    <div class="legend-item"><span class="legend-color" style="background: #d9534f;"></span><b>Tríada Alto Riesgo:</b> Peso + Glucemia (- Farmaco)</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #f0ad4e;"></span><b>Glucemia:</b> Alteración de Glucemia</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #0275d8;"></span><b>Cardíaco:</b> PA ≥130/85 ou FC >100</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #5cb85c;"></span><b>Prev. Primaria:</b> IMC > 25 (Subclínico)</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #6c757d;"></span><b>Sin Alteraciones:</b> Parâmetros Normais</div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #6c757d;"></span>
+                        <div class="legend-text">
+                            <b>Sin Alteraciones:</b>
+                            <span>Parámetros Normais</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #f0ad4e;"></span>
+                        <div class="legend-text">
+                            <b>Glucemia:</b>
+                            <span>Alteración de Glucemia</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #0275d8;"></span>
+                        <div class="legend-text">
+                            <b>Cardíaco:</b>
+                            <span>PA ≥130/85 ou FC >100</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #5cb85c;"></span>
+                        <div class="legend-text">
+                            <b>Prev. Primaria:</b>
+                            <span>IMC > 25 (Subclínico)</span>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #d9534f;"></span>
+                        <div class="legend-text">
+                            <b>Tríada Alto Riesgo:</b>
+                            <span>Peso + Glucemia (-Farmaco)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,7 +321,8 @@
                 mapaLeaflet.remove();
             }
 
-            mapaLeaflet = L.map('map', { maxZoom: 20 }).setView([20, 10], 2);
+            // NIVEL DE ZOOM GLOBAL INICIAL: Coordenadas [20, 0] com zoom 2 (Exibe o mapa-múndi inteiro)
+            mapaLeaflet = L.map('map', { maxZoom: 20 }).setView([20, 0], 2);
 
             const layerSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 20,
@@ -290,7 +342,7 @@
                 attribution: 'VITALSig.info | Esri Topo Map'
             });
 
-            // Ativa o Relevo por padrão para coincidir com a seleção inicial
+            // Ativa o Relevo como mapa base inicial
             layerRelevo.addTo(mapaLeaflet);
 
             const baseMaps = {
@@ -306,8 +358,6 @@
                 showCoverageOnHover: false,
                 zoomToBoundsOnClick: true
             });
-
-            const bounds = [];
 
             dados.forEach((row) => {
                 let keyLat = Object.keys(row).find(k => k.trim().toLowerCase().includes("lat"));
@@ -341,7 +391,7 @@
                     }
 
                     conteudoPopup += `<hr style="margin: 5px 0; border: 0; border-top: 1px solid #ccc;">
-                        <small style="color:#777;">VITALSig.info - Dimensão Preventiva</small>
+                        <small style="color:#777;">VITALSig.info - Dimensión Preventiva</small>
                     </div>`;
 
                     let marker = L.circleMarker([lat, lon], {
@@ -354,15 +404,10 @@
                     }).bindPopup(conteudoPopup);
 
                     markersGroup.addLayer(marker);
-                    bounds.push([lat, lon]);
                 }
             });
 
             mapaLeaflet.addLayer(markersGroup);
-
-            if (bounds.length > 0) {
-                mapaLeaflet.fitBounds(bounds, { padding: [50, 50] });
-            }
         }
 
         function focarNoMapa() {
