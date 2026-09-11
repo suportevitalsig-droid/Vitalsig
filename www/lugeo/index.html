@@ -73,18 +73,27 @@
         #map-container { display: none; margin-top: 30px; position: relative; }
         #map { height: 75vh; width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
-        /* Ajuste do Seletor do Mapa (Caixa de Seleção Expandida) */
-        .leaflet-control-layers-expanded {
-            padding: 10px 14px !important;
+        /* REMOVE SETAS E SCROLL DO SELETOR DE CAMADAS */
+        .leaflet-control-layers {
             border-radius: 8px !important;
             box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
-            font-family: 'Segoe UI', Arial, sans-serif !important;
+            padding: 8px 12px !important;
+            background: #ffffff !important;
+        }
+        .leaflet-control-layers-list {
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+        .leaflet-control-layers-base label {
+            display: flex !important;
+            align-items: center !important;
+            margin-bottom: 4px !important;
             font-size: 14px !important;
+            cursor: pointer !important;
         }
         .leaflet-control-layers-selector {
             margin-right: 8px !important;
-            transform: scale(1.2);
-            cursor: pointer;
         }
 
         /* Estilização da Legenda Metodológica no Rodapé */
@@ -140,7 +149,7 @@
     <header class="vitalsig-header">
         <h1>VITALSig.info</h1>
         <p>Todos os direitos reservados à TRAVASSOS L.R. (ludmilartmed@gmail.com)</p>
-        <div class="sub-rights">Módulo LUGEO - CELLPROGRESS II</div>
+        <div class="sub-rights">Módulo LUGEO - CELLPROGRESS II | Multilingual Map Engine</div>
     </header>
 
     <div class="container">
@@ -159,7 +168,7 @@
             <button id="btn-abrir" class="btn-action btn-open-map" onclick="focarNoMapa()">3. Abrir e Visualizar Mapa no Navegador 🚀</button>
 
             <div class="footer-credits">
-                <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R. | Leia 1Cor13.2 +Amor</b><br>
+                <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R.</b><br>
                 Contato: <a href="mailto:ludmilartmed@gmail.com" style="color: #0056b3;">ludmilartmed@gmail.com</a>
             </div>
         </div>
@@ -167,7 +176,6 @@
         <div id="map-container">
             <div id="map"></div>
             
-            <!-- Legenda Externa no Rodapé do Mapa -->
             <div class="external-legend">
                 <h4>Dimensión Preventiva</h4>
                 <div class="legend-grid">
@@ -264,29 +272,26 @@
 
             mapaLeaflet = L.map('map', { maxZoom: 20 }).setView([20, 10], 2);
 
-            // 1. Satélite
             const layerSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 20,
                 maxNativeZoom: 19,
                 attribution: 'VITALSig.info | Esri World Imagery'
             });
 
-            // 2. Planta Baixa (Ruas)
             const layerRuas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 20,
                 maxNativeZoom: 19,
                 attribution: 'VITALSig.info | Esri Street Map'
             });
 
-            // 3. Relevo / Topografia
             const layerRelevo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 20,
                 maxNativeZoom: 19,
                 attribution: 'VITALSig.info | Esri Topo Map'
             });
 
-            // Adiciona a Planta Baixa por padrão
-            layerRuas.addTo(mapaLeaflet);
+            // Ativa o Relevo por padrão para coincidir com a seleção inicial
+            layerRelevo.addTo(mapaLeaflet);
 
             const baseMaps = {
                 "Satelite": layerSatelite,
@@ -294,7 +299,6 @@
                 "Relevo": layerRelevo
             };
 
-            // "collapsed: false" mantem o menu aberto exatamente como na foto
             L.control.layers(baseMaps, null, { collapsed: false, position: 'topright' }).addTo(mapaLeaflet);
 
             const markersGroup = L.markerClusterGroup({
