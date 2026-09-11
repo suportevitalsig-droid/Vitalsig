@@ -7,10 +7,15 @@
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <!-- Leaflet MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 
     <!-- Bibliotecas JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,31 +73,48 @@
         #map-container { display: none; margin-top: 30px; position: relative; }
         #map { height: 75vh; width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
-        /* Estilização da Legenda Metodológica */
-        .info.legend {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 15px;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            font-size: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            border-radius: 8px;
-            line-height: 18px;
-            color: #222;
-            max-width: 320px;
+        /* Ajuste do Seletor do Mapa (Caixa de Seleção Expandida) */
+        .leaflet-control-layers-expanded {
+            padding: 10px 14px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+            font-size: 14px !important;
         }
-        .info.legend h4 {
-            margin: 0 0 8px;
+        .leaflet-control-layers-selector {
+            margin-right: 8px !important;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        /* Estilização da Legenda Metodológica no Rodapé */
+        .external-legend {
+            background: #ffffff;
+            margin-top: 15px;
+            padding: 15px 20px;
+            font-family: 'Segoe UI', Arial, sans-serif;
             font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            color: #222;
+        }
+        .external-legend h4 {
+            margin-bottom: 10px;
+            font-size: 14px;
             font-weight: bold;
             color: #0f2027;
             border-bottom: 2px solid #00d2ff;
-            padding-bottom: 4px;
+            padding-bottom: 5px;
             text-transform: uppercase;
+        }
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
         }
         .legend-item {
             display: flex;
             align-items: center;
-            margin-bottom: 6px;
         }
         .legend-color {
             width: 14px;
@@ -118,7 +140,7 @@
     <header class="vitalsig-header">
         <h1>VITALSig.info</h1>
         <p>Todos os direitos reservados à TRAVASSOS L.R. (ludmilartmed@gmail.com)</p>
-        <div class="sub-rights">Módulo LUGEO - CELLPROGRESS II | Multilingual Map Engine</div>
+        <div class="sub-rights">Módulo LUGEO - CELLPROGRESS II</div>
     </header>
 
     <div class="container">
@@ -137,13 +159,25 @@
             <button id="btn-abrir" class="btn-action btn-open-map" onclick="focarNoMapa()">3. Abrir e Visualizar Mapa no Navegador 🚀</button>
 
             <div class="footer-credits">
-                <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R.</b><br>
+                <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R. | Leia 1Cor13.2 +Amor</b><br>
                 Contato: <a href="mailto:ludmilartmed@gmail.com" style="color: #0056b3;">ludmilartmed@gmail.com</a>
             </div>
         </div>
 
         <div id="map-container">
             <div id="map"></div>
+            
+            <!-- Legenda Externa no Rodapé do Mapa -->
+            <div class="external-legend">
+                <h4>Dimensión Preventiva</h4>
+                <div class="legend-grid">
+                    <div class="legend-item"><span class="legend-color" style="background: #d9534f;"></span><b>Tríada Alto Riesgo:</b> Peso + Glucemia (- Farmaco)</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #f0ad4e;"></span><b>Glucemia:</b> Alteración de Glucemia</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #0275d8;"></span><b>Cardíaco:</b> PA ≥130/85 ou FC >100</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #5cb85c;"></span><b>Prev. Primaria:</b> IMC > 25 (Subclínico)</div>
+                    <div class="legend-item"><span class="legend-color" style="background: #6c757d;"></span><b>Sin Alteraciones:</b> Parâmetros Normais</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -187,7 +221,6 @@
             reader.readAsArrayBuffer(file);
         }
 
-        // Função de Classificação Preventiva (Método UNE/CELLPROGRESS II)
         function classificarPaciente(row) {
             let pas = parseFloat(row["PAS"] || row["Pressão Arterial Sistólica"] || (row["Pressão Arterial"] ? row["Pressão Arterial"].split('/')[0] : 0) || 0);
             let pad = parseFloat(row["PAD"] || row["Pressão Arterial Diastólica"] || (row["Pressão Arterial"] ? row["Pressão Arterial"].split('/')[1] : 0) || 0);
@@ -197,7 +230,6 @@
             let glicPos = parseFloat(row["Glicemia Pós-Prandial"] || row["Glicemia Pos"] || 0);
             
             let imc = parseFloat(row["IMC"] || 0);
-            let idade = parseFloat(row["Idade"] || 0);
             
             let farmaco = String(row["Farmacoterapia"] || row["Tratamento"] || "").toLowerCase().includes("sim") || 
                           String(row["Farmacoterapia"] || row["Tratamento"] || "").toLowerCase().includes("+");
@@ -207,22 +239,22 @@
             let altPeso = (imc > 25);
 
             if (altPeso && altGlicemia && !farmaco) {
-                return { color: "#d9534f", label: "Tríada Alto Riesgo Metabólico (- Farmaco)" }; // Vermelho
+                return { color: "#d9534f", label: "Tríada Alto Riesgo Metabólico (- Farmaco)" };
             }
             if (altPeso && !altCardiaca && !altGlicemia && !farmaco) {
-                return { color: "#5cb85c", label: "Sobrepeso Subclínico | Prev. Primaria (IMC > 25)" }; // Verde
+                return { color: "#5cb85c", label: "Sobrepeso Subclínico | Prev. Primaria (IMC > 25)" };
             }
             if (altGlicemia) {
-                return { color: "#f0ad4e", label: "Alteración de Glucemia" }; // Laranja
+                return { color: "#f0ad4e", label: "Alteración de Glucemia" };
             }
             if (altCardiaca) {
-                return { color: "#0275d8", label: "Alteración Cardíaca (PA / FC)" }; // Azul
+                return { color: "#0275d8", label: "Alteración Cardíaca (PA / FC)" };
             }
             if (altPeso) {
-                return { color: "#5bc0de", label: "Alteración de Peso / Obesidad" }; // Ciano
+                return { color: "#5bc0de", label: "Alteración de Peso / Obesidad" };
             }
 
-            return { color: "#6c757d", label: "Sin Alteraciones Significativas" }; // Cinza
+            return { color: "#6c757d", label: "Sin Alteraciones Significativas" };
         }
 
         function gerarMapa(dados) {
@@ -230,36 +262,48 @@
                 mapaLeaflet.remove();
             }
 
-            mapaLeaflet = L.map('map').setView([20, 10], 2);
+            mapaLeaflet = L.map('map', { maxZoom: 20 }).setView([20, 10], 2);
 
-            // 1. Planta Baixa / Ruas (OpenStreetMap Standard - Zoom até 19)
-            const layerRuas = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: 'VITALSig.info | OpenStreetMap'
-            });
-
-            // 2. Satélite HD Alta Resolução (Esri World Imagery - Zoom até 19)
+            // 1. Satélite
             const layerSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                maxZoom: 19,
+                maxZoom: 20,
+                maxNativeZoom: 19,
                 attribution: 'VITALSig.info | Esri World Imagery'
             });
 
-            // 3. Relevo / Topografia (OpenTopoMap - Zoom até 17)
-            const layerRelevo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                maxZoom: 17,
-                attribution: 'VITALSig.info | OpenTopoMap'
+            // 2. Planta Baixa (Ruas)
+            const layerRuas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 20,
+                maxNativeZoom: 19,
+                attribution: 'VITALSig.info | Esri Street Map'
             });
 
-            // Ativa Planta Baixa / Ruas por padrão
+            // 3. Relevo / Topografia
+            const layerRelevo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 20,
+                maxNativeZoom: 19,
+                attribution: 'VITALSig.info | Esri Topo Map'
+            });
+
+            // Adiciona a Planta Baixa por padrão
             layerRuas.addTo(mapaLeaflet);
 
-            // Seletor de Camadas no canto superior direito
             const baseMaps = {
-                "🗺️ Planta Baixa / Ruas": layerRuas,
-                "🛰️ Imagem de Satélite HD": layerSatelite,
-                "⛰️ Relevo / Topografia": layerRelevo
+                "Satelite": layerSatelite,
+                "Planta baixa": layerRuas,
+                "Relevo": layerRelevo
             };
-            L.control.layers(baseMaps).addTo(mapaLeaflet);
+
+            // "collapsed: false" mantem o menu aberto exatamente como na foto
+            L.control.layers(baseMaps, null, { collapsed: false, position: 'topright' }).addTo(mapaLeaflet);
+
+            const markersGroup = L.markerClusterGroup({
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: false,
+                zoomToBoundsOnClick: true
+            });
+
+            const bounds = [];
 
             dados.forEach((row) => {
                 let keyLat = Object.keys(row).find(k => k.trim().toLowerCase().includes("lat"));
@@ -274,7 +318,6 @@
                 let lon = parseFloat(rawLon);
 
                 if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
-                    
                     if (lat > 0) lat = -Math.abs(lat);
                     if (lon > 0) lon = -Math.abs(lon);
 
@@ -297,38 +340,25 @@
                         <small style="color:#777;">VITALSig.info - Dimensão Preventiva</small>
                     </div>`;
 
-                    L.circleMarker([lat, lon], {
-                        radius: 9,
+                    let marker = L.circleMarker([lat, lon], {
+                        radius: 8,
                         fillColor: classificacao.color,
                         color: "#ffffff",
                         weight: 2,
                         opacity: 1,
                         fillOpacity: 0.9
-                    }).addTo(mapaLeaflet).bindPopup(conteudoPopup);
+                    }).bindPopup(conteudoPopup);
+
+                    markersGroup.addLayer(marker);
+                    bounds.push([lat, lon]);
                 }
             });
 
-            // Adiciona a Legenda em Destaque no Mapa
-            adicionarLegenda(mapaLeaflet);
-        }
+            mapaLeaflet.addLayer(markersGroup);
 
-        function adicionarLegenda(map) {
-            const legend = L.control({ position: 'bottomright' });
-
-            legend.onAdd = function () {
-                const div = L.DomUtil.create('div', 'info legend');
-                div.innerHTML = `
-                    <h4>Dimensión Preventiva</h4>
-                    <div class="legend-item"><span class="legend-color" style="background: #d9534f;"></span><b>Tríada Alto Riesgo:</b> Peso + Glucemia (- Farmaco)</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #f0ad4e;"></span><b>Glucemia:</b> Alteración de Glucemia</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #0275d8;"></span><b>Cardíaco:</b> PA ≥130/85 ou FC >100</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #5cb85c;"></span><b>Prev. Primaria:</b> IMC > 25 (Subclínico)</div>
-                    <div class="legend-item"><span class="legend-color" style="background: #6c757d;"></span><b>Sin Alteraciones:</b> Parâmetros Normais</div>
-                `;
-                return div;
-            };
-
-            legend.addTo(map);
+            if (bounds.length > 0) {
+                mapaLeaflet.fitBounds(bounds, { padding: [50, 50] });
+            }
         }
 
         function focarNoMapa() {
