@@ -19,7 +19,7 @@
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px 0; }
         
         /* Cabeçalho Oficial */
         .vitalsig-header {
@@ -28,14 +28,15 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
         }
         .vitalsig-header h1 { font-size: 26px; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; }
         .vitalsig-header p { font-size: 13px; color: #00d2ff; font-weight: 500; }
         .vitalsig-header .sub-rights { font-size: 11px; color: #cfd8dc; margin-top: 4px; }
 
         /* Estrutura Central */
-        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-        .card { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .card { background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; margin-bottom: 25px; }
         
         .file-input-wrapper { margin: 20px 0; }
         input[type="file"] { display: none; }
@@ -78,7 +79,7 @@
         .btn-download:hover { background-color: #59359a; }
 
         /* Área do Mapa */
-        #map-container { display: none; margin-top: 30px; position: relative; }
+        #map-container { display: none; margin-top: 10px; position: relative; }
         #map { height: 75vh; width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
 
         /* Seletor de Camadas Expandido sem Scroll */
@@ -104,7 +105,7 @@
             margin-right: 8px !important;
         }
 
-        /* Estilização da Legenda Metodológica em 5 Colunas (Máx. 2 linhas) */
+        /* Estilização da Legenda Metodológica em 5 Colunas */
         .external-legend {
             background: #ffffff;
             margin-top: 15px;
@@ -158,9 +159,8 @@
 
         .footer-credits {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 20px;
             padding-top: 15px;
-            border-top: 1px solid #e0e0e0;
             font-size: 12px;
             color: #666;
         }
@@ -174,14 +174,15 @@
 </head>
 <body>
 
-    <header class="vitalsig-header">
+    <header class="vitalsig-header" id="main-header">
         <h1>VITALSig.info</h1>
         <p>Todos os direitos reservados à TRAVASSOS L.R. (ludmilartmed@gmail.com)</p>
         <div class="sub-rights">Módulo LUGEO - CELLPROGRESS II | Multilingual Map Engine</div>
     </header>
 
     <div class="container">
-        <div class="card">
+        <!-- Cartão de Upload (Removido na versão salva) -->
+        <div class="card" id="upload-card">
             <h2>Processador Geográfico LUGEO</h2>
             <p style="color: #666; font-size: 14px; margin-top: 5px;">Carregue a planilha do CELLPROGRESS II (.xlsx) para gerar o mapa dinâmico.</p>
 
@@ -194,7 +195,7 @@
 
             <button id="btn-gerar" class="btn-action btn-process" onclick="processarPlanilha()">2. Clique para Gerar Mapa LUGEO</button>
             <button id="btn-abrir" class="btn-action btn-open-map" onclick="focarNoMapa()">3. Abrir e Visualizar Mapa no Navegador 🚀</button>
-            <button id="btn-salvar" class="btn-action btn-download" onclick="baixarMapaHTML()">💾 Salvar Mapa HTML Final</button>
+            <button id="btn-salvar" class="btn-action btn-download" onclick="baixarMapaExclusivoHTML()">💾 Salvar Mapa HTML Final</button>
 
             <div class="footer-credits">
                 <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R.</b><br>
@@ -202,6 +203,7 @@
             </div>
         </div>
 
+        <!-- Área do Mapa + Legenda + Direitos (Mantidos no arquivo salvo) -->
         <div id="map-container">
             <div id="map"></div>
             
@@ -245,11 +247,17 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Rodapé de Direitos Autorais mantido no mapa final -->
+            <div class="footer-credits" id="export-footer">
+                <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R.</b> | Contato: <a href="mailto:ludmilartmed@gmail.com" style="color: #0056b3;">ludmilartmed@gmail.com</a>
+            </div>
         </div>
     </div>
 
     <script>
         let mapaLeaflet = null;
+        let dadosGlobais = [];
 
         document.getElementById('excel-file').addEventListener('change', function(e) {
             if (e.target.files[0]) {
@@ -271,14 +279,14 @@
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheet = workbook.SheetNames[0];
-                const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
+                dadosGlobais = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
 
-                if (jsonData.length === 0) {
+                if (dadosGlobais.length === 0) {
                     alert("A planilha selecionada está vazia.");
                     return;
                 }
 
-                gerarMapa(jsonData);
+                gerarMapa(dadosGlobais);
 
                 document.getElementById('btn-gerar').style.display = 'none';
                 document.getElementById('btn-abrir').style.display = 'block';
@@ -422,19 +430,270 @@
             setTimeout(() => { mapaLeaflet.invalidateSize(); }, 300);
         }
 
-        /* FUNÇÃO PARA SALVAR O MAPA HTML COM NOMENCLATURA DINÂMICA */
-        function baixarMapaHTML() {
+        /* GERA O HTML AUTOEXECUTÁVEL CONTENDO SOMENTE O MAPA + LEGENDA + DIREITOS */
+        function baixarMapaExclusivoHTML() {
             const agora = new Date();
             const ano = agora.getFullYear();
             const mes = String(agora.getMonth() + 1).padStart(2, '0');
             const dia = String(agora.getDate()).padStart(2, '0');
             const horas = String(agora.getHours()).padStart(2, '0');
             const minutos = String(agora.getMinutes()).padStart(2, '0');
-
             const nomeArquivo = `VitalSig_Lugeo_${ano}${mes}${dia}_${horas}${minutos}.html`;
-            const conteudoHTML = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
 
-            const blob = new Blob([conteudoHTML], { type: 'text/html;charset=utf-8' });
+            const dadosJSON = JSON.stringify(dadosGlobais);
+
+            const htmlFinal = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VITALSig.info - Mapa LUGEO</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"><\/script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"><\/script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px 0; }
+        
+        .vitalsig-header {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+        }
+        .vitalsig-header h1 { font-size: 26px; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; }
+        .vitalsig-header p { font-size: 13px; color: #00d2ff; font-weight: 500; }
+        .vitalsig-header .sub-rights { font-size: 11px; color: #cfd8dc; margin-top: 4px; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        #map { height: 75vh; width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        .leaflet-control-layers {
+            border-radius: 8px !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+            padding: 8px 12px !important;
+            background: #ffffff !important;
+        }
+        .leaflet-control-layers-list {
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+        .leaflet-control-layers-base label {
+            display: flex !important;
+            align-items: center !important;
+            margin-bottom: 4px !important;
+            font-size: 14px !important;
+            cursor: pointer !important;
+        }
+        .leaflet-control-layers-selector { margin-right: 8px !important; }
+
+        .external-legend {
+            background: #ffffff;
+            margin-top: 15px;
+            padding: 15px 20px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            color: #222;
+        }
+        .external-legend h4 {
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #0f2027;
+            border-bottom: 2px solid #00d2ff;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+        .legend-item { display: flex; align-items: flex-start; line-height: 1.25; }
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin-right: 8px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            border: 1px solid rgba(0,0,0,0.3);
+        }
+        .legend-text { display: flex; flex-direction: column; }
+        .legend-text b { color: #0f2027; font-weight: 700; }
+        .legend-text span { color: #555; font-size: 11px; }
+
+        .footer-credits {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        @media (max-width: 850px) {
+            .legend-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="vitalsig-header">
+        <h1>VITALSig.info</h1>
+        <p>Todos os direitos reservados à TRAVASSOS L.R. (ludmilartmed@gmail.com)</p>
+        <div class="sub-rights">Módulo LUGEO - CELLPROGRESS II | Multilingual Map Engine</div>
+    </header>
+
+    <div class="container">
+        <div id="map"></div>
+        
+        <div class="external-legend">
+            <h4>DIMENSIÓN PREVENTIVA</h4>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #6c757d;"></span>
+                    <div class="legend-text">
+                        <b>Sin Alteraciones:</b>
+                        <span>Parámetros Normais</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #f0ad4e;"></span>
+                    <div class="legend-text">
+                        <b>Glucemia:</b>
+                        <span>Alteración de Glucemia</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #0275d8;"></span>
+                    <div class="legend-text">
+                        <b>Cardíaco:</b>
+                        <span>PA ≥130/85 ou FC >100</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #5cb85c;"></span>
+                    <div class="legend-text">
+                        <b>Prev. Primaria:</b>
+                        <span>IMC > 25 (Subclínico)</span>
+                    </div>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #d9534f;"></span>
+                    <div class="legend-text">
+                        <b>Tríada Alto Riesgo:</b>
+                        <span>Peso + Glucemia (-Farmaco)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-credits">
+            <b>VITALSig.info</b> © Todos os direitos reservados à <b>TRAVASSOS L.R.</b> | Contato: <a href="mailto:ludmilartmed@gmail.com" style="color: #0056b3;">ludmilartmed@gmail.com</a>
+        </div>
+    </div>
+
+    <script>
+        const dados = ${dadosJSON};
+
+        function classificarPaciente(row) {
+            let pas = parseFloat(row["PAS"] || row["Pressão Arterial Sistólica"] || (row["Pressão Arterial"] ? row["Pressão Arterial"].split('/')[0] : 0) || 0);
+            let pad = parseFloat(row["PAD"] || row["Pressão Arterial Diastólica"] || (row["Pressão Arterial"] ? row["Pressão Arterial"].split('/')[1] : 0) || 0);
+            let fc = parseFloat(row["Freq. Cardíaca"] || row["FC"] || 0);
+            let glicJejum = parseFloat(row["Glicemia Jejuma"] || row["Glicemia Jejum"] || row["Glicemia"] || 0);
+            let glicPos = parseFloat(row["Glicemia Pós-Prandial"] || row["Glicemia Pos"] || 0);
+            let imc = parseFloat(row["IMC"] || 0);
+            let farmaco = String(row["Farmacoterapia"] || row["Tratamento"] || "").toLowerCase().includes("sim") || String(row["Farmacoterapia"] || row["Tratamento"] || "").toLowerCase().includes("+");
+
+            let altCardiaca = (pas >= 130 || pad >= 85 || fc > 100);
+            let altGlicemia = (glicJejum >= 100 || glicPos >= 140);
+            let altPeso = (imc > 25);
+
+            if (altPeso && altGlicemia && !farmaco) return { color: "#d9534f", label: "Tríada Alto Riesgo Metabólico (- Farmaco)" };
+            if (altPeso && !altCardiaca && !altGlicemia && !farmaco) return { color: "#5cb85c", label: "Sobrepeso Subclínico | Prev. Primaria (IMC > 25)" };
+            if (altGlicemia) return { color: "#f0ad4e", label: "Alteración de Glucemia" };
+            if (altCardiaca) return { color: "#0275d8", label: "Alteración Cardíaca (PA / FC)" };
+            if (altPeso) return { color: "#5bc0de", label: "Alteración de Peso / Obesidad" };
+
+            return { color: "#6c757d", label: "Sin Alteraciones Significativas" };
+        }
+
+        window.onload = function() {
+            const mapa = L.map('map', { maxZoom: 20 }).setView([20, 0], 2);
+
+            const layerSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 20, maxNativeZoom: 19, attribution: 'VITALSig.info | Esri World Imagery' });
+            const layerRuas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 20, maxNativeZoom: 19, attribution: 'VITALSig.info | Esri Street Map' });
+            const layerRelevo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 20, maxNativeZoom: 19, attribution: 'VITALSig.info | Esri Topo Map' });
+
+            layerRelevo.addTo(mapa);
+
+            const baseMaps = { "Satelite": layerSatelite, "Planta baixa": layerRuas, "Relevo": layerRelevo };
+            L.control.layers(baseMaps, null, { collapsed: false, position: 'topright' }).addTo(mapa);
+
+            const markersGroup = L.markerClusterGroup({ spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true });
+
+            dados.forEach((row) => {
+                let keyLat = Object.keys(row).find(k => k.trim().toLowerCase().includes("lat"));
+                let keyLon = Object.keys(row).find(k => k.trim().toLowerCase().includes("lon") || k.trim().toLowerCase().includes("lng"));
+
+                if (!keyLat || !keyLon) return;
+
+                let lat = parseFloat(String(row[keyLat]).replace(',', '.').trim());
+                let lon = parseFloat(String(row[keyLon]).replace(',', '.').trim());
+
+                if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
+                    if (lat > 0) lat = -Math.abs(lat);
+                    if (lon > 0) lon = -Math.abs(lon);
+
+                    let classificacao = classificarPaciente(row);
+
+                    let conteudoPopup = \`<div style="font-family: Arial, sans-serif; font-size: 13px; max-width: 280px;">
+                        <b style="color:#0f2027; font-size: 14px;">Amostra CELLPROGRESS II</b><br>
+                        <span style="display:inline-block; margin-top:4px; padding:2px 6px; background:\${classificacao.color}; color:#fff; font-size:11px; border-radius:4px; font-weight:bold;">
+                            \${classificacao.label}
+                        </span>
+                        <hr style="margin: 8px 0; border: 0; border-top: 1px solid #ccc;">\`;
+
+                    for (let campo in row) {
+                        if (row[campo] !== undefined && row[campo] !== null && row[campo] !== "") {
+                            conteudoPopup += \`<b>\${campo}:</b> \${row[campo]}<br>\`;
+                        }
+                    }
+
+                    conteudoPopup += \`<hr style="margin: 5px 0; border: 0; border-top: 1px solid #ccc;">
+                        <small style="color:#777;">VITALSig.info - Dimensión Preventiva</small>
+                    </div>\`;
+
+                    let marker = L.circleMarker([lat, lon], {
+                        radius: 8,
+                        fillColor: classificacao.color,
+                        color: "#ffffff",
+                        weight: 2,
+                        opacity: 1,
+                        fillOpacity: 0.9
+                    }).bindPopup(conteudoPopup);
+
+                    markersGroup.addLayer(marker);
+                }
+            });
+
+            mapa.addLayer(markersGroup);
+        };
+    <\/script>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlFinal], { type: 'text/html;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.download = nomeArquivo;
