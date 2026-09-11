@@ -189,7 +189,6 @@
 
         // Função de Classificação Preventiva (Método UNE/CELLPROGRESS II)
         function classificarPaciente(row) {
-            // Extração flexível dos parâmetros da planilha
             let pas = parseFloat(row["PAS"] || row["Pressão Arterial Sistólica"] || (row["Pressão Arterial"] ? row["Pressão Arterial"].split('/')[0] : 0) || 0);
             let pad = parseFloat(row["PAD"] || row["Pressão Arterial Diastólica"] || (row["Pressão Arterial"] ? row["Pressão Arterial"].split('/')[1] : 0) || 0);
             let fc = parseFloat(row["Freq. Cardíaca"] || row["FC"] || 0);
@@ -200,7 +199,6 @@
             let imc = parseFloat(row["IMC"] || 0);
             let idade = parseFloat(row["Idade"] || 0);
             
-            // Verificação de Tratamento Farmacológico
             let farmaco = String(row["Farmacoterapia"] || row["Tratamento"] || "").toLowerCase().includes("sim") || 
                           String(row["Farmacoterapia"] || row["Tratamento"] || "").toLowerCase().includes("+");
 
@@ -208,15 +206,14 @@
             let altGlicemia = (glicJejum >= 100 || glicPos >= 140);
             let altPeso = (imc > 25);
 
-            // Regras de Classificação pelas Cores Solicitadas
             if (altPeso && altGlicemia && !farmaco) {
-                return { color: "#d9534f", label: "Tríada Alto Riesgo Metabólico (- Farmaco)" }; // Vermelho Vivo
+                return { color: "#d9534f", label: "Tríada Alto Riesgo Metabólico (- Farmaco)" }; // Vermelho
             }
             if (altPeso && !altCardiaca && !altGlicemia && !farmaco) {
                 return { color: "#5cb85c", label: "Sobrepeso Subclínico | Prev. Primaria (IMC > 25)" }; // Verde
             }
             if (altGlicemia) {
-                return { color: "#f0ad4e", label: "Alteración de Glucemia (Sem/Com Farmaco)" }; // Laranja
+                return { color: "#f0ad4e", label: "Alteración de Glucemia" }; // Laranja
             }
             if (altCardiaca) {
                 return { color: "#0275d8", label: "Alteración Cardíaca (PA / FC)" }; // Azul
@@ -225,7 +222,7 @@
                 return { color: "#5bc0de", label: "Alteración de Peso / Obesidad" }; // Ciano
             }
 
-            return { color: "#6c757d", label: "Sin Alteraciones Significativas" }; // Cinza Padrão
+            return { color: "#6c757d", label: "Sin Alteraciones Significativas" }; // Cinza
         }
 
         function gerarMapa(dados) {
@@ -235,27 +232,32 @@
 
             mapaLeaflet = L.map('map').setView([20, 10], 2);
 
-            const layerPT = L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-                maxZoom: 20,
+            // 1. Planta Baixa / Ruas (OpenStreetMap Standard - Zoom até 19)
+            const layerRuas = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
                 attribution: 'VITALSig.info | OpenStreetMap'
             });
 
-            const layerEN = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            // 2. Satélite HD Alta Resolução (Esri World Imagery - Zoom até 19)
+            const layerSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 maxZoom: 19,
-                attribution: 'VITALSig.info | Esri World Street Map (English)'
+                attribution: 'VITALSig.info | Esri World Imagery'
             });
 
-            const layerES = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            // 3. Relevo / Topografia (OpenTopoMap - Zoom até 17)
+            const layerRelevo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
                 maxZoom: 17,
                 attribution: 'VITALSig.info | OpenTopoMap'
             });
 
-            layerPT.addTo(mapaLeaflet);
+            // Ativa Planta Baixa / Ruas por padrão
+            layerRuas.addTo(mapaLeaflet);
 
+            // Seletor de Camadas no canto superior direito
             const baseMaps = {
-                "🇧🇷 Português (OSM PT)": layerPT,
-                "🇺🇸 English (Esri World Map)": layerEN,
-                "🇪🇸 Español / Topo (OpenTopo)": layerES
+                "🗺️ Planta Baixa / Ruas": layerRuas,
+                "🛰️ Imagem de Satélite HD": layerSatelite,
+                "⛰️ Relevo / Topografia": layerRelevo
             };
             L.control.layers(baseMaps).addTo(mapaLeaflet);
 
@@ -276,7 +278,6 @@
                     if (lat > 0) lat = -Math.abs(lat);
                     if (lon > 0) lon = -Math.abs(lon);
 
-                    // Classificação Metodológica por Cor
                     let classificacao = classificarPaciente(row);
 
                     let conteudoPopup = `<div style="font-family: Arial, sans-serif; font-size: 13px; max-width: 280px;">
