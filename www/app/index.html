@@ -8,12 +8,24 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../img/icon-meu-logo.png">
 
-    <!-- Meta Tags para Compartilhamento (WhatsApp, Facebook, LinkedIn, etc.) -->
-    <meta property="og:title" content="V I T A L S i g - APP">
-    <meta property="og:description" content="Plataforma VITALSig.info - Acesso aos módulos Sinais Vitais, CELLPROGRESS e LUGEO.">
-    <meta property="og:image" content="https://www.vitalsig.info/img/meu-logo-green.png">
-    <meta property="og:url" content="https://www.vitalsig.info/app">
+    <!-- Meta Tags para Pré-visualização com Foto Grande (Open Graph / WhatsApp) -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.vitalsig.info/app/">
+    <meta property="og:title" content="Plataforma VITALSig.info">
+    <meta property="og:description" content="Acesso aos módulos VITALSig (Sinais Vitais), CELLPROGRESS (Planilhamento) e LUGEO (Mapeamento).">
+    
+    <!-- Link absoluto com HTTPS obrigatório para a imagem -->
+    <meta property="og:image" content="https://www.vitalsig.info/img/meu-logo-green.png">
+    <meta property="og:image:secure_url" content="https://www.vitalsig.info/img/meu-logo-green.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Meta Tags do Twitter/X para forçar o formato de Banner Grande -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Plataforma VITALSig.info">
+    <meta name="twitter:description" content="Acesso aos módulos VITALSig, CELLPROGRESS e LUGEO.">
+    <meta name="twitter:image" content="https://www.vitalsig.info/img/meu-logo-green.png">
 
     <style>
         * {
@@ -34,7 +46,7 @@
 
         header {
             background-color: transparent;
-            padding: 6px 12px;
+            padding: 4px 12px 0 12px; /* Reduzido padding inferior */
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -64,7 +76,7 @@
             max-width: 800px;
             width: 100%;
             margin: 0 auto;
-            padding: 0 12px 6px 12px;
+            padding: 0 12px 6px 12px; /* Zera espaço no topo para aproximar da barra de idiomas */
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -72,13 +84,14 @@
             justify-content: center;
         }
 
-        /* Logo compacta para economizar espaço vertical */
+        /* Logo ampliada e com margem aproximada */
         .main-logo-container {
+            margin-top: -5px;
             margin-bottom: 6px;
         }
 
         .main-logo-container img {
-            max-width: 110px;
+            max-width: 150px; /* Logo aumentada */
             height: auto;
             display: block;
             margin: 0 auto;
@@ -100,7 +113,7 @@
         /* Subtítulo ajustado para uma linha */
         p.subtitle {
             color: #4c6e5d;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             font-size: 0.82rem;
             white-space: nowrap;
         }
@@ -122,7 +135,7 @@
                 gap: 12px;
             }
             .main-logo-container img {
-                max-width: 130px;
+                max-width: 180px; /* Maior em computadores */
             }
         }
 
