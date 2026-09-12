@@ -75,10 +75,9 @@
             font-size: 1.05rem;
         }
 
-        /* Layout responsivo dos botões */
         .menu-grid {
             display: flex;
-            flex-direction: column; /* Dispositivos móveis: um sobre o outro */
+            flex-direction: column;
             gap: 20px;
             width: 100%;
             max-width: 800px;
@@ -87,7 +86,7 @@
 
         @media (min-width: 768px) {
             .menu-grid {
-                flex-direction: row; /* Computadores: um ao lado do outro */
+                flex-direction: row;
                 justify-content: center;
             }
         }
@@ -149,7 +148,7 @@
 
     <header>
         <div class="logo-container">
-            <img src="img/meu-logo.png" alt="VITALSig Logo">
+            <img src="../img/meu-logo-green.png" alt="VITALSig Logo">
         </div>
         <div class="lang-switch">
             <button onclick="setLanguage('pt')" id="btn-pt" class="active">PT</button>
