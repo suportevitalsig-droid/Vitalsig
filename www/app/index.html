@@ -17,12 +17,13 @@
             color: #2e4a3e;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
+            overflow-x: hidden;
         }
 
         header {
             background-color: transparent;
-            padding: 20px 25px;
+            padding: 10px 15px;
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -32,13 +33,13 @@
             background: #ffffff;
             border: 1px solid #a5d6a7;
             color: #1b5e20;
-            padding: 8px 16px;
-            margin-left: 6px;
-            border-radius: 6px;
+            padding: 4px 10px;
+            margin-left: 4px;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 0.8rem;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .lang-switch button:hover, .lang-switch button.active {
@@ -49,49 +50,57 @@
 
         main {
             flex: 1;
-            max-width: 900px;
+            max-width: 850px;
             width: 100%;
             margin: 0 auto;
-            padding: 10px 20px 40px 20px;
+            padding: 0 15px 10px 15px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
 
-        /* Container do Logo Centralizado e de Destaque */
+        /* Logo menor para evitar rolagem de tela */
         .main-logo-container {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .main-logo-container img {
-            max-width: 280px; /* Logo grande e visível */
+            max-width: 150px;
             height: auto;
             display: block;
             margin: 0 auto;
-            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.08));
         }
 
+        /* Título com fonte bem fina (font-weight: 200) */
         h1 {
             color: #1b5e20;
-            margin-bottom: 8px;
-            font-size: 2.4rem;
-            font-weight: 700;
+            margin-bottom: 4px;
+            font-size: 1.8rem;
+            font-weight: 200;
+            letter-spacing: 0.5px;
         }
 
+        h1 strong {
+            font-weight: 600;
+        }
+
+        /* Subtítulo menor para caber em uma linha */
         p.subtitle {
             color: #4c6e5d;
-            margin-bottom: 35px;
-            font-size: 1.1rem;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
-        /* Layout responsivo dos botões */
+        /* Layout responsivo compacto dos botões */
         .menu-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
             width: 100%;
-            max-width: 800px;
+            max-width: 750px;
             margin: 0 auto;
         }
 
@@ -101,18 +110,18 @@
                 justify-content: center;
             }
             .main-logo-container img {
-                max-width: 320px; /* Ainda maior em telas de computador */
+                max-width: 170px;
             }
         }
 
         .card {
             flex: 1;
             background: #ffffff;
-            border-radius: 12px;
-            padding: 30px 20px;
+            border-radius: 8px;
+            padding: 18px 12px;
             text-decoration: none;
             color: inherit;
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.08);
+            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.06);
             border: 1px solid #c8e6c9;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             display: flex;
@@ -122,20 +131,20 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.15);
             border-color: #2e7d32;
         }
 
         .card h2 {
-            font-size: 1.35rem;
+            font-size: 1.15rem;
             color: #2e7d32;
-            margin-bottom: 10px;
+            margin-bottom: 4px;
             font-weight: 700;
         }
 
         .card p {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #555;
         }
 
@@ -143,8 +152,8 @@
             background-color: #ffffff;
             border-top: 1px solid #c8e6c9;
             text-align: center;
-            padding: 20px;
-            font-size: 0.85rem;
+            padding: 12px 10px;
+            font-size: 0.75rem;
             color: #4c6e5d;
         }
 
@@ -170,12 +179,11 @@
     </header>
 
     <main>
-        <!-- Logo em destaque no centro -->
         <div class="main-logo-container">
             <img id="logo-img" src="../img/meu-logo-green.png" alt="VITALSig Logo" onerror="tryNextLogoPath(this)">
         </div>
 
-        <h1 id="main-title">Plataforma VITALSig.info</h1>
+        <h1><span id="platform-txt">Plataforma</span> <strong>VITALSig.info</strong></h1>
         <p class="subtitle" id="main-subtitle">Selecione o módulo desejado para acessar:</p>
 
         <div class="menu-grid">
@@ -198,11 +206,10 @@
 
     <footer>
         <p><span id="rights">Todos os direitos reservados</span> TRAVASSOS L.R. - <a href="mailto:ludmilartmed@gmail.com">ludmilartmed@gmail.com</a> - 1Cor13.2+Amor</p>
-        <p style="margin-top: 5px;">www.vitalsig.info/app</p>
+        <p style="margin-top: 3px;">www.vitalsig.info/app</p>
     </footer>
 
     <script>
-        // Fallback automático para encontrar a imagem caso o caminho mude na hospedagem
         const logoPaths = [
             '../img/meu-logo-green.png',
             '../img/meu-logo.png',
@@ -221,6 +228,7 @@
 
         const translations = {
             pt: {
+                platform: "Plataforma",
                 subtitle: "Selecione o módulo desejado para acessar:",
                 vitalsig: "Sinais Vitais",
                 cellprogress: "Planilhamento",
@@ -228,6 +236,7 @@
                 rights: "Todos os direitos reservados"
             },
             en: {
+                platform: "Platform",
                 subtitle: "Select the desired module to access:",
                 vitalsig: "Vital Signs",
                 cellprogress: "Spreadsheets",
@@ -235,6 +244,7 @@
                 rights: "All rights reserved"
             },
             es: {
+                platform: "Plataforma",
                 subtitle: "Seleccione el módulo deseado para acceder:",
                 vitalsig: "Signos Vitales",
                 cellprogress: "Hojas de cálculo",
@@ -244,6 +254,7 @@
         };
 
         function setLanguage(lang) {
+            document.getElementById('platform-txt').innerText = translations[lang].platform;
             document.getElementById('main-subtitle').innerText = translations[lang].subtitle;
             document.getElementById('desc-vitalsig').innerText = translations[lang].vitalsig;
             document.getElementById('desc-cellprogress').innerText = translations[lang].cellprogress;
