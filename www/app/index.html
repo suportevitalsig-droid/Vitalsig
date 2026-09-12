@@ -21,31 +21,24 @@
         }
 
         header {
-            background-color: #ffffff;
-            border-bottom: 2px solid #2e7d32;
-            padding: 12px 20px;
+            background-color: transparent;
+            padding: 20px 25px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .logo-container img {
-            max-height: 45px;
-            width: auto;
-            display: block;
         }
 
         .lang-switch button {
-            background: #e8f5e9;
+            background: #ffffff;
             border: 1px solid #a5d6a7;
             color: #1b5e20;
-            padding: 6px 14px;
-            margin-left: 4px;
+            padding: 8px 16px;
+            margin-left: 6px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .lang-switch button:hover, .lang-switch button.active {
@@ -59,22 +52,40 @@
             max-width: 900px;
             width: 100%;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 10px 20px 40px 20px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Container do Logo Centralizado e de Destaque */
+        .main-logo-container {
+            margin-bottom: 20px;
+        }
+
+        .main-logo-container img {
+            max-width: 280px; /* Logo grande e visível */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.08));
         }
 
         h1 {
             color: #1b5e20;
             margin-bottom: 8px;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
+            font-weight: 700;
         }
 
         p.subtitle {
             color: #4c6e5d;
             margin-bottom: 35px;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
         }
 
+        /* Layout responsivo dos botões */
         .menu-grid {
             display: flex;
             flex-direction: column;
@@ -89,16 +100,19 @@
                 flex-direction: row;
                 justify-content: center;
             }
+            .main-logo-container img {
+                max-width: 320px; /* Ainda maior em telas de computador */
+            }
         }
 
         .card {
             flex: 1;
             background: #ffffff;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 30px 20px;
             text-decoration: none;
             color: inherit;
-            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.08);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.08);
             border: 1px solid #c8e6c9;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             display: flex;
@@ -117,6 +131,7 @@
             font-size: 1.35rem;
             color: #2e7d32;
             margin-bottom: 10px;
+            font-weight: 700;
         }
 
         .card p {
@@ -147,9 +162,6 @@
 <body>
 
     <header>
-        <div class="logo-container">
-            <img src="../img/meu-logo-green.png" alt="VITALSig Logo">
-        </div>
         <div class="lang-switch">
             <button onclick="setLanguage('pt')" id="btn-pt" class="active">PT</button>
             <button onclick="setLanguage('en')" id="btn-en">EN</button>
@@ -158,6 +170,11 @@
     </header>
 
     <main>
+        <!-- Logo em destaque no centro -->
+        <div class="main-logo-container">
+            <img id="logo-img" src="../img/meu-logo-green.png" alt="VITALSig Logo" onerror="tryNextLogoPath(this)">
+        </div>
+
         <h1 id="main-title">Plataforma VITALSig.info</h1>
         <p class="subtitle" id="main-subtitle">Selecione o módulo desejado para acessar:</p>
 
@@ -185,6 +202,23 @@
     </footer>
 
     <script>
+        // Fallback automático para encontrar a imagem caso o caminho mude na hospedagem
+        const logoPaths = [
+            '../img/meu-logo-green.png',
+            '../img/meu-logo.png',
+            '/img/meu-logo-green.png',
+            '/img/meu-logo.png',
+            'img/meu-logo-green.png'
+        ];
+        let currentPathIndex = 0;
+
+        function tryNextLogoPath(imgElement) {
+            currentPathIndex++;
+            if (currentPathIndex < logoPaths.length) {
+                imgElement.src = logoPaths[currentPathIndex];
+            }
+        }
+
         const translations = {
             pt: {
                 subtitle: "Selecione o módulo desejado para acessar:",
