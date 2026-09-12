@@ -8,26 +8,274 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="../img/icon-meu-logo.png">
 
-    <!-- Meta Tags para Pré-visualização com Foto Grande (Open Graph / WhatsApp) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.vitalsig.info/app/">
-    <meta property="og:title" content="Plataforma VITALSig.info">
-    <meta property="og:description" content="Acesso aos módulos VITALSig (Sinais Vitais), CELLPROGRESS (Planilhamento) e LUGEO (Mapeamento).">
-    
-    <!-- Link absoluto com HTTPS obrigatório para a imagem -->
+    <!-- Meta Tags para Compartilhamento (WhatsApp, Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="V I T A L S i g - APP">
+    <meta property="og:description" content="Plataforma VITALSig.info - Acesso aos módulos Sinais Vitais, CELLPROGRESS e LUGEO.">
     <meta property="og:image" content="https://www.vitalsig.info/img/meu-logo-green.png">
-    <meta property="og:image:secure_url" content="https://www.vitalsig.info/img/meu-logo-green.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <!-- Meta Tags do Twitter/X para forçar o formato de Banner Grande -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Plataforma VITALSig.info">
-    <meta name="twitter:description" content="Acesso aos módulos VITALSig, CELLPROGRESS e LUGEO.">
-    <meta name="twitter:image" content="https://www.vitalsig.info/img/meu-logo-green.png">
+    <meta property="og:url" content="https://www.vitalsig.info/app">
+    <meta property="og:type" content="website">
 
     <style>
-        /* Mantenha seus estilos CSS aqui */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f2f7f4;
+            color: #2e4a3e;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Evita rolagens indesejadas em telas ajustadas */
+        }
+
+        header {
+            background-color: transparent;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .lang-switch button {
+            background: #ffffff;
+            border: 1px solid #a5d6a7;
+            color: #1b5e20;
+            padding: 3px 8px;
+            margin-left: 3px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .lang-switch button:hover, .lang-switch button.active {
+            background-color: #2e7d32;
+            color: #ffffff;
+            border-color: #2e7d32;
+        }
+
+        main {
+            flex: 1;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 12px 6px 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Logo compacta para economizar espaço vertical */
+        .main-logo-container {
+            margin-bottom: 6px;
+        }
+
+        .main-logo-container img {
+            max-width: 110px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Título com tipografia fina (font-weight: 200) */
+        h1 {
+            color: #1b5e20;
+            margin-bottom: 2px;
+            font-size: 1.5rem;
+            font-weight: 200;
+            letter-spacing: 0.5px;
+        }
+
+        h1 strong {
+            font-weight: 600;
+        }
+
+        /* Subtítulo ajustado para uma linha */
+        p.subtitle {
+            color: #4c6e5d;
+            margin-bottom: 14px;
+            font-size: 0.82rem;
+            white-space: nowrap;
+        }
+
+        /* Grid dos cartões responsiva e enxuta */
+        .menu-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .menu-grid {
+                flex-direction: row;
+                justify-content: center;
+                gap: 12px;
+            }
+            .main-logo-container img {
+                max-width: 130px;
+            }
+        }
+
+        .card {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 12px 10px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 2px 6px rgba(46, 125, 50, 0.05);
+            border: 1px solid #c8e6c9;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+            border-color: #2e7d32;
+        }
+
+        .card h2 {
+            font-size: 1.05rem;
+            color: #2e7d32;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .card p {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #c8e6c9;
+            text-align: center;
+            padding: 8px 10px;
+            font-size: 0.7rem;
+            color: #4c6e5d;
+        }
+
+        footer a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
+<body>
+
+    <header>
+        <div class="lang-switch">
+            <button onclick="setLanguage('pt')" id="btn-pt" class="active">PT</button>
+            <button onclick="setLanguage('en')" id="btn-en">EN</button>
+            <button onclick="setLanguage('es')" id="btn-es">ES</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="main-logo-container">
+            <img id="logo-img" src="../img/meu-logo-green.png" alt="VITALSig Logo" onerror="tryNextLogoPath(this)">
+        </div>
+
+        <h1><span id="platform-txt">Plataforma</span> <strong>VITALSig.info</strong></h1>
+        <p class="subtitle" id="main-subtitle">Selecione o módulo desejado para acessar:</p>
+
+        <div class="menu-grid">
+            <a href="https://www.vitalsig.info/" class="card" target="_blank">
+                <h2>VITALSig</h2>
+                <p id="desc-vitalsig">Sinais Vitais</p>
+            </a>
+
+            <a href="https://www.vitalsig.info/cellprogress" class="card" target="_blank">
+                <h2>CELLPROGRESS</h2>
+                <p id="desc-cellprogress">Planilhamento</p>
+            </a>
+
+            <a href="https://www.vitalsig.info/lugeo" class="card" target="_blank">
+                <h2>LUGEO</h2>
+                <p id="desc-lugeo">Mapeamento</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p><span id="rights">Todos os direitos reservados</span> TRAVASSOS L.R. - <a href="mailto:ludmilartmed@gmail.com">ludmilartmed@gmail.com</a> - 1Cor13.2+Amor</p>
+        <p style="margin-top: 2px;">www.vitalsig.info/app</p>
+    </footer>
+
+    <script>
+        const logoPaths = [
+            '../img/meu-logo-green.png',
+            '../img/meu-logo.png',
+            '/img/meu-logo-green.png',
+            '/img/meu-logo.png',
+            'img/meu-logo-green.png'
+        ];
+        let currentPathIndex = 0;
+
+        function tryNextLogoPath(imgElement) {
+            currentPathIndex++;
+            if (currentPathIndex < logoPaths.length) {
+                imgElement.src = logoPaths[currentPathIndex];
+            }
+        }
+
+        const translations = {
+            pt: {
+                platform: "Plataforma",
+                subtitle: "Selecione o módulo desejado para acessar:",
+                vitalsig: "Sinais Vitais",
+                cellprogress: "Planilhamento",
+                lugeo: "Mapeamento",
+                rights: "Todos os direitos reservados"
+            },
+            en: {
+                platform: "Platform",
+                subtitle: "Select the desired module to access:",
+                vitalsig: "Vital Signs",
+                cellprogress: "Spreadsheets",
+                lugeo: "Mapping",
+                rights: "All rights reserved"
+            },
+            es: {
+                platform: "Plataforma",
+                subtitle: "Seleccione el módulo deseado para acceder:",
+                vitalsig: "Signos Vitales",
+                cellprogress: "Hojas de cálculo",
+                lugeo: "Mapeo",
+                rights: "Todos los derechos reservados"
+            }
+        };
+
+        function setLanguage(lang) {
+            document.getElementById('platform-txt').innerText = translations[lang].platform;
+            document.getElementById('main-subtitle').innerText = translations[lang].subtitle;
+            document.getElementById('desc-vitalsig').innerText = translations[lang].vitalsig;
+            document.getElementById('desc-cellprogress').innerText = translations[lang].cellprogress;
+            document.getElementById('desc-lugeo').innerText = translations[lang].lugeo;
+            document.getElementById('rights').innerText = translations[lang].rights;
+
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
