@@ -57,6 +57,18 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        summary::-webkit-details-marker { display: none; }
+        summary { list-style: none; }
+        
+        details summary .icone-toggle::after {
+          content: "+";
+          font-size: 1.2rem;
+          font-weight: bold;
+          line-height: 1;
+        }
+        
+        details[open] summary .icone-toggle::after { content: "−"; }
+
         .form-card { 
             background: white; 
             max-width: 550px; 
@@ -64,20 +76,6 @@
             padding: 16px; 
             border-radius: 12px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-        }
-        
-        /* Container pai (ex: header ou navbar) */
-        .header-container {
-            display: flex;
-            align-items: center; /* Alinha verticalmente ao centro */
-            justify-content: flex-start; /* Ou space-between, dependendo do layout */
-            gap: 15px; /* Espaçamento entre os botões, imagem e título */
-        }
-        
-        /* Ajuste no tamanho do logo para não quebrar a barra */
-        .header-logo {
-            height: 40px; /* Ajuste a altura conforme necessário */
-            width: auto;
         }
         
         .form-header-title { 
@@ -96,7 +94,6 @@
             gap: 12px; 
         }
 
-        /* Seletor de idiomas no topo estilo barra */
         .lang-selector-container {
             display: flex;
             flex-direction: column;
@@ -110,11 +107,7 @@
             max-width: 250px;
         }
 
-        .lang-buttons {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-        }
+        .lang-buttons { display: flex; gap: 6px; justify-content: center; }
 
         .btn-lang {
             background: #ffffff;
@@ -128,10 +121,7 @@
             transition: all 0.2s ease;
         }
 
-        .btn-lang:hover, .btn-lang.active {
-            background: var(--verde-claro-destaque);
-            color: white;
-        }
+        .btn-lang:hover, .btn-lang.active { background: var(--verde-claro-destaque); color: white; }
 
         .form-header-title img {
             max-width: 180px; 
@@ -187,14 +177,15 @@
             background: white;
             transition: all 0.2s ease;
         }
-        input:focus, select:focus { 
-            outline: 2px solid var(--verde-claro-destaque); 
-            background: #f0fff6; 
-        }
-
+        input:focus, select:focus { outline: 2px solid var(--verde-claro-destaque); background: #f0fff6; }
         input[readonly] { background-color: #e9ecef; }
         
         .imc-status { font-size: 11px; font-weight: bold; margin-top: 4px; min-height: 14px; display: block; }
+        
+            /* Adicione estas linhas: */
+            .imc-status.status-alerta { color: #dc3545; } /* Vermelho */
+            .imc-status.status-aviso { color: #ffc107; }  /* Amarelo / Laranja */
+            .imc-status.status-ok { color: #198754; }     /* Verde */
 
         .category-header {
             color: var(--verde-principal);
@@ -214,7 +205,6 @@
             border-radius: 4px;
             transition: background-color 0.2s ease;
         }
-
         .vaccine-row:hover { background-color: #e8f5e9; }
 
         .vaccine-label {
@@ -227,19 +217,13 @@
             cursor: pointer;
         }
 
-        .vaccine-select {
-            width: auto;
-            min-width: 130px;
-            height: 32px;
-            font-size: 0.8rem;
-            padding: 2px 6px;
-        }
+        .vaccine-select { width: auto; min-width: 130px; height: 32px; font-size: 0.8rem; padding: 2px 6px; }
         
         #bloco-sugestoes {
-            background: #ffffff;
+            background: #f4fbf3;
             padding: 14px;
             border-radius: 8px;
-            border: 2px solid var(--verde-principal);
+            border: 2px solid #59c339;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
@@ -261,25 +245,9 @@
             background: #f8fafc;
         }
 
-        #lista-sugestoes li.sugestao-alerta {
-            background-color: #fef2f2;
-            border-left-color: #dc2626;
-            color: #991b1b;
-            font-weight: 600;
-        }
-
-        #lista-sugestoes li.sugestao-aviso {
-            background-color: #fffbeb;
-            border-left-color: #f59e0b;
-            color: #92400e;
-            font-weight: 600;
-        }
-
-        #lista-sugestoes li.sugestao-ok {
-            background-color: #f0fdf4;
-            border-left-color: #10b981;
-            color: #166534;
-        }
+        #lista-sugestoes li.sugestao-alerta { background-color: #fef2f2; border-left-color: #dc2626; color: #991b1b; font-weight: 600; }
+        #lista-sugestoes li.sugestao-aviso { background-color: #fffbeb; border-left-color: #f59e0b; color: #92400e; font-weight: 600; }
+        #lista-sugestoes li.sugestao-ok { background-color: #f0fdf4; border-left-color: #10b981; color: #166534; }
 
         .advertencia-box {
             background-color: #fffbeb;
@@ -417,7 +385,6 @@
     
     <div class="form-card">
         <div class="form-header-title">
-            <!-- Seletor de Idioma no Topo -->
             <div class="lang-selector-container">
                 <div class="lang-buttons">
                     <button class="btn-lang active" id="btn-lang-pt" onclick="trocarIdioma('pt')" data-i18n="btn_pt">PT</button>
@@ -426,16 +393,11 @@
                 </div>
             </div>
 
-                  <!-- Logotipo Centralizado -->
-                  <img src="img/meu-logo.png" alt="VITAL" style="max-width: 180px; width: 100%; height: auto; object-fit: contain; margin: 8px auto 4px auto; display: block;" onerror="this.style.display='none'">
-                  
-                  <!-- Título Principal -->
-                  <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
-                  
-             </div>
+            <img src="img/meu-logo.png" alt="VITAL" style="max-width: 180px; width: 100%; height: auto; object-fit: contain; margin: 8px auto 4px auto; display: block;" onerror="this.style.display='none'">
+            <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
+        </div>
 
         <form id="formMed">
-            
             <fieldset>
                 <legend data-i18n="secao_info_pessoais">Informações Pessoais</legend>
                 <div class="form-group" style="margin-bottom: 10px;">
@@ -450,34 +412,11 @@
                     </div>
                     <div class="form-group" style="flex: 1; min-width: 50px;">
                         <label for="iniciais" data-i18n="lbl_iniciais">Iniciais:</label>
-                        <input type="text" id="iniciais" placeholder="N.C." data-i18n-ph="ph_iniciais">
+                        <input type="text" id="iniciais" placeholder="N.C." data-i18n-ph="ph_iniciais" readonly style="background-color: #e9ecef; cursor: not-allowed;">                   
                     </div>
                 </div>
 
                 <div class="flex-row" style="margin-bottom: 10px;">
-                    <div class="form-group" style="flex: 1; min-width: 100px;">
-                        <label for="pais" data-i18n="lbl_pais">País:</label>
-                        <select id="pais" onchange="carregarEstados()">
-                            <option value="Brasil" selected data-i18n="pais_brasil">Brasil</option>
-                            <option value="Portugal" data-i18n="pais_portugal">Portugal</option>
-                            <option value="Bolivia" data-i18n="pais_bolivia">Bolívia</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="flex: 1.2; min-width: 130px;">
-                        <label id="lbl-estado" for="estado" data-i18n="lbl_estado">Estado/Departamento:</label>
-                        <select id="estado" onchange="carregarCidades()">
-                            <option value="" data-i18n="opt_selecione_pais">Selecione o País</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="flex: 1.2; min-width: 130px;">
-                        <label for="cidade" data-i18n="lbl_cidade">Cidade/Localidade:</label>
-                        <select id="cidade" disabled>
-                            <option value="" data-i18n="opt_selecione_estado">Selecione o Estado/Dep.</option>
-                        </select>
-                    </div>
-                </div>
-
-               <div class="flex-row" style="margin-bottom: 10px;">
                     <div class="form-group" style="flex: 1; min-width: 60px;">
                         <label for="biologico" data-i18n="lbl_sexo">Sexo:</label>
                         <select id="biologico">
@@ -494,53 +433,8 @@
                         <label for="edad" data-i18n="lbl_idade">Idade:</label>
                         <input type="text" id="edad" readonly placeholder="--" style="text-align:center;">
                     </div>
-                </div>
-                  
-               <div class="flex-row" style="margin-bottom: 10px;">
-                    <div class="form-group" style="flex: 1; min-width: 60px;">
-                        <label for="minutosRepouso" data-i18n="lbl_repouso">Repouso prévio:</label>
-                        <select id="minutosRepouso">
-                            <option value="<5min" data-i18n="repouso_lt5">&lt;5min</option>
-                            <option value="5-10min" data-i18n="repouso_5_10">5-10min</option>
-                            <option value="15-30min" data-i18n="repouso_15_30">15-30min</option>
-                            <option value="30-1h" data-i18n="repouso_30_1h">30-1h</option>
-                            <option value=">1h" data-i18n="repouso_gt1h">&gt;1h</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="flex: 1; min-width: 60px;">
-                        <label for="tempoJejum" data-i18n="lbl_jejum">Jejum prévio:</label>
-                        <select id="tempoJejum">
-                            <option value="<5min" data-i18n="jejum_lt5">&lt;5min</option>
-                            <option value="5-10min" data-i18n="jejum_5_10">5-10min</option>
-                            <option value="15-30min" data-i18n="jejum_15_30">15-30min</option>
-                            <option value="30-1h" data-i18n="jejum_30_1h">30-1h</option>
-                            <option value=">1h" data-i18n="jejum_gt1h">&gt;1h</option>
-                            <option value=">2h" data-i18n="jejum_gt2h">&gt;2h</option>
-                            <option value=">3h" data-i18n="jejum_gt3h">&gt;3h</option>
-                            <option value=">4h" data-i18n="jejum_gt4h">&gt;4h</option>
-                            <option value=">5h" data-i18n="jejum_gt5h">&gt;5h</option>
-                            <option value=">6h" data-i18n="jejum_gt6h">&gt;6h</option>
-                            <option value=">7h" data-i18n="jejum_gt7h">&gt;7h</option>
-                            <option value=">8h" data-i18n="jejum_gt8h">&gt;8h</option>
-                            <option value=">9h" data-i18n="jejum_gt9h">&gt;9h</option>
-                            <option value=">10h" data-i18n="jejum_gt10h">&gt;10h</option>
-                            <option value=">11h" data-i18n="jejum_gt11h">&gt;11h</option>
-                            <option value=">12h" data-i18n="jejum_gt12h">&gt;12h ou mais</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="flex: 1; min-width: 60px;">
-                        <label for="posicaoCorpo" data-i18n="lbl_posicao">Posição:</label>
-                        <select id="posicaoCorpo">
-                            <option value="em pé" data-i18n="pos_em_pe">em pé</option>
-                            <option value="sentado" data-i18n="pos_sentado">sentado</option>
-                            <option value="decúbito dorsal" data-i18n="pos_dorsal">decúbito dorsal</option>
-                            <option value="decúbito frontal" data-i18n="pos_frontal">decúbito frontal</option>
-                            <option value="decúbito lateral" data-i18n="pos_lateral">decúbito lateral</option>
-                        </select>
-                    </div>
-                </div>
-                      
-                <div class="flex-row" style="margin-top: 8px;">
+
+                   <div class="flex-row" style="margin-top: 8px; width: 100%;">
                     <div class="form-group" style="flex: 1; min-width: 80px;">
                         <label for="peso" data-i18n="lbl_peso">Peso (kg):</label>
                         <input type="tel" id="peso" placeholder="00.0" maxlength="6" oninput="calcularIMC()">
@@ -548,7 +442,8 @@
                     
                     <div class="form-group" style="flex: 1; min-width: 80px;">
                         <label for="altura" data-i18n="lbl_altura">Altura (m):</label>
-                        <input type="tel" id="altura" placeholder="0.00" maxlength="4" oninput="calcularIMC()">
+                        <!-- maxlength ajustado para 6 -->
+                        <input type="tel" id="altura" placeholder="0.00" maxlength="6" oninput="calcularIMC()">
                     </div>
                     
                     <div class="form-group" style="flex: 1.5; min-width: 110px;">
@@ -557,6 +452,7 @@
                         <span id="imc-legenda" class="imc-status"></span>
                     </div>
                 </div>
+
             </fieldset>
 
             <fieldset>
@@ -652,205 +548,9 @@
                     </div>
                 </div>
             </fieldset>
-            
-            <fieldset>
-                <legend data-i18n="secao_vacinacao">Histórico de Vacinação</legend>
-                
-                <div class="category-header" data-i18n="cat_vacinas_rotina">Vacinas de Rotina e Globais Monitoradas</div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_bcg" data-i18n="vac_bcg">BCG (Tuberculose militar/meníngea)</label>
-                    <select class="vaccine-select" id="vac_bcg" name="vac_bcg">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_dtp" data-i18n="vac_dtp">DTP / Pentavalente (Difteria, Tétano, Coqueluche, Hep B, Hib)</label>
-                    <select class="vaccine-select" id="vac_dtp" name="vac_dtp">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_polio" data-i18n="vac_polio">Poliomielite - VIP/VOP (Paralisia infantil)</label>
-                    <select class="vaccine-select" id="vac_polio" name="vac_polio">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_scr" data-i18n="vac_scr">Tríplice Viral - SCR (Sarampo, Caxumba, Rubéola)</label>
-                    <select class="vaccine-select" id="vac_scr" name="vac_scr">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_hepb" data-i18n="vac_hepb">Hepatite B</label>
-                    <select class="vaccine-select" id="vac_hepb" name="vac_hepb">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="category-header" data-i18n="cat_vacinas_regionais">Vacinas de Indicação Regional ou Específica</div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_hpv" data-i18n="vac_hpv">HPV (Papilomavírus Humano)</label>
-                    <select class="vaccine-select" id="vac_hpv" name="vac_hpv">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_amarela" data-i18n="vac_amarela">Febre Amarela</label>
-                    <select class="vaccine-select" id="vac_amarela" name="vac_amarela">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_influenza" data-i18n="vac_influenza">Influenza (Gripe Sazonal)</label>
-                    <select class="vaccine-select" id="vac_influenza" name="vac_influenza">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_pneumo" data-i18n="vac_pneumo">Pneumocócica</label>
-                    <select class="vaccine-select" id="vac_pneumo" name="vac_pneumo">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_rotavirus" data-i18n="vac_rotavirus">Rotavírus</label>
-                    <select class="vaccine-select" id="vac_rotavirus" name="vac_rotavirus">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_malaria" data-i18n="vac_malaria">Malária</label>
-                    <select class="vaccine-select" id="vac_malaria" name="vac_malaria">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="vac_covid" data-i18n="vac_covid">Covid-19</label>
-                    <select class="vaccine-select" id="vac_covid" name="vac_covid">
-                        <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                        <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
-                    </select>
-                </div>
-            </fieldset>
 
             <fieldset>
-                <legend data-i18n="secao_interferentes">Outros Valores Interferentes</legend>
-
-                <div class="category-header" data-i18n="cat_atividades_habitos">Atividades e Hábitos</div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_esf_fisico" data-i18n="interf_esf_fisico">Esforço físico recente</label>
-                    <select class="vaccine-select" id="interf_esf_fisico" name="interf_esf_fisico">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_cafeina" data-i18n="interf_cafeina">Consumo de cafeína / energético</label>
-                    <select class="vaccine-select" id="interf_cafeina" name="interf_cafeina">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_alcool" data-i18n="interf_alcool">Consumo de bebida alcoólica</label>
-                    <select class="vaccine-select" id="interf_alcool" name="interf_alcool">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_psicoativos" data-i18n="interf_psicoativos">Uso de psicoativos / psicotrópicos</label>
-                    <select class="vaccine-select" id="interf_psicoativos" name="interf_psicoativos">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_tabagismo" data-i18n="interf_tabagismo">Tabagismo</label>
-                    <select class="vaccine-select" id="interf_tabagismo" name="interf_tabagismo">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
-                <div class="category-header" data-i18n="cat_condicoes_emocionais">Condições Fisiológicas e Emocionais</div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_estresse" data-i18n="interf_estresse">Estresse / ansiedade</label>
-                    <select class="vaccine-select" id="interf_estresse" name="interf_estresse">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="interf_alergia" data-i18n="interf_alergia">Crise alérgica ativa</label>
-                    <select class="vaccine-select" id="interf_alergia" name="interf_alergia">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
-
+                <legend data-i18n="secao_interferentes">Medicamentos em Uso</legend>
                 <div class="category-header" data-i18n="cat_medicamentos">Medicamentos em Uso</div>
 
                 <div class="vaccine-row">
@@ -925,56 +625,270 @@
                     </select>
                 </div>
             </fieldset>
-            
+
             <fieldset>
-                <legend data-i18n="secao_entorno">Entorno Ecológico</legend>
-                
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="entorno_arborizado" data-i18n="entorno_arborizado">Ambiente Saudável (Arborizado)</label>
-                    <select class="vaccine-select" id="entorno_arborizado" name="entorno_arborizado">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
+                <details>
+                    <summary style="cursor: pointer; font-weight: 700; color: white; font-size: 0.85rem; background: var(--verde-principal); padding: 8px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; width: 100%; justify-content: space-between; align-items: center; box-sizing: border-box;">
+                        <span data-i18n="secao_outros_interferentes">Outros Valores Interferentes</span>
+                        <span class="icone-toggle"></span>
+                    </summary>
 
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="entorno_lixo" data-i18n="entorno_lixo">Presença de lixo / Sem saneamento</label>
-                    <select class="vaccine-select" id="entorno_lixo" name="entorno_lixo">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
+                    <div class="category-header" data-i18n="cat_condicoes_emocionais">Condições Fisiológicas e Emocionais</div>
 
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="entorno_particulas" data-i18n="entorno_particulas">Exposição a partículas em suspensão</label>
-                    <select class="vaccine-select" id="entorno_particulas" name="entorno_particulas">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_estresse" data-i18n="interf_estresse">Estresse / ansiedade</label>
+                        <select class="vaccine-select" id="interf_estresse" name="interf_estresse">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
 
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="entorno_focos" data-i18n="entorno_focos">Focos de infecção / Águas estancadas</label>
-                    <select class="vaccine-select" id="entorno_focos" name="entorno_focos">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_alergia" data-i18n="interf_alergia">Crise alérgica ativa</label>
+                        <select class="vaccine-select" id="interf_alergia" name="interf_alergia">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
 
-                <div class="vaccine-row">
-                    <label class="vaccine-label" for="entorno_clima" data-i18n="entorno_clima">Exposição a efeitos climáticos externos (calor / frio)</label>
-                    <select class="vaccine-select" id="entorno_clima" name="entorno_clima">
-                        <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
-                        <option value="Sim" data-i18n="opt_sim">Sim</option>
-                        <option value="Não" data-i18n="opt_nao">Não</option>
-                    </select>
-                </div>
+                    <div class="category-header" data-i18n="cat_atividades_habitos" style="margin-top: 14px;">Atividades e Hábitos</div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_esf_fisico" data-i18n="interf_esf_fisico">Esforço físico recente</label>
+                        <select class="vaccine-select" id="interf_esf_fisico" name="interf_esf_fisico">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_cafeina" data-i18n="interf_cafeina">Consumo de cafeína / energético</label>
+                        <select class="vaccine-select" id="interf_cafeina" name="interf_cafeina">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_alcool" data-i18n="interf_alcool">Consumo de bebida alcoólica</label>
+                        <select class="vaccine-select" id="interf_alcool" name="interf_alcool">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_psicoativos" data-i18n="interf_psicoativos">Uso de psicoativos / psicotrópicos</label>
+                        <select class="vaccine-select" id="interf_psicoativos" name="interf_psicoativos">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="interf_tabagismo" data-i18n="interf_tabagismo">Tabagismo</label>
+                        <select class="vaccine-select" id="interf_tabagismo" name="interf_tabagismo">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+                </details>
             </fieldset>
-            
+
+            <fieldset>
+                <details>
+                    <summary style="cursor: pointer; font-weight: 700; color: white; font-size: 0.85rem; background: var(--verde-principal); padding: 8px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; width: 100%; justify-content: space-between; align-items: center; box-sizing: border-box;">
+                        <span data-i18n="secao_entorno">Entorno Ecológico</span>
+                        <span class="icone-toggle"></span>
+                    </summary>
+
+                    <div class="vaccine-row" style="margin-top: 14px;">
+                        <label class="vaccine-label" for="entorno_arborizado" data-i18n="entorno_arborizado">Ambiente Saudável (Arborizado)</label>
+                        <select class="vaccine-select" id="entorno_arborizado" name="entorno_arborizado">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="entorno_lixo" data-i18n="entorno_lixo">Presença de lixo / Sem saneamento</label>
+                        <select class="vaccine-select" id="entorno_lixo" name="entorno_lixo">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="entorno_particulas" data-i18n="entorno_particulas">Exposição a partículas em suspensão</label>
+                        <select class="vaccine-select" id="entorno_particulas" name="entorno_particulas">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="entorno_focos" data-i18n="entorno_focos">Focos de infecção / Águas estancadas</label>
+                        <select class="vaccine-select" id="entorno_focos" name="entorno_focos">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="entorno_clima" data-i18n="entorno_clima">Exposição a efeitos climáticos externos (calor / frio)</label>
+                        <select class="vaccine-select" id="entorno_clima" name="entorno_clima">
+                            <option value="Não informado" selected data-i18n="opt_nao_informado_lc">Não informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                        </select>
+                    </div>
+                </details>
+            </fieldset>
+
+            <fieldset>
+                <details>
+                  <summary style="cursor: pointer; font-weight: 700; color: white; font-size: 0.85rem; background: var(--verde-principal); padding: 8px 12px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; width: 100%; justify-content: space-between; align-items: center; box-sizing: border-box;">
+                    <span data-i18n="secao_vacinacao">Histórico de Vacinação</span>
+                    <span class="icone-toggle"></span>
+                  </summary>                    
+
+                    <div class="category-header" data-i18n="cat_vacinas_rotina" style="margin-top: 14px;">Vacinas de Rotina e Globais Monitoradas</div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_bcg" data-i18n="vac_bcg">BCG (Tuberculose militar/meníngea)</label>
+                        <select class="vaccine-select" id="vac_bcg" name="vac_bcg">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_dtp" data-i18n="vac_dtp">DTP / Pentavalente (Difteria, Tétano, Coqueluche, Hep B, Hib)</label>
+                        <select class="vaccine-select" id="vac_dtp" name="vac_dtp">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_polio" data-i18n="vac_polio">Poliomielite - VIP/VOP (Paralisia infantil)</label>
+                        <select class="vaccine-select" id="vac_polio" name="vac_polio">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_scr" data-i18n="vac_scr">Tríplice Viral - SCR (Sarampo, Caxumba, Rubéola)</label>
+                        <select class="vaccine-select" id="vac_scr" name="vac_scr">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_hepb" data-i18n="vac_hepb">Hepatite B</label>
+                        <select class="vaccine-select" id="vac_hepb" name="vac_hepb">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="category-header" data-i18n="cat_vacinas_regionais">Vacinas de Indicação Regional ou Específica</div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_hpv" data-i18n="vac_hpv">HPV (Papilomavírus Humano)</label>
+                        <select class="vaccine-select" id="vac_hpv" name="vac_hpv">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_amarela" data-i18n="vac_amarela">Febre Amarela</label>
+                        <select class="vaccine-select" id="vac_amarela" name="vac_amarela">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_influenza" data-i18n="vac_influenza">Influenza (Gripe Sazonal)</label>
+                        <select class="vaccine-select" id="vac_influenza" name="vac_influenza">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_pneumo" data-i18n="vac_pneumo">Pneumocócica</label>
+                        <select class="vaccine-select" id="vac_pneumo" name="vac_pneumo">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_rotavirus" data-i18n="vac_rotavirus">Rotavírus</label>
+                        <select class="vaccine-select" id="vac_rotavirus" name="vac_rotavirus">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_malaria" data-i18n="vac_malaria">Malária</label>
+                        <select class="vaccine-select" id="vac_malaria" name="vac_malaria">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+
+                    <div class="vaccine-row">
+                        <label class="vaccine-label" for="vac_covid" data-i18n="vac_covid">Covid-19</label>
+                        <select class="vaccine-select" id="vac_covid" name="vac_covid">
+                            <option value="Não Informado" selected data-i18n="opt_nao_informado">Não Informado</option>
+                            <option value="Sim" data-i18n="opt_sim">Sim</option>
+                            <option value="Não" data-i18n="opt_nao">Não</option>
+                            <option value="Não sei" data-i18n="opt_nao_sei">Não sei</option>
+                        </select>
+                    </div>
+                </details>
+            </fieldset>
+
             <fieldset>
                 <legend data-i18n="secao_sugestoes">Sugestões Automáticas (OMS)</legend>
                 <div id="bloco-sugestoes">
@@ -995,11 +909,11 @@
                 <div class="flex-row" style="margin-bottom: 8px;">
                     <div class="form-group" style="flex: 1;">
                         <label for="latitude" data-i18n="lbl_latitude">Latitude:</label>
-                        <input type="text" id="latitude" placeholder="Buscando GPS..." data-i18n-ph="ph_gps" oninput="atualizarMapaPorInput()">
+                        <input type="text" id="latitude" placeholder="Buscando GPS..." data-i18n-ph="ph_gps">
                     </div>
                     <div class="form-group" style="flex: 1;">
                         <label for="longitude" data-i18n="lbl_longitude">Longitude:</label>
-                        <input type="text" id="longitude" placeholder="Buscando GPS..." data-i18n-ph="ph_gps" oninput="atualizarMapaPorInput()">
+                        <input type="text" id="longitude" placeholder="Buscando GPS..." data-i18n-ph="ph_gps">
                     </div>
                 </div>
 
@@ -1038,31 +952,10 @@
                 titulo_header: "SINAIS VITAIS",
                 secao_info_pessoais: "Informações Pessoais",
                 lbl_data_atendimento: "Data do Atendimento:",
-                lbl_nome: "Nome Completo:",
-                ph_nome: "Nome Completo",
-                lbl_iniciais: "Iniciais:",
-                ph_iniciais: "N.C.",
-                lbl_pais: "País:",
-                pais_brasil: "Brasil", pais_portugal: "Portugal", pais_bolivia: "Bolívia",
-                lbl_estado: "Estado/Departamento:",
-                lbl_distrito: "Distrito:",
-                lbl_departamento: "Departamento:",
-                opt_selecione_pais: "Selecione o País",
-                lbl_cidade: "Cidade/Localidade:",
-                opt_selecione_estado: "Selecione o Estado/Dep.",
-                opt_selecione: "Selecione",
-                lbl_sexo: "Sexo:",
-                sexo_m: "M", sexo_f: "F",
-                lbl_fnac: "Data de Nascimento:",
-                lbl_idade: "Idade:",
-                lbl_repouso: "Repouso prévio:",
-                repouso_lt5: "<5min", repouso_5_10: "5-10min", repouso_15_30: "15-30min", repouso_30_1h: "30-1h", repouso_gt1h: ">1h",
-                lbl_jejum: "Jejum prévio:",
-                jejum_lt5: "<5min", jejum_5_10: "5-10min", jejum_15_30: "15-30min", jejum_30_1h: "30-1h", jejum_gt1h: ">1h",
-                jejum_gt2h: ">2h", jejum_gt3h: ">3h", jejum_gt4h: ">4h", jejum_gt5h: ">5h", jejum_gt6h: ">6h", jejum_gt7h: ">7h",
-                jejum_gt8h: ">8h", jejum_gt9h: ">9h", jejum_gt10h: ">10h", jejum_gt11h: ">11h", jejum_gt12h: ">12h ou mais",
-                lbl_posicao: "Posição:",
-                pos_em_pe: "em pé", pos_sentado: "sentado", pos_dorsal: "decúbito dorsal", pos_frontal: "decúbito frontal", pos_lateral: "decúbito lateral",
+                lbl_nome: "Nome Completo:", ph_nome: "Nome Completo",
+                lbl_iniciais: "Iniciais:", ph_iniciais: "N.C.",
+                lbl_sexo: "Sexo:", sexo_m: "M", sexo_f: "F",
+                lbl_fnac: "Data de Nascimento:", lbl_idade: "Idade:",
                 lbl_peso: "Peso (kg):", lbl_altura: "Altura (m):", lbl_imc: "IMC:",
                 secao_sinais_vitais: "Sinais Vitais",
                 th_dato: "Dado", th_valor: "Valor", th_ref_oms: "Ref. OMS",
@@ -1081,38 +974,36 @@
                 cat_vacinas_rotina: "Vacinas de Rotina e Globais Monitoradas",
                 cat_vacinas_regionais: "Vacinas de Indicação Regional ou Específica",
                 opt_nao_informado: "Não Informado", opt_sim: "Sim", opt_nao: "Não", opt_nao_sei: "Não sei", opt_nao_informado_lc: "Não informado",
-                vac_bcg: "BCG (Tuberculose militar/meníngea)", vac_dtp: "DTP / Pentavalente (Difteria, Tétano, Coqueluche, Hep B, Hib)",
-                vac_polio: "Poliomielite - VIP/VOP (Paralisia infantil)", vac_scr: "Tríplice Viral - SCR (Sarampo, Caxumba, Rubéola)",
-                vac_hepb: "Hepatite B", vac_hpv: "HPV (Papilomavírus Humano)", vac_amarela: "Febre Amarela", vac_influenza: "Influenza (Gripe Sazonal)",
-                vac_pneumo: "Pneumocócica", vac_rotavirus: "Rotavírus", vac_malaria: "Malária", vac_covid: "Covid-19",
-                secao_interferentes: "Outros Valores Interferentes",
+                secao_interferentes: "Medicamentos em Uso",
+                secao_outros_interferentes: "Outros Valores Interferentes",
                 cat_atividades_habitos: "Atividades e Hábitos", cat_condicoes_emocionais: "Condições Fisiológicas e Emocionais", cat_medicamentos: "Medicamentos em Uso",
-                interf_esf_fisico: "Esforço físico recente", interf_cafeina: "Consumo de cafeína / energético", interf_alcool: "Consumo de bebida alcoólica",
-                interf_psicoativos: "Uso de psicoativos / psicotrópicos", interf_tabagismo: "Tabagismo", interf_estresse: "Estresse / ansiedade",
-                interf_alergia: "Crise alérgica ativa", interf_med_ansioliticos: "Ansiolíticos", interf_med_cardio: "Cardiovasculares",
-                interf_med_anticoagulantes: "Anticoagulantes / AAS", interf_med_colesterol: "Colesterol (Estatinas/Fibratos)", interf_med_diabetes: "Diabetes / Hipoglicemiantes",
-                interf_med_antialergicos: "Antialérgicos / Anti-histamínicos", interf_med_antibioticos: "Antibióticos", interf_med_antiinflamatorios: "Anti-inflamatório / Corticoides",
+                interf_med_ansioliticos: "Ansiolíticos", interf_med_cardio: "Cardiovasculares", interf_med_anticoagulantes: "Anticoagulantes / AAS",
+                interf_med_colesterol: "Colesterol (Estatinas/Fibratos)", interf_med_diabetes: "Diabetes / Hipoglicemiantes", interf_med_antialergicos: "Antialérgicos / Anti-histamínicos",
+                interf_med_antibioticos: "Antibióticos", interf_med_antiinflamatorios: "Anti-inflamatório / Corticoides",
+                interf_estresse: "Estresse / ansiedade", interf_alergia: "Crise alérgica ativa", interf_esf_fisico: "Esforço físico recente",
+                interf_cafeina: "Consumo de cafeína / energético", interf_alcool: "Consumo de bebida alcoólica", interf_psicoativos: "Uso de psicoativos / psicotrópicos", interf_tabagismo: "Tabagismo",
                 secao_entorno: "Entorno Ecológico",
                 entorno_arborizado: "Ambiente Saudável (Arborizado)", entorno_lixo: "Presença de lixo / Sem saneamento", entorno_particulas: "Exposição a partículas em suspensão",
                 entorno_focos: "Focos de infecção / Águas estancadas", entorno_clima: "Exposição a efeitos climáticos externos (calor / frio)",
+                vac_bcg: "BCG (Tuberculose militar/meníngea)", vac_dtp: "DTP / Pentavalente (Difteria, Tétano, Coqueluche, Hep B, Hib)", vac_polio: "Poliomielite - VIP/VOP (Paralisia infantil)",
+                vac_scr: "Tríplice Viral - SCR (Sarampo, Caxumba, Rubéola)", vac_hepb: "Hepatite B", vac_hpv: "HPV (Papilomavírus Humano)", vac_amarela: "Febre Amarela",
+                vac_influenza: "Influenza (Gripe Sazonal)", vac_pneumo: "Pneumocócica", vac_rotavirus: "Rotavírus", vac_malaria: "Malária", vac_covid: "Covid-19",
                 secao_sugestoes: "Sugestões Automáticas (OMS)",
                 desc_sugestoes: "Ações e orientações recomendadas com base nas medições:",
                 item_sugestoes_inicial: "Insira os sinais vitais para visualizar as sugestões automáticas.",
                 secao_geolocalizacao: "Georreferenciamento & Localização",
                 btn_gps: "📍 CAPTURAR COORDENADAS VIA GPS", lbl_latitude: "Latitude:", lbl_longitude: "Longitude:", ph_gps: "Buscando GPS...",
-                status_rede_verificando: "Verificando rede...", status_online: "Online", status_offline: "Modo Off-line (GPS ativo)",
-                instrucoes_mapa: "* O GPS físico do celular funciona sem internet. A visualização gráfica do mapa exige conexão para o registro de coordenadas.",
+                status_online: "Online", status_offline: "Modo Off-line (GPS ativo)",
                 adv_titulo: "O Ministério da Saúde adverte:",
                 adv_texto: "A triagem de sinais vitais e as sugestões automáticas são de caráter exclusivamente educativo e não substituem a consulta médica, o diagnóstico ou o tratamento especializado. Evite a automedicação e procure sempre um profissional de saúde de sua confiança.",
                 btn_exportar: "📄 EXPORTAR E SALVAR",
-                footer_linha1: "Este aplicativo oferece apenas triagem preliminar e não substitui o diagnóstico ou atendimento com seu profissional médico. Em emergências ou dúvidas, consulte seu médico.",
-                footer_linha2: "Formulário filantrópico - sem custos | Leia 1 Cor. 13.2",
-                footer_linha3: "Todos os direitos de autoria reservados a", footer_autor: "TRAVASSOS, L.R.; 2026 | Leia I Coríntios 13.2 +Amor", footer_contato: "Contato:",
-                pdf_titulo_relatorio: "Sinais Vitais & Saúde",
                 imc_abaixo: "Abaixo do peso", imc_eutrofico: "Eutrófico (Peso Normal)", imc_sobrepeso: "Sobrepeso", imc_obesidade: "Obesidade",
-                msg_cronometro_fim: "Tempo de 1 minuto finalizado!",
-                msg_pdf_erro: "Erro ao tentar exportar o PDF. Verifique se os dados estão preenchidos corretamente.",
-                msg_pdf_sem_sugestoes: "Nenhum sinal vital alterado para gerar sugestões."
+                opt_selecione: "Selecione",
+                nao_informado: "Não informado", pdf_nao_capturada: "Não capturada", pdf_anos: "anos",
+                pdf_titulo_cabecalho: "SINAIS VITAIS | www.VitalSig.info", pdf_th_parametro: "PARÂMETRO / DADO", pdf_th_registro: "REGISTRO",
+                pdf_th_sinal: "SINAL VITAL", pdf_th_valor: "VALOR MEDIDO", pdf_th_unidade: "UNIDADE", pdf_th_referencia: "REFERÊNCIA OMS",
+                pdf_th_interferentes: "FATORES INTERFERENTES", pdf_th_detalhes: "DETALHES", pdf_th_entorno: "ENTORNO ECOLÓGICO", pdf_th_condicao: "CONDIÇÃO",
+                pdf_th_vacina: "VACINA / IMUNIZANTE", pdf_th_status: "STATUS", pdf_th_sugestoes: "SUGESTÕES AUTOMÁTICAS (OMS)", pdf_sem_sugestoes: "Nenhum sinal vital alterado para gerar sugestões."
             },
             es: {
                 btn_pt: "PT", btn_es: "ES", btn_en: "EN",
@@ -1120,31 +1011,10 @@
                 titulo_header: "SIGNOS VITALES",
                 secao_info_pessoais: "Información Personal",
                 lbl_data_atendimento: "Fecha de Atención:",
-                lbl_nome: "Nombre Completo:",
-                ph_nome: "Nombre Completo",
-                lbl_iniciais: "Iniciales:",
-                ph_iniciais: "N.C.",
-                lbl_pais: "País:",
-                pais_brasil: "Brasil", pais_portugal: "Portugal", pais_bolivia: "Bolivia",
-                lbl_estado: "Estado/Departamento:",
-                lbl_distrito: "Distrito:",
-                lbl_departamento: "Departamento:",
-                opt_selecione_pais: "Seleccione el País",
-                lbl_cidade: "Ciudad/Localidad:",
-                opt_selecione_estado: "Seleccione Estado/Dep.",
-                opt_selecione: "Seleccione",
-                lbl_sexo: "Sexo:",
-                sexo_m: "M", sexo_f: "F",
-                lbl_fnac: "Fecha de Nacimiento:",
-                lbl_idade: "Edad:",
-                lbl_repouso: "Reposo previo:",
-                repouso_lt5: "<5min", repouso_5_10: "5-10min", repouso_15_30: "15-30min", repouso_30_1h: "30-1h", repouso_gt1h: ">1h",
-                lbl_jejum: "Ayuno previo:",
-                jejum_lt5: "<5min", jejum_5_10: "5-10min", jejum_15_30: "15-30min", jejum_30_1h: "30-1h", jejum_gt1h: ">1h",
-                jejum_gt2h: ">2h", jejum_gt3h: ">3h", jejum_gt4h: ">4h", jejum_gt5h: ">5h", jejum_gt6h: ">6h", jejum_gt7h: ">7h",
-                jejum_gt8h: ">8h", jejum_gt9h: ">9h", jejum_gt10h: ">10h", jejum_gt11h: ">11h", jejum_gt12h: ">12h o más",
-                lbl_posicao: "Posición:",
-                pos_em_pe: "de pie", pos_sentado: "sentado", pos_dorsal: "decúbito dorsal", pos_frontal: "decúbito frontal", pos_lateral: "decúbito lateral",
+                lbl_nome: "Nombre Completo:", ph_nome: "Nombre Completo",
+                lbl_iniciais: "Iniciales:", ph_iniciais: "N.C.",
+                lbl_sexo: "Sexo:", sexo_m: "M", sexo_f: "F",
+                lbl_fnac: "Fecha de Nacimiento:", lbl_idade: "Edad:",
                 lbl_peso: "Peso (kg):", lbl_altura: "Altura (m):", lbl_imc: "IMC:",
                 secao_sinais_vitais: "Signos Vitales",
                 th_dato: "Dato", th_valor: "Valor", th_ref_oms: "Ref. OMS",
@@ -1163,38 +1033,36 @@
                 cat_vacinas_rotina: "Vacunas de Rutina y Globales Monitoreadas",
                 cat_vacinas_regionais: "Vacunas de Indicación Regional o Específica",
                 opt_nao_informado: "No Informado", opt_sim: "Sí", opt_nao: "No", opt_nao_sei: "No sé", opt_nao_informado_lc: "No informado",
-                vac_bcg: "BCG (Tuberculosis)", vac_dtp: "DTP / Pentavalente (Difteria, Tétanos, Tos ferina, Hep B, Hib)",
-                vac_polio: "Poliomielitis - VIP/VOP", vac_scr: "Triple Viral - SRP (Sarampión, Parotiditis, Rubéola)",
-                vac_hepb: "Hepatitis B", vac_hpv: "VPH (Virus del Papiloma Humano)", vac_amarela: "Fiebre Amarilla", vac_influenza: "Influenza (Gripe Estacional)",
-                vac_pneumo: "Neumocócica", vac_rotavirus: "Rotavirus", vac_malaria: "Malaria", vac_covid: "Covid-19",
-                secao_interferentes: "Otros Valores Interferentes",
+                secao_interferentes: "Medicamentos en Uso",
+                secao_outros_interferentes: "Otros Valores Interferentes",
                 cat_atividades_habitos: "Actividades y Hábitos", cat_condicoes_emocionais: "Condiciones Fisiológicas y Emocionales", cat_medicamentos: "Medicamentos en Uso",
-                interf_esf_fisico: "Esfuerzo físico reciente", interf_cafeina: "Consumo de cafeína / energizante", interf_alcool: "Consumo de alcohol",
-                interf_psicoativos: "Uso de psicoactivos / psicotrópicos", interf_tabagismo: "Tabaquismo", interf_estresse: "Estrés / ansiedad",
-                interf_alergia: "Crisis alérgica activa", interf_med_ansioliticos: "Ansiolíticos", interf_med_cardio: "Cardiovasculares",
-                interf_med_anticoagulantes: "Anticoagulantes / AAS", interf_med_colesterol: "Colesterol (Estatinas/Fibratos)", interf_med_diabetes: "Diabetes / Hipoglucemiantes",
-                interf_med_antialergicos: "Antialérgicos / Antihistamínicos", interf_med_antibioticos: "Antibióticos", interf_med_antiinflamatorios: "Antiinflamatorios / Corticoides",
+                interf_med_ansioliticos: "Ansiolíticos", interf_med_cardio: "Cardiovasculares", interf_med_anticoagulantes: "Anticoagulantes / AAS",
+                interf_med_colesterol: "Colesterol (Estatinas/Fibratos)", interf_med_diabetes: "Diabetes / Hipoglucemiantes", interf_med_antialergicos: "Antialérgicos / Antihistamínicos",
+                interf_med_antibioticos: "Antibióticos", interf_med_antiinflamatorios: "Antiinflamatorios / Corticoides",
+                interf_estresse: "Estrés / ansiedad", interf_alergia: "Crisis alérgica activa", interf_esf_fisico: "Esfuerzo físico reciente",
+                interf_cafeina: "Consumo de cafeína / energéticos", interf_alcool: "Consumo de bebidas alcohólicas", interf_psicoativos: "Uso de psicoactivos / psicotrópicos", interf_tabagismo: "Tabaquismo",
                 secao_entorno: "Entorno Ecológico",
                 entorno_arborizado: "Ambiente Saludable (Arbolado)", entorno_lixo: "Presencia de basura / Sin saneamiento", entorno_particulas: "Exposición a partículas en suspensión",
-                entorno_focos: "Focos de infección / Aguas estancadas", entorno_clima: "Exposición a efectos climáticos externos (calor / frío)",
+                entorno_focos: "Focos de infección / Aguas estancadas", entorno_clima: "Exposición a efectos climáticos extremos (calor / frío)",
+                vac_bcg: "BCG (Tuberculosis militar/meníngea)", vac_dtp: "DTP / Pentavalente", vac_polio: "Poliomielitis - VIP/VOP",
+                vac_scr: "Triple Viral - SRP (Sarampión, Rubeola, Parotiditis)", vac_hepb: "Hepatitis B", vac_hpv: "HPV (Virus del Papiloma Humano)", vac_amarela: "Fiebre Amarilla",
+                vac_influenza: "Influenza (Gripe Estacional)", vac_pneumo: "Neumocócica", vac_rotavirus: "Rotavirus", vac_malaria: "Malaria", vac_covid: "Covid-19",
                 secao_sugestoes: "Sugerencias Automáticas (OMS)",
                 desc_sugestoes: "Acciones y orientaciones recomendadas según las mediciones:",
                 item_sugestoes_inicial: "Ingrese los signos vitales para ver las sugerencias automáticas.",
                 secao_geolocalizacao: "Georreferenciación y Localización",
                 btn_gps: "📍 CAPTURAR COORDENADAS VÍA GPS", lbl_latitude: "Latitud:", lbl_longitude: "Longitud:", ph_gps: "Buscando GPS...",
-                status_rede_verificando: "Verificando red...", status_online: "En línea", status_offline: "Modo fuera de línea (GPS activo)",
-                instrucoes_mapa: "* El GPS físico funciona sin internet. La visualización gráfica del mapa requiere conexión.",
+                status_online: "En línea", status_offline: "Modo fuera de línea (GPS activo)",
                 adv_titulo: "El Ministerio de Salud advierte:",
-                adv_texto: "El triaje de signos vitales y las sugerencias automáticas son de carácter educativo y no reemplazan la consulta médica. Evite la automedicación.",
+                adv_texto: "El triaje de signos vitales y las sugerencias automáticas son de carácter educativo y no reemplazan la consulta médica.",
                 btn_exportar: "📄 EXPORTAR Y GUARDAR",
-                footer_linha1: "Esta aplicación ofrece solo triaje preliminar y no reemplaza el diagnóstico o la atención médica. Ante emergencias, consulte a su médico.",
-                footer_linha2: "Formulario filantrópico - sin costo | Lea 1 Cor. 13.2",
-                footer_linha3: "Todos los derechos de autor reservados a", footer_autor: "TRAVASSOS, L.R.; 2026 | Lee 1 Corintios 13:2 + Amor", footer_contato: "Contacto:",
-                pdf_titulo_relatorio: "Signos Vitales y Salud",
                 imc_abaixo: "Bajo peso", imc_eutrofico: "Eutrófico (Peso Normal)", imc_sobrepeso: "Sobrepeso", imc_obesidade: "Obesidad",
-                msg_cronometro_fim: "¡Tiempo de 1 minuto finalizado!",
-                msg_pdf_erro: "Error al exportar el PDF. Verifique que los datos estén completos.",
-                msg_pdf_sem_sugestoes: "Ningún signo vital alterado para generar sugerencias."
+                opt_selecione: "Seleccione",
+                nao_informado: "No informado", pdf_nao_capturada: "No capturada", pdf_anos: "años",
+                pdf_titulo_cabecalho: "SIGNOS VITALES | www.VitalSig.info", pdf_th_parametro: "PARÁMETRO / DATO", pdf_th_registro: "REGISTRO",
+                pdf_th_sinal: "SIGNO VITAL", pdf_th_valor: "VALOR MEDIDO", pdf_th_unidade: "UNIDAD", pdf_th_referencia: "REFERENCIA OMS",
+                pdf_th_interferentes: "FACTORES INTERFERENTES", pdf_th_detalhes: "DETALLES", pdf_th_entorno: "ENTORNO ECOLÓGICO", pdf_th_condicao: "CONDICIÓN",
+                pdf_th_vacina: "VACUNA / INMUNIZANTE", pdf_th_status: "ESTADO", pdf_th_sugestoes: "SUGERENCIAS AUTOMÁTICAS (OMS)", pdf_sem_sugestoes: "Ningún signo vital alterado para generar sugerencias."
             },
             en: {
                 btn_pt: "PT", btn_es: "ES", btn_en: "EN",
@@ -1202,31 +1070,10 @@
                 titulo_header: "VITAL SIGNS",
                 secao_info_pessoais: "Personal Information",
                 lbl_data_atendimento: "Service Date:",
-                lbl_nome: "Full Name:",
-                ph_nome: "Full Name",
-                lbl_iniciais: "Initials:",
-                ph_iniciais: "N.C.",
-                lbl_pais: "Country:",
-                pais_brasil: "Brazil", pais_portugal: "Portugal", pais_bolivia: "Bolivia",
-                lbl_estado: "State/Department:",
-                lbl_distrito: "District:",
-                lbl_departamento: "Department:",
-                opt_selecione_pais: "Select Country",
-                lbl_cidade: "City/Locality:",
-                opt_selecione_estado: "Select State/Dept.",
-                opt_selecione: "Select",
-                lbl_sexo: "Sex:",
-                sexo_m: "M", sexo_f: "F",
-                lbl_fnac: "Date of Birth:",
-                lbl_idade: "Age:",
-                lbl_repouso: "Prior Rest:",
-                repouso_lt5: "<5min", repouso_5_10: "5-10min", repouso_15_30: "15-30min", repouso_30_1h: "30-1h", repouso_gt1h: ">1h",
-                lbl_jejum: "Prior Fasting:",
-                jejum_lt5: "<5min", jejum_5_10: "5-10min", jejum_15_30: "15-30min", jejum_30_1h: "30-1h", jejum_gt1h: ">1h",
-                jejum_gt2h: ">2h", jejum_gt3h: ">3h", jejum_gt4h: ">4h", jejum_gt5h: ">5h", jejum_gt6h: ">6h", jejum_gt7h: ">7h",
-                jejum_gt8h: ">8h", jejum_gt9h: ">9h", jejum_gt10h: ">10h", jejum_gt11h: ">11h", jejum_gt12h: ">12h or more",
-                lbl_posicao: "Position:",
-                pos_em_pe: "standing", pos_sentado: "sitting", pos_dorsal: "supine position", pos_frontal: "prone position", pos_lateral: "side-lying position",
+                lbl_nome: "Full Name:", ph_nome: "Full Name",
+                lbl_iniciais: "Initials:", ph_iniciais: "N.C.",
+                lbl_sexo: "Sex:", sexo_m: "M", sexo_f: "F",
+                lbl_fnac: "Date of Birth:", lbl_idade: "Age:",
                 lbl_peso: "Weight (kg):", lbl_altura: "Height (m):", lbl_imc: "BMI:",
                 secao_sinais_vitais: "Vital Signs",
                 th_dato: "Metric", th_valor: "Value", th_ref_oms: "WHO Ref.",
@@ -1245,38 +1092,36 @@
                 cat_vacinas_rotina: "Monitored Routine and Global Vaccines",
                 cat_vacinas_regionais: "Regional or Specific Target Vaccines",
                 opt_nao_informado: "Not Informed", opt_sim: "Yes", opt_nao: "No", opt_nao_sei: "Don't know", opt_nao_informado_lc: "Not informed",
-                vac_bcg: "BCG (Tuberculosis)", vac_dtp: "DTP / Pentavalente (Diphtheria, Tetanus, Pertussis, Hep B, Hib)",
-                vac_polio: "Poliomyelitis - IPV/OPV", vac_scr: "MMR (Measles, Mumps, Rubella)",
-                vac_hepb: "Hepatitis B", vac_hpv: "HPV (Human Papillomavirus)", vac_amarela: "Yellow Fever", vac_influenza: "Influenza (Seasonal Flu)",
-                vac_pneumo: "Pneumococcal", vac_rotavirus: "Rotavirus", vac_malaria: "Malaria", vac_covid: "Covid-19",
-                secao_interferentes: "Other Interfering Factors",
+                secao_interferentes: "Current Medications",
+                secao_outros_interferentes: "Other Interfering Factors",
                 cat_atividades_habitos: "Activities and Habits", cat_condicoes_emocionais: "Physiological and Emotional Conditions", cat_medicamentos: "Current Medications",
-                interf_esf_fisico: "Recent physical exertion", interf_cafeina: "Caffeine / Energy drink intake", interf_alcool: "Alcohol consumption",
-                interf_psicoativos: "Psychoactive / psychotropic use", interf_tabagismo: "Smoking", interf_estresse: "Stress / anxiety",
-                interf_alergia: "Active allergic crisis", interf_med_ansioliticos: "Anxiolytics", interf_med_cardio: "Cardiovascular drugs",
-                interf_med_anticoagulantes: "Anticoagulants / Aspirin", interf_med_colesterol: "Cholesterol lowering (Statins)", interf_med_diabetes: "Diabetes / Hypoglycemics",
-                interf_med_antialergicos: "Antihistamines", interf_med_antibioticos: "Antibiotics", interf_med_antiinflamatorios: "Anti-inflammatory / Corticosteroids",
+                interf_med_ansioliticos: "Anxiolytics", interf_med_cardio: "Cardiovascular", interf_med_anticoagulantes: "Anticoagulants / Aspirin",
+                interf_med_colesterol: "Cholesterol (Statins/Fibrates)", interf_med_diabetes: "Diabetes / Hypoglycemics", interf_med_antialergicos: "Antiallergics / Antihistamines",
+                interf_med_antibioticos: "Antibiotics", interf_med_antiinflamatorios: "Anti-inflammatories / Corticosteroids",
+                interf_estresse: "Stress / anxiety", interf_alergia: "Active allergic episode", interf_esf_fisico: "Recent physical exertion",
+                interf_cafeina: "Caffeine / energy drink intake", interf_alcool: "Alcoholic beverage intake", interf_psicoativos: "Use of psychoactives / psychotropics", interf_tabagismo: "Smoking",
                 secao_entorno: "Ecological Environment",
-                entorno_arborizado: "Healthy Environment (Wooded)", entorno_lixo: "Trash accumulation / No sanitation", entorno_particulas: "Suspended particulate exposure",
-                entorno_focos: "Infection focus / Stagnant water", entorno_clima: "Exposure to extreme weather (heat / cold)",
+                entorno_arborizado: "Healthy Environment (Wooded)", entorno_lixo: "Presence of trash / Poor sanitation", entorno_particulas: "Exposure to airborne particles",
+                entorno_focos: "Infection foci / Stagnant water", entorno_clima: "Exposure to extreme weather (heat / cold)",
+                vac_bcg: "BCG (Tuberculosis)", vac_dtp: "DTP / Pentavalente", vac_polio: "Poliomyelitis - IPV/OPV",
+                vac_scr: "MMR (Measles, Mumps, Rubella)", vac_hepb: "Hepatitis B", vac_hpv: "HPV (Human Papillomavirus)", vac_amarela: "Yellow Fever",
+                vac_influenza: "Influenza (Seasonal Flu)", vac_pneumo: "Pneumococcal", vac_rotavirus: "Rotavirus", vac_malaria: "Malaria", vac_covid: "Covid-19",
                 secao_sugestoes: "Automated Recommendations (WHO)",
                 desc_sugestoes: "Recommended actions based on recorded metrics:",
                 item_sugestoes_inicial: "Enter vital signs to view automatic suggestions.",
                 secao_geolocalizacao: "Georeferencing & Location",
                 btn_gps: "📍 CAPTURE GPS COORDINATES", lbl_latitude: "Latitude:", lbl_longitude: "Longitude:", ph_gps: "Searching GPS...",
-                status_rede_verificando: "Checking network...", status_online: "Online", status_offline: "Offline mode (GPS active)",
-                instrucoes_mapa: "* Physical phone GPS works offline. Graphical map rendering requires network connection.",
+                status_online: "Online", status_offline: "Offline mode (GPS active)",
                 adv_titulo: "Health Ministry Warning:",
-                adv_texto: "Vital sign triage and automated suggestions are purely educational and do not replace professional medical evaluation. Avoid self-medication.",
+                adv_texto: "Vital sign triage and automated suggestions are purely educational and do not replace professional medical evaluation.",
                 btn_exportar: "📄 EXPORT & SAVE",
-                footer_linha1: "This app provides preliminary screening only and does not replace professional medical diagnosis. Consult a doctor for emergencies.",
-                footer_linha2: "Philanthropic form - free of charge | Read 1 Cor. 13:2",
-                footer_linha3: "All copyrights reserved to", footer_autor: "TRAVASSOS, L.R.; 2026 | Read ICorinthians 13:2 +Love", footer_contato: "Contact:",
-                pdf_titulo_relatorio: "Vital Signs & Health",
                 imc_abaixo: "Underweight", imc_eutrofico: "Eutrophic (Normal Weight)", imc_sobrepeso: "Overweight", imc_obesidade: "Obesity",
-                msg_cronometro_fim: "1-minute timer finished!",
-                msg_pdf_erro: "Error exporting PDF. Check if all required fields are valid.",
-                msg_pdf_sem_sugestoes: "No abnormal vital signs detected for recommendations."
+                opt_selecione: "Select",
+                nao_informado: "Not informed", pdf_nao_capturada: "Not captured", pdf_anos: "years",
+                pdf_titulo_cabecalho: "VITAL SIGNS | www.VitalSig.info", pdf_th_parametro: "PARAMETER / METRIC", pdf_th_registro: "RECORD",
+                pdf_th_sinal: "VITAL SIGN", pdf_th_valor: "MEASURED VALUE", pdf_th_unidade: "UNIT", pdf_th_referencia: "WHO REFERENCE",
+                pdf_th_interferentes: "INTERFERING FACTORS", pdf_th_detalhes: "DETAILS", pdf_th_entorno: "ECOLOGICAL ENVIRONMENT", pdf_th_condicao: "CONDITION",
+                pdf_th_vacina: "VACCINE / IMMUNIZATION", pdf_th_status: "STATUS", pdf_th_sugestoes: "AUTOMATED RECOMMENDATIONS (WHO)", pdf_sem_sugestoes: "No altered vital signs to generate suggestions."
             }
         };
 
@@ -1304,73 +1149,17 @@
 
             const edadVal = document.getElementById('edad').value;
             const idadeAnos = parseInt(edadVal) || 18;
+            preencherSelectsSinais();
             atualizarValoresReferencia(idadeAnos);
             calcularIMC();
             validarSinais();
-            carregarEstados();
             atualizarStatusRede();
         }
-
-        const BrasilEstadosNomes = {
-            "AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia",
-            "CE": "Ceará", "DF": "Distrito Federal", "ES": "Espírito Santo", "GO": "Goiás",
-            "MA": "Maranhão", "MT": "Mato Grosso", "MS": "Mato Grosso do Sul", "MG": "Minas Gerais",
-            "PA": "Pará", "PB": "Paraíba", "PR": "Paraná", "PE": "Pernambuco", "PI": "Piauí",
-            "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte", "RS": "Rio Grande do Sul",
-            "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo",
-            "SE": "Sergipe", "TO": "Tocantins"
-        };
-
-        const BrasilDados = {
-            "AC": ["Cruzeiro do Sul", "Feijó", "Mâncio Lima", "Rio Branco", "Sena Madureira", "Tarauacá"],
-            "AL": ["Arapiraca", "Campo Alegre", "Coruripe", "Delmiro Gouveia", "Maceió", "Marechal Deodoro", "Palmeira dos Índios", "Penedo", "Rio Largo", "São Miguel dos Campos"],
-            "AP": ["Amapá", "Calçoene", "Laranjal do Jari", "Macapá", "Oiapoque", "Porto Grande", "Santana", "Tartarugalzinho"],
-            "AM": ["Coari", "Itacoatiara", "Manacapuru", "Manaus", "Parintins", "São Gabriel da Cachoeira", "Tabatinga", "Tefé"],
-            "BA": ["Alagoinhas", "Barreiras", "Camaçari", "Eunápolis", "Feira de Santana", "Ilhéus", "Itabuna", "Jequié", "Juazeiro", "Lauro de Freitas", "Porto Seguro", "Salvador", "Simões Filho", "Teixeira de Freitas", "Vitória da Conquista"],
-            "CE": ["Caucaia", "Crateús", "Crato", "Fortaleza", "Iguatu", "Itapipoca", "Juazeiro do Norte", "Maracanaú", "Maranguape", "Quixadá", "Sobral"],
-            "DF": ["Brasília", "Ceilândia", "Gama", "Planalto", "Samambaia", "Taguatinga"],
-            "ES": ["Aracruz", "Cachoeiro de Itapemirim", "Cariacica", "Colatina", "Guarapari", "Linhares", "Nova Venécia", "São Mateus", "Serra", "Viana", "Vila Velha", "Vitória"],
-            "GO": ["Águas Lindas de Goiás", "Anápolis", "Aparecida de Goiânia", "Catalão", "Formosa", "Goiânia", "Itumbiara", "Jataí", "Luziânia", "Rio Verde", "Senador Canedo", "Valparaíso de Goiás"],
-            "MA": ["Açailândia", "Bacabal", "Balsas", "Caxias", "Codó", "Imperatriz", "Itapecuru Mirim", "Paço do Lumiar", "Santa Inês", "São José de Ribamar", "São Luís", "Timon"],
-            "MT": ["Alta Floresta", "Barra do Garças", "Cáceres", "Cuiabá", "Lucas do Rio Verde", "Rondonópolis", "Sinop", "Sorriso", "Várzea Grande"],
-            "MS": ["Aquidauana", "Campo Grande", "Corumbá", "Dourados", "Naviraí", "Nova Andradina", "Ponta Porã", "Três Lagoas"],
-            "MG": ["Araxá", "Barbacena", "Belo Horizonte", "Betim", "Conselheiro Lafaiete", "Contagem", "Divinópolis", "Governador Valadares", "Ipatinga", "Juiz de Fora", "Montes Claros", "Patos de Minas", "Poços de Caldas", "Pouso Alegre", "Ribeirão das Neves", "Santa Luzia", "Sete Lagoas", "Teófilo Otoni", "Uberaba", "Uberlândia", "Varginha"],
-            "PA": ["Abaetetuba", "Altamira", "Ananindeua", "Barcarena", "Belém", "Castanhal", "Itaituba", "Marabá", "Parauapebas", "Santarém", "Tucuruí"],
-            "PB": ["Cajazeiras", "Campina Grande", "Guarabira", "João Pessoa", "Patos", "Santa Rita", "Sousa"],
-            "PR": ["Apucarana", "Arapongas", "Campo Largo", "Cascavel", "Colombo", "Curitiba", "Foz do Iguaçu", "Guarapuava", "Londrina", "Maringá", "Paranaguá", "Ponta Grossa", "São José dos Pinhais", "Umuarama"],
-            "PE": ["Cabo de Santo Agostinho", "Caruaru", "Garanhuns", "Igarassu", "Jaboatão dos Guararapes", "Olinda", "Petrolina", "Recife", "São Lourenço da Mata", "Vitória de Santo Antão"],
-            "PI": ["Acauã", "Altos", "Amarante", "Barras", "Bom Jesus", "Campo Maior", "Floriano", "Oeiras", "Parnaíba", "Picos", "Piripiri", "São Raimundo Nonato", "Teresina", "Uruçuí"],
-            "RJ": ["Angra dos Reis", "Araruama", "Belford Roxo", "Cabo Frio", "Campos dos Goytacazes", "Duque de Caxias", "Itaboraí", "Macaé", "Niterói", "Nova Iguaçu", "Petropolis", "Rio de Janeiro", "São Gonçalo", "São Pedro da Aldeia", "Volta Redonda"],
-            "RN": ["Caicó", "Ceará-Mirim", "Macaíba", "Mossoró", "Natal", "Parnamirim", "São Gonçalo do Amarante"],
-            "RS": ["Alvorada", "Bagé", "Canoas", "Caxias do Sul", "Gravataí", "Novo Hamburgo", "Passo Fundo", "Pelotas", "Porto Alegre", "Rio Grande", "Santa Cruz do Sul", "Santa Maria", "São Leopoldo", "Viamão"],
-            "RO": ["Ariquemes", "Cacoal", "Guajará-Mirim", "Jaru", "Ji-Paraná", "Porto Velho", "Vilhena"],
-            "RR": ["Alto Alegre", "Boa Vista", "Bonfim", "Caracaraí", "Mucajaí", "Rorainópolis"],
-            "SC": ["Blumenau", "Chapecó", "Criciúma", "Florianópolis", "Itajaí", "Jaraguá do Sul", "Joinville", "Lages", "Palhoça", "São José"],
-            "SP": ["Americana", "Araçatuba", "Araraquara", "Bauru", "Campinas", "Franca", "Guarulhos", "Jundiaí", "Marília", "Piracicaba", "Presidente Prudente", "Ribeirão Preto", "Santo André", "Santos", "São Bernardo do Campo", "São José do Rio Preto", "São José dos Campos", "São Paulo", "Sorocaba", "Taubaté"],
-            "SE": ["Aracaju", "Estância", "Itabaiana", "Lagarto", "Nossa Senhora do Socorro", "São Cristóvão"],
-            "TO": ["Araguaína", "Gurupi", "Palmas", "Paraíso do Tocantins", "Porto Nacional"]
-        };
-
-        const BoliviaDados = {
-            "Santa Cruz": ["Santa Cruz de la Sierra", "Montero", "Warnes", "Camiri"],
-            "La Paz": ["La Paz", "El Alto", "Viacha"],
-            "Cochabamba": ["Cochabamba", "Sacaba", "Quillacollo"]
-        };
-
-        const PortugalDados = {
-            "Lisboa": ["Lisboa", "Sintra", "Cascais", "Loures", "Amadora"],
-            "Porto": ["Porto", "Vila Nova de Gaia", "Matosinhos", "Maia"],
-            "Braga": ["Braga", "Guimarães", "Barcelos"]
-        };
 
         function gerarIniciaisAutomatica() {
             const nomeInput = document.getElementById('nome').value.trim();
             const campoIniciais = document.getElementById('iniciais');
-            
-            if (!nomeInput) {
-                campoIniciais.value = '';
-                return;
-            }
+            if (!nomeInput) { campoIniciais.value = ''; return; }
 
             const palavrasIgnoradas = ['de', 'do', 'da', 'dos', 'das', 'e', 'of', 'and', 'y', 'del', 'la', 'los', 'las'];
             const partes = nomeInput.split(/\s+/).filter(part => part.length > 0);
@@ -1394,7 +1183,7 @@
         }
 
         const tabelasReferencia = {
-            lactente: { fc: "100 - 160", fr: "30 - 60", pa: "70-100/50-65", temp: "36.5 - 37.5" },
+            lactente: { fc: "100 - 160", fr: "30 - 60", pa: "70-100/50-65", temp: "35.9 - 37.5" },
             preEscolarPequeno: { fc: "90 - 140", fr: "24 - 40", pa: "80-105/55-70", temp: "36.1 - 37.2" },
             preEscolar: { fc: "80 - 130", fr: "22 - 34", pa: "85-110/55-72", temp: "36.1 - 37.2" },
             escolar: { fc: "70 - 110", fr: "18 - 30", pa: "90-120/60-80", temp: "36.1 - 37.2" },
@@ -1406,14 +1195,16 @@
             function popularSelect(id, min, max, passo, unidade, placeholderKey) {
                 const sel = document.getElementById(id);
                 if (!sel) return;
+                const valAtual = sel.value; 
                 const phText = i18nData[idiomaAtual][placeholderKey] || 'Selecione';
-                sel.innerHTML = `<option value="" selected>${phText}</option>`;
+                sel.innerHTML = `<option value="">${phText}</option>`;
                 
                 for (let i = min; i <= max; i += passo) {
                     let val = (passo < 1) ? i.toFixed(1) : i.toString();
                     let label = unidade ? `${val} ${unidade}` : val;
                     sel.appendChild(new Option(label, val));
                 }
+                if (valAtual) sel.value = valAtual;
             }
 
             popularSelect('pa_sis', 40, 300, 1, '', 'opt_pas');
@@ -1427,7 +1218,6 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            carregarEstados();
             preencherSelectsSinais();
             atualizarValoresReferencia(18);
             validarSinais();
@@ -1436,7 +1226,6 @@
             const dataMatricula = document.getElementById('dataMatricula');
             if (dataMatricula) dataMatricula.value = hoje;
             
-            initMapa();
             atualizarStatusRede();
         });
 
@@ -1454,53 +1243,6 @@
 
         window.addEventListener('online', atualizarStatusRede);
         window.addEventListener('offline', atualizarStatusRede);
-
-        function carregarEstados() {
-            const pais = document.getElementById('pais').value;
-            const selectEstado = document.getElementById('estado');
-            const selectCidade = document.getElementById('cidade');
-            const lblEstado = document.getElementById('lbl-estado');
-            
-            selectEstado.innerHTML = `<option value="">${i18nData[idiomaAtual].opt_selecione}</option>`;
-            selectCidade.innerHTML = `<option value="">${i18nData[idiomaAtual].opt_selecione_estado}</option>`;
-            selectCidade.disabled = true;
-
-            if (pais === 'Brasil') {
-                lblEstado.textContent = i18nData[idiomaAtual].lbl_estado;
-                Object.keys(BrasilDados).sort().forEach(sigla => {
-                    const nomeEstado = BrasilEstadosNomes[sigla] || sigla;
-                    selectEstado.appendChild(new Option(`${nomeEstado} (${sigla})`, sigla));
-                });
-            } else if (pais === 'Portugal') {
-                lblEstado.textContent = i18nData[idiomaAtual].lbl_distrito;
-                Object.keys(PortugalDados).sort().forEach(distrito => {
-                    selectEstado.appendChild(new Option(distrito, distrito));
-                });
-            } else if (pais === 'Bolivia') {
-                lblEstado.textContent = i18nData[idiomaAtual].lbl_departamento;
-                Object.keys(BoliviaDados).sort().forEach(dep => {
-                    selectEstado.appendChild(new Option(dep, dep));
-                });
-            }
-        }
-
-        function carregarCidades() {
-            const pais = document.getElementById('pais').value;
-            const estadoSelecionado = document.getElementById('estado').value;
-            const selectCidade = document.getElementById('cidade');
-            
-            selectCidade.innerHTML = `<option value="">${i18nData[idiomaAtual].opt_selecione}</option>`;
-            selectCidade.disabled = false;
-
-            let cidades = [];
-            if (pais === 'Brasil' && BrasilDados[estadoSelecionado]) cidades = BrasilDados[estadoSelecionado];
-            else if (pais === 'Portugal' && PortugalDados[estadoSelecionado]) cidades = PortugalDados[estadoSelecionado];
-            else if (pais === 'Bolivia' && BoliviaDados[estadoSelecionado]) cidades = BoliviaDados[estadoSelecionado];
-
-            cidades.forEach(cidade => {
-                selectCidade.appendChild(new Option(cidade, cidade));
-            });
-        }
 
         function aplicarMascaraData(input) {
             let v = input.value.replace(/\D/g, "");
@@ -1586,35 +1328,114 @@
             document.getElementById('ref-fr').textContent = `${ref.fr} rpm`;
         }
 
-        function calcularIMC() {
-            const peso = parseFloat(document.getElementById('peso').value.replace(',', '.'));
-            const altura = parseFloat(document.getElementById('altura').value.replace(',', '.'));
-            const imcCampo = document.getElementById('imc');
-            const legenda = document.getElementById('imc-legenda');
+    /* --- CÁLCULO E CLASSIFICAÇÃO DE IMC --- */
+            
+            function calcularIMC() {
+                const pesoEl = document.getElementById("peso");
+                const alturaEl = document.getElementById("altura");
+                const imcEl = document.getElementById("imc");
+                const legendaEl = document.getElementById("imc-legenda");
+            
+                if (!pesoEl || !alturaEl || !imcEl) return;
+            
+                let peso = parseFloat(pesoEl.value.replace(",", "."));
+                let altura = parseFloat(alturaEl.value.replace(",", "."));
+            
+                if (!isNaN(peso) && !isNaN(altura) && peso > 0 && altura > 0) {
+                    // Converte cm para m caso o usuário digite 167 em vez de 1.67
+                    if (altura > 3) {
+                        altura = altura / 100;
+                    }
+            
+                    let imc = peso / (altura * altura);
+                    imcEl.value = imc.toFixed(1);
+            
+                    let resultado = classificarIMC(imc);
+            
+                    if (legendaEl) {
+                        legendaEl.innerText = resultado.mensagem;
+                        legendaEl.className = "imc-status status-" + resultado.tipo;
+                    }
+            
+                    // >>> RECALCULA AS SUGESTÕES AUTOMATICAMENTE <<<
+                    if (typeof validarSinais === "function") validarSinais();
 
-            if (peso > 0 && altura > 0) {
-                const imc = (peso / (altura * altura)).toFixed(1);
-                imcCampo.value = imc;
-
-                let txt = i18nData[idiomaAtual];
-                if (imc < 18.5) {
-                    legenda.textContent = txt.imc_abaixo;
-                    legenda.style.color = '#d97706';
-                } else if (imc >= 18.5 && imc <= 24.9) {
-                    legenda.textContent = txt.imc_eutrofico;
-                    legenda.style.color = '#059669';
-                } else if (imc >= 25 && imc <= 29.9) {
-                    legenda.textContent = txt.imc_sobrepeso;
-                    legenda.style.color = '#d97706';
+                    return resultado;
                 } else {
-                    legenda.textContent = txt.imc_obesidade;
-                    legenda.style.color = '#dc2626';
+                    imcEl.value = "--";
+                    if (legendaEl) legendaEl.innerText = "";
+                    
+                    // >>> LIMPA/RECALCULA AS SUGESTÕES QUANDO O CAMPO É ESVAZIADO <<<
+                    if (typeof validarSinais === "function") validarSinais();
                 }
-            } else {
-                imcCampo.value = '--';
-                legenda.textContent = '';
             }
-        }
+            
+            function classificarIMC(imc) {
+                let alterado = false;
+                let mensagem = "";
+                let tipo = "ok";
+            
+                // Fallback para 'pt' caso idiomaAtual seja indefinido
+                const lang = (typeof idiomaAtual !== "undefined" && idiomaAtual) ? idiomaAtual : "pt";
+            
+                const txtEsl = {
+                    pt: {
+                        abaixo: "IMC - Abaixo do peso (< 18.5 kg/m²). SUGESTÃO: Avaliar estado nutricional.",
+                        norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGESTÃO: Manter hábitos saudáveis.",
+                        sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGESTÃO: Reeducação alimentar e exercício.",
+                        ob1: "IMC - Obesidade Grau I (30.0–34.9 kg/m²). SUGESTÃO: Acompanhamento nutricional e médico.",
+                        ob2: "IMC - Obesidade Grau II (35.0–39.9 kg/m²). SUGESTÃO: Consulta médica especializada.",
+                        ob3: "IMC - Obesidade Grau III / Mórbida (≥ 40.0 kg/m²). SUGESTÃO: Acompanhamento médico intensivo."
+                    },
+                    es: {
+                        abaixo: "IMC - Bajo peso (< 18.5 kg/m²). SUGERENCIA: Evaluar estado nutricional.",
+                        norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGERENCIA: Mantener hábitos saludables.",
+                        sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGERENCIA: Reeducación alimentaria y ejercicio.",
+                        ob1: "IMC - Obesidad Grado I (30.0–34.9 kg/m²). SUGERENCIA: Control nutricional y médico.",
+                        ob2: "IMC - Obesidad Grado II (35.0–39.9 kg/m²). SUGERENCIA: Consulta médica especializada.",
+                        ob3: "IMC - Obesidad Grado III / Mórbida (≥ 40.0 kg/m²). SUGERENCIA: Control médico intensivo."
+                    },
+                    en: {
+                        abaixo: "BMI - Underweight (< 18.5 kg/m²). RECOMMENDATION: Evaluate nutritional status.",
+                        norm: "BMI - Normal weight (18.5–24.9 kg/m²). RECOMMENDATION: Maintain healthy habits.",
+                        sobrepeso: "BMI - Overweight (25.0–29.9 kg/m²). RECOMMENDATION: Diet re-education and exercise.",
+                        ob1: "BMI - Obesity Class I (30.0–34.9 kg/m²). RECOMMENDATION: Nutritional and medical follow-up.",
+                        ob2: "BMI - Obesity Class II (35.0–39.9 kg/m²). RECOMMENDATION: Specialized medical consultation.",
+                        ob3: "BMI - Obesity Class III / Severe (≥ 40.0 kg/m²). RECOMMENDATION: Intensive medical monitoring."
+                    }
+                }[lang];
+            
+                // Ajuste de condições sem lacunas decimais
+                if (imc < 18.5) {
+                    alterado = true;
+                    mensagem = txtEsl.abaixo;
+                    tipo = "aviso";
+                } else if (imc < 25.0) {
+                    alterado = false;
+                    mensagem = txtEsl.norm;
+                    tipo = "ok";
+                } else if (imc < 30.0) {
+                    alterado = true;
+                    mensagem = txtEsl.sobrepeso;
+                    tipo = "aviso";
+                } else if (imc < 35.0) {
+                    alterado = true;
+                    mensagem = txtEsl.ob1;
+                    tipo = "alerta";
+                } else if (imc < 40.0) {
+                    alterado = true;
+                    mensagem = txtEsl.ob2;
+                    tipo = "alerta";
+                } else {
+                    alterado = true;
+                    mensagem = txtEsl.ob3;
+                    tipo = "alerta";
+                }
+            
+                return { imcAlterado: alterado, mensagem, tipo };
+            }
+
+        /* --- SUGESTÕES P.A. --- */
 
         function classificarPA(pas, pad, idade) {
             let pasAlterada = false;
@@ -1625,10 +1446,10 @@
             let txtEsl = {
                 pt: {
                     f05: "De 0 a 5 anos", f69: "De 6 a 9 anos", f1012: "De 10 a 12 anos",
-                    elev: "⚠️ P.A. elevada para a faixa etária", sugest_cardio: "SUGESTÃO: Procure seu cardiologista.",
+                    elev: "P.A. elevada para a faixa etária", sugest_cardio: "SUGESTÃO: Procure seu cardiologista.",
                     adeq: "Pressão Arterial adequada para a faixa etária",
-                    hipo: "🚨 Hipotensão (Pressão Baixa): Sistólica ≤109 mmHg e Diastólica ≤79 mmHg. SUGESTÃO: Procure seu cardiologista.",
-                    h3: "Hipertensão Estágio 3 (≥180 e/ou ≥110 mmHg): Requer atenção médica imediata. SUGESTÃO: Procure seu cardiologista.",
+                    hipo: "Hipotensão (Pressão Baixa): Sistólica ≤109 mmHg e Diastólica ≤79 mmHg. SUGESTÃO: Procure seu cardiologista.",
+                    h3: "Hipertensão Estágio 3 (≥180 e/ou ≥110 mmHg): Requer atenção médica imediata.",
                     h2: "Hipertensão Estágio 2 (160–179 e/ou 100–109 mmHg). SUGESTÃO: Procure seu cardiologista.",
                     h1: "Hipertensão Estágio 1 (140–159 e/ou 90–99 mmHg). SUGESTÃO: Procure seu cardiologista.",
                     pre: "Pré-hipertensão (130–139 e/ou 85–89 mmHg). SUGESTÃO: Acompanhamento regular.",
@@ -1636,10 +1457,10 @@
                 },
                 es: {
                     f05: "De 0 a 5 años", f69: "De 6 a 9 años", f1012: "De 10 a 12 años",
-                    elev: "⚠️ P.A. elevada para el grupo de edad", sugest_cardio: "SUGERENCIA: Consulte a su cardiólogo.",
+                    elev: "P.A. elevada para el grupo de edad", sugest_cardio: "SUGERENCIA: Consulte a su cardiólogo.",
                     adeq: "Presión Arterial adecuada para el grupo de edad",
-                    hipo: "🚨 Hipotensión (Presión Baja): Sistólica ≤109 mmHg y Diastólica ≤79 mmHg. SUGERENCIA: Consulte a su cardiólogo.",
-                    h3: "Hipertensión Etapa 3 (≥180 y/o ≥110 mmHg): Requiere atención médica inmediata. SUGERENCIA: Consulte a su cardiólogo.",
+                    hipo: "Hipotensión (Presión Baja): Sistólica ≤109 mmHg y Diastólica ≤79 mmHg.",
+                    h3: "Hipertensión Etapa 3 (≥180 y/o ≥110 mmHg): Requiere atención médica inmediata.",
                     h2: "Hipertensión Etapa 2 (160–179 y/o 100–109 mmHg). SUGERENCIA: Consulte a su cardiólogo.",
                     h1: "Hipertensión Etapa 1 (140–159 y/o 90–99 mmHg). SUGERENCIA: Consulte a su cardiólogo.",
                     pre: "Prehipertensión (130–139 y/o 85–89 mmHg). SUGERENCIA: Seguimiento regular.",
@@ -1647,10 +1468,10 @@
                 },
                 en: {
                     f05: "0 to 5 years old", f69: "6 to 9 years old", f1012: "10 to 12 years old",
-                    elev: "⚠️ Elevated B.P. for age group", sugest_cardio: "RECOMMENDATION: Consult a cardiologist.",
+                    elev: "Elevated B.P. for age group", sugest_cardio: "RECOMMENDATION: Consult a cardiologist.",
                     adeq: "Blood Pressure appropriate for age group",
-                    hipo: "🚨 Hypotension (Low Blood Pressure): Systolic ≤109 mmHg and Diastolic ≤79 mmHg. RECOMMENDATION: Consult a cardiologist.",
-                    h3: "Stage 3 Hypertension (≥180 and/or ≥110 mmHg): Immediate medical attention required. RECOMMENDATION: Consult a cardiologist.",
+                    hipo: "Hypotension (Low Blood Pressure): Systolic ≤109 mmHg and Diastolic ≤79 mmHg.",
+                    h3: "Stage 3 Hypertension (≥180 and/or ≥110 mmHg): Immediate medical attention required.",
                     h2: "Stage 2 Hypertension (160–179 and/or 100–109 mmHg). RECOMMENDATION: Consult a cardiologist.",
                     h1: "Stage 1 Hypertension (140–159 and/or 90–99 mmHg). RECOMMENDATION: Consult a cardiologist.",
                     pre: "Prehypertension (130–139 and/or 85–89 mmHg). RECOMMENDATION: Regular monitoring.",
@@ -1660,11 +1481,8 @@
 
             if (idade < 13) {
                 let maxPas = 110, maxPad = 75, faixaNome = txtEsl.f05;
-                if (idade >= 6 && idade < 10) {
-                    maxPas = 120; maxPad = 80; faixaNome = txtEsl.f69;
-                } else if (idade >= 10) {
-                    maxPas = 125; maxPad = 85; faixaNome = txtEsl.f1012;
-                }
+                if (idade >= 6 && idade < 10) { maxPas = 120; maxPad = 80; faixaNome = txtEsl.f69; }
+                else if (idade >= 10) { maxPas = 125; maxPad = 85; faixaNome = txtEsl.f1012; }
         
                 if (pas > maxPas) pasAlterada = true;
                 if (pad > maxPad) padAlterada = true;
@@ -1679,34 +1497,30 @@
             } else {
                 if (pas <= 109 && pad <= 79) {
                     pasAlterada = true; padAlterada = true;
-                    mensagem = txtEsl.hipo;
-                    tipo = "alerta";
+                    mensagem = txtEsl.hipo; tipo = "alerta";
                 } else if (pas >= 180 || pad >= 110) {
                     pasAlterada = true; padAlterada = true;
-                    mensagem = txtEsl.h3;
-                    tipo = "alerta";
+                    mensagem = txtEsl.h3; tipo = "alerta";
                 } else if (pas >= 160 || pad >= 100) {
                     pasAlterada = true; padAlterada = true;
-                    mensagem = txtEsl.h2;
-                    tipo = "alerta";
+                    mensagem = txtEsl.h2; tipo = "alerta";
                 } else if (pas >= 140 || pad >= 90) {
                     pasAlterada = true; padAlterada = true;
-                    mensagem = txtEsl.h1;
-                    tipo = "alerta";
+                    mensagem = txtEsl.h1; tipo = "alerta";
                 } else if (pas >= 130 || pad >= 85) {
                     pasAlterada = true; padAlterada = true;
-                    mensagem = txtEsl.pre;
-                    tipo = "aviso";
+                    mensagem = txtEsl.pre; tipo = "aviso";
                 } else {
-                    mensagem = txtEsl.norm;
-                    tipo = "ok";
+                    mensagem = txtEsl.norm; tipo = "ok";
                 }
             }
 
             return { pasAlterada, padAlterada, mensagem, tipo };
         }
 
-        function validarSinais() {
+
+
+ function validarSinais() {
             const pas = parseFloat(document.getElementById('pa_sis').value);
             const pad = parseFloat(document.getElementById('pa_dia').value);
             const gluc = parseFloat(document.getElementById('gluc').value);
@@ -1717,10 +1531,27 @@
             const fr = parseFloat(document.getElementById('fr').value);
             const idade = parseInt(document.getElementById('edad').value) || 18;
 
+            // Pega o valor do IMC do campo
+            const imcEl = document.getElementById("imc");
+            const imcVal = imcEl ? parseFloat(imcEl.value.replace(",", ".")) : NaN;
+
             const lista = document.getElementById('lista-sugestoes');
             lista.innerHTML = '';
             let contadorSugestoes = 0;
 
+            // --- VALIDAÇÃO DO IMC ---
+            if (!isNaN(imcVal) && imcVal > 0) {
+                const resImc = classificarIMC(imcVal); 
+                if (typeof marcarCampo === "function") marcarCampo('imc', resImc.imcAlterado);
+                
+                // Adicionada a trava para só inserir se existir mensagem válida
+                if (resImc && resImc.mensagem) {
+                    lista.innerHTML += `<li class="sugestao-${resImc.tipo}">${resImc.mensagem}</li>`;
+                    contadorSugestoes++;
+                }
+            } else {
+                if (typeof marcarCampo === "function") marcarCampo('imc', false);
+            }
             function marcarCampo(id, alterado) {
                 const el = document.getElementById(id);
                 if (!el) return;
@@ -1743,76 +1574,104 @@
                 marcarCampo('pa_dia', false);
             }
 
-            let txtDict = {
-                pt: {
-                    gluc_hipo: "🚨 Glicose de Jejum muito baixa (< 70 mg/dL): Hipoglicemia. Ingerir carboidratos rápidos e procurar ajuda médica.",
-                    gluc_pre: "⚠️ Glicose de Jejum em Nível de Pré-Diabetes (100 a 125 mg/dL). Recomendada avaliação com endocrinologista e mudanças de hábitos.",
-                    gluc_diab: "🚨 Glicose de Jejum Elevada (≥ 126 mg/dL): Indicativo de Diabetes. Procure um endocrinologista para confirmação e acompanhamento.",
-                    gluc_post_hipo: "🚨 Glicose Pós-Prandial muito baixa (< 70 mg/dL).",
-                    gluc_post_pre: "⚠️ Glicose Pós-Prandial Alterada / Pré-Diabetes (140 a 199 mg/dL).",
-                    gluc_post_diab: "🚨 Glicose Pós-Prandial Elevada (≥ 200 mg/dL): Indicativo de Diabetes.",
-                    temp_hipo: "🚨 Hipotermia (< 35°C): Manter o paciente aquecido e procurar assistência médica imediata.",
-                    temp_febre: "⚠️ Febre (≥ 37.8°C): Recomenda-se repouso, hidratação e acompanhamento médico.",
-                    temp_hiper: "🚨 Hipertermia grave (> 39°C): Requer atenção médica imediata.",
-                    sat_hipoxia: "🚨 Saturação de Oxigênio CRÍTICA (< 90%): Hipoxia severa. Requer atendimento médico e oxigenoterapia de emergência.",
-                    sat_lim: "⚠️ Saturação Limítrofe (90 - 94%): Monitorar atentamente e consultar um médico.",
-                    fc_lactente_alta: "🚨 Taquicardia para Lactente (> 160 bpm). Procure pediatra.",
-                    fc_lactente_baixa: "🚨 Bradicardia para Lactente (< 100 bpm). Procure pediatra.",
-                    fc_alta: "🚨 Taquicardia (> 100 bpm): Frequência cardíaca elevada em repouso. Consultar cardiologista.",
-                    fc_baixa: "🚨 Bradicardia (< 60 bpm): Frequência cardíaca abaixo do normal em repouso. Consultar cardiologista.",
-                    fr_lactente_alta: "🚨 Taquipneia para Lactente (> 60 rpm). Procure pediatra.",
-                    fr_lactente_baixa: "🚨 Bradipneia para Lactente (< 30 rpm). Procure pediatra.",
-                    fr_alta: "🚨 Taquipneia (> 20 rpm): Frequência respiratória aumentada. Consultar médico.",
-                    fr_baixa: "🚨 Bradipneia (< 12 rpm): Frequência respiratória diminuída. Consultar médico."
-                },
-                es: {
-                    gluc_hipo: "🚨 Glucosa en ayunas muy baja (< 70 mg/dL): Hipoglucemia. Consumir carbohidratos rápidos y buscar ayuda médica.",
-                    gluc_pre: "⚠️ Glucosa en ayunas en nivel de Pre-Diabetes (100 a 125 mg/dL). Se recomienda evaluación con endocrinólogo.",
-                    gluc_diab: "🚨 Glucosa en ayunas elevada (≥ 126 mg/dL): Indicativo de Diabetes. Consulte a un endocrinólogo.",
-                    gluc_post_hipo: "🚨 Glucosa Postprandial muy baja (< 70 mg/dL).",
-                    gluc_post_pre: "⚠️ Glucosa Postprandial Alterada / Pre-Diabetes (140 a 199 mg/dL).",
-                    gluc_post_diab: "🚨 Glucosa Postprandial Elevada (≥ 200 mg/dL): Indicativo de Diabetes.",
-                    temp_hipo: "🚨 Hipotermia (< 35°C): Mantener al paciente abrigado y buscar atención médica inmediata.",
-                    temp_febre: "⚠️ Fiebre (≥ 37.8°C): Se recomienda reposo, hidratación y seguimiento médico.",
-                    temp_hiper: "🚨 Hipertermia grave (> 39°C): Requiere atención médica inmediata.",
-                    sat_hipoxia: "🚨 Saturación de Oxígeno CRÍTICA (< 90%): Hipoxia severa. Requiere atención de emergencia.",
-                    sat_lim: "⚠️ Saturación Limítrofe (90 - 94%): Monitorear atentamente y consultar a un médico.",
-                    fc_lactente_alta: "🚨 Taquicardia en Lactante (> 160 bpm). Consulte al pediatra.",
-                    fc_lactente_baixa: "🚨 Bradicardia en Lactante (< 100 bpm). Consulte al pediatra.",
-                    fc_alta: "🚨 Taquicardia (> 100 bpm): Frecuencia cardíaca elevada en reposo. Consulte al cardiólogo.",
-                    fc_baixa: "🚨 Bradicardia (< 60 bpm): Frecuencia cardíaca baja en reposo. Consulte al cardiólogo.",
-                    fr_lactente_alta: "🚨 Taquipnea en Lactante (> 60 rpm). Consulte al pediatra.",
-                    fr_lactente_baixa: "🚨 Bradipnea en Lactante (< 30 rpm). Consulte al pediatra.",
-                    fr_alta: "🚨 Taquipnea (> 20 rpm): Frecuencia respiratoria elevada. Consulte a un médico.",
-                    fr_baixa: "🚨 Bradipnea (< 12 rpm): Frecuencia respiratoria disminuida. Consulte a un médico."
-                },
-                en: {
-                    gluc_hipo: "🚨 Very low Fasting Glucose (< 70 mg/dL): Hypoglycemia. Consume fast-acting carbs and seek medical help.",
-                    gluc_pre: "⚠️ Fasting Glucose in Pre-Diabetes range (100 to 125 mg/dL). Endocrinologist evaluation recommended.",
-                    gluc_diab: "🚨 High Fasting Glucose (≥ 126 mg/dL): Diabetes indicator. Consult an endocrinologist.",
-                    gluc_post_hipo: "🚨 Very low Postprandial Glucose (< 70 mg/dL).",
-                    gluc_post_pre: "⚠️ Altered Postprandial Glucose / Pre-Diabetes (140 to 199 mg/dL).",
-                    gluc_post_diab: "🚨 High Postprandial Glucose (≥ 200 mg/dL): Diabetes indicator.",
-                    temp_hipo: "🚨 Hypothermia (< 35°C): Keep patient warm and seek immediate medical care.",
-                    temp_febre: "⚠️ Fever (≥ 37.8°C): Rest, hydration, and medical follow-up recommended.",
-                    temp_hiper: "🚨 Severe Hyperthermia (> 39°C): Immediate medical attention required.",
-                    sat_hipoxia: "🚨 CRITICAL Oxygen Saturation (< 90%): Severe hypoxia. Requires emergency care.",
-                    sat_lim: "⚠️ Borderline Oxygen Saturation (90 - 94%): Monitor closely and consult a doctor.",
-                    fc_lactente_alta: "🚨 Infant Tachycardia (> 160 bpm). Consult pediatrician.",
-                    fc_lactente_baixa: "🚨 Infant Bradycardia (< 100 bpm). Consult pediatrician.",
-                    fc_alta: "🚨 Tachycardia (> 100 bpm): High resting heart rate. Consult cardiologist.",
-                    fc_baixa: "🚨 Bradycardia (< 60 bpm): Low resting heart rate. Consult cardiologist.",
-                    fr_lactente_alta: "🚨 Infant Tachypnea (> 60 rpm). Consult pediatrician.",
-                    fr_lactente_baixa: "🚨 Infant Bradypnea (< 30 rpm). Consult pediatrician.",
-                    fr_alta: "🚨 Tachypnea (> 20 rpm): High respiratory rate. Consult doctor.",
-                    fr_baixa: "🚨 Bradypnea (< 12 rpm): Low respiratory rate. Consult doctor."
-                }
-            }[idiomaAtual];
+        let txtDict = {
+            pt: {
+                gluc_hipo: "Glicose de Jejum muito baixa (< 70 mg/dL): Hipoglicemia.",
+                gluc_normo: "Glicose de Jejum Normal (71 a 99 mg/dL).",
+                gluc_pre: "Glicose de Jejum em Nível de Pré-Diabetes (100 a 125 mg/dL).",
+                gluc_diab: "Glicose de Jejum Elevada (≥ 126 mg/dL): Indicativo de Diabetes.",
+                
+                gluc_post_hipo: "Glicose Pós-Prandial muito baixa (< 70 mg/dL).",
+                gluc_post_normo: "Glicose Pós-Prandial Normal (71 a 140 mg/dL).",
+                gluc_post_pre: "Glicose Pós-Prandial Alterada / Pré-Diabetes (141 a 199 mg/dL).",
+                gluc_post_diab: "Glicose Pós-Prandial Elevada (≥ 200 mg/dL): Indicativo de Diabetes.",
+                
+                temp_hipo: "Hipotermia (< 35,5°C): Manter aquecido.",
+                temp_normo: "Temperatura Normal (35,6°C a 37,2°C).",
+                temp_febril: "Estado Febril / Subfebril (37,3°C a 37,7°C): Acompanhar.",
+                temp_febre: "Febre (37,8°C a 39,0°C): Recomenda-se repouso e hidratação.",
+                temp_hiper: "Hipertermia grave (> 39,0°C): Requer atenção médica imediata.",
+                
+                sat_hipoxia: "Saturação de Oxigênio CRÍTICA (< 89%): Hipoxia severa.",
+                sat_lim: "Saturação Limítrofe (90 - 94%): Monitorar atentamente.",
+                sat_normo: "Saturação de Oxigênio Normal (95 - 100%).",
+                
+                fc_baixa: "Bradicardia (< 59 bpm): Consultar cardiologista.",
+                fc_normo: "Frequência Cardíaca Normal (60 a 100 bpm).",
+                fc_alta: "Taquicardia (> 101 bpm): Consultar cardiologista.",
+                
+                fr_baixa: "Bradipneia (< 11 rpm): Consultar médico.",
+                fr_normo: "Frequência Respiratória Normal (12 a 20 rpm).",
+                fr_alta: "Taquipneia (> 21 rpm): Consultar médico."
+            },
+            es: {
+                gluc_hipo: "Glucosa en ayunas muy baja (< 70 mg/dL): Hipoglucemia.",
+                gluc_normo: "Glucosa en Ayunas Normal (71 a 99 mg/dL).",
+                gluc_pre: "Glucosa en ayunas en nivel de Pre-Diabetes (100 a 125 mg/dL).",
+                gluc_diab: "Glucosa en ayunas elevada (≥ 126 mg/dL): Indicativo de Diabetes.",
+                
+                gluc_post_hipo: "Glucosa Postprandial muy baja (< 70 mg/dL).",
+                gluc_post_normo: "Glucosa Postprandial Normal (71 a 140 mg/dL).",
+                gluc_post_pre: "Glucosa Postprandial Alterada / Pre-Diabetes (141 a 199 mg/dL).",
+                gluc_post_diab: "Glucosa Postprandial Elevada (≥ 200 mg/dL): Indicativo de Diabetes.",
+                
+                temp_hipo: "Hipotermia (< 35,5°C): Mantener al paciente abrigado.",
+                temp_normo: "emperatura Normal (35,6°C a 37,2°C).",
+                temp_febril: "Subfebril (37,3°C a 37,7°C): Monitorear.",
+                temp_febre: "Fiebre (37,8°C a 39,0°C): Se recomienda reposo e hidratación.",
+                temp_hiper: "Hipertermia grave (> 39,0°C): Atención médica inmediata.",
+                
+                sat_hipoxia: "Saturación de Oxígeno CRÍTICA (< 89%): Hipoxia severa.",
+                sat_lim: "Saturación Limítrofe (90 - 94%): Monitorear atentamente.",
+                sat_normo: "Saturación de Oxígeno Normal (95 - 100%).",
+                
+                fc_baixa: "Bradicardia (< 59 bpm): Consulte al cardiólogo.",
+                fc_normo: "Frecuencia Cardíaca Normal (60 a 100 bpm).",
+                fc_alta: "Taquicardia (> 101 bpm): Consulte al cardiólogo.",
+                
+                fr_baixa: "Bradipnea (< 11 rpm): Consulte a un médico.",
+                fr_normo: "Frecuencia Respiratoria Normal (12 a 20 rpm).",
+                fr_alta: "Taquipnea (> 21 rpm): Consulte a un médico."
+            },
+            en: {
+                gluc_hipo: "Very low Fasting Glucose (< 70 mg/dL): Hypoglycemia.",
+                gluc_normo: "Normal Fasting Glucose (71 to 99 mg/dL).",
+                gluc_pre: "Fasting Glucose in Pre-Diabetes range (100 to 125 mg/dL).",
+                gluc_diab: "High Fasting Glucose (≥ 126 mg/dL): Diabetes indicator.",
+                
+                gluc_post_hipo: "Very low Postprandial Glucose (< 70 mg/dL).",
+                gluc_post_normo: "Normal Postprandial Glucose (71 a 140 mg/dL).",
+                gluc_post_pre: "Altered Postprandial Glucose / Pre-Diabetes (141 to 199 mg/dL).",
+                gluc_post_diab: "High Postprandial Glucose (≥ 200 mg/dL): Diabetes indicator.",
+                
+                temp_hipo: "Hypothermia (< 35.5°C): Keep patient warm.",
+                temp_normo: "Normal Temperature (35.6°C to 37.2°C).",
+                temp_febril: "Low-grade Fever (37.3°C to 37.7°C): Monitor.",
+                temp_febre: "Fever (37.8°C to 39.0°C): Rest and hydration recommended.",
+                temp_hiper: "Severe Hyperthermia (> 39.0°C): Immediate medical care.",
+                
+                sat_hipoxia: "CRITICAL Oxygen Saturation (< 89%): Severe hypoxia.",
+                sat_lim: "Borderline Oxygen Saturation (90 - 94%): Monitor closely.",
+                sat_normo: "Normal Oxygen Saturation (95 - 100%).",
+                
+                fc_baixa: "Bradycardia (< 59 bpm): Consult your cardiologist.",
+                fc_normo: "Normal Heart Rate (60 to 100 bpm).",
+                fc_alta: "Tachycardia (> 101 bpm): Consult your cardiologist.",
+                
+                fr_baixa: "Bradypnea (< 11 rpm): Consult your doctor.",
+                fr_normo: "Normal Respiratory Rate (12 to 20 rpm).",
+                fr_alta: "Tachypnea (> 21 rpm): Consult your doctor."
+            }
+        }[idiomaAtual];
 
             if (!isNaN(gluc)) {
                 if (gluc < 70) {
                     marcarCampo('gluc', true);
                     lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_hipo}</li>`;
+                    contadorSugestoes++;
+                } else if (gluc >= 70 && gluc <= 99) {
+                    marcarCampo('gluc', false);
+                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.gluc_normo}</li>`;
                     contadorSugestoes++;
                 } else if (gluc >= 100 && gluc <= 125) {
                     marcarCampo('gluc', true);
@@ -1822,9 +1681,7 @@
                     marcarCampo('gluc', true);
                     lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_diab}</li>`;
                     contadorSugestoes++;
-                } else {
-                    marcarCampo('gluc', false);
-                }
+                } else marcarCampo('gluc', false);
             } else marcarCampo('gluc', false);
 
             if (!isNaN(glucPost)) {
@@ -1832,7 +1689,11 @@
                     marcarCampo('gluc_post', true);
                     lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_post_hipo}</li>`;
                     contadorSugestoes++;
-                } else if (glucPost >= 140 && glucPost <= 199) {
+                } else if (glucPost >= 71 && glucPost <= 140) {
+                    marcarCampo('gluc_post', false);
+                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.gluc_post_normo}</li>`;
+                    contadorSugestoes++;
+                } else if (glucPost >= 141 && glucPost <= 199) {
                     marcarCampo('gluc_post', true);
                     lista.innerHTML += `<li class="sugestao-aviso">${txtDict.gluc_post_pre}</li>`;
                     contadorSugestoes++;
@@ -1840,15 +1701,21 @@
                     marcarCampo('gluc_post', true);
                     lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_post_diab}</li>`;
                     contadorSugestoes++;
-                } else {
-                    marcarCampo('gluc_post', false);
-                }
+                } else marcarCampo('gluc_post', false);
             } else marcarCampo('gluc_post', false);
 
             if (!isNaN(temp)) {
-                if (temp < 35.0) {
+                if (temp < 36.1) {
                     marcarCampo('temp', true);
                     lista.innerHTML += `<li class="sugestao-alerta">${txtDict.temp_hipo}</li>`;
+                    contadorSugestoes++;
+                } else if (temp >= 36.1 && temp <= 37.2) {
+                    marcarCampo('temp', false);
+                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.temp_normo}</li>`;
+                    contadorSugestoes++;
+                } else if (temp >= 37.3 && temp <= 37.7) {
+                    marcarCampo('temp', true);
+                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.temp_febril}</li>`;
                     contadorSugestoes++;
                 } else if (temp >= 37.8 && temp <= 39.0) {
                     marcarCampo('temp', true);
@@ -1858,9 +1725,7 @@
                     marcarCampo('temp', true);
                     lista.innerHTML += `<li class="sugestao-alerta">${txtDict.temp_hiper}</li>`;
                     contadorSugestoes++;
-                } else {
-                    marcarCampo('temp', false);
-                }
+                } else marcarCampo('temp', false);
             } else marcarCampo('temp', false);
 
             if (!isNaN(sat)) {
@@ -1872,66 +1737,51 @@
                     marcarCampo('sat', true);
                     lista.innerHTML += `<li class="sugestao-aviso">${txtDict.sat_lim}</li>`;
                     contadorSugestoes++;
-                } else {
+                } else if (sat >= 95 && sat <= 100) {
                     marcarCampo('sat', false);
-                }
+                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.sat_normo}</li>`;
+                    contadorSugestoes++;
+                } else marcarCampo('sat', false);
             } else marcarCampo('sat', false);
 
             if (!isNaN(fc)) {
-                const faixa = obterFaixaEtaria(idade);
-                if (faixa === 'lactente') {
-                    if (fc > 160) {
-                        marcarCampo('fc', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_lactente_alta}</li>`;
-                        contadorSugestoes++;
-                    } else if (fc < 100) {
-                        marcarCampo('fc', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_lactente_baixa}</li>`;
-                        contadorSugestoes++;
-                    } else marcarCampo('fc', false);
-                } else {
-                    if (fc > 100) {
-                        marcarCampo('fc', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_alta}</li>`;
-                        contadorSugestoes++;
-                    } else if (fc < 60) {
-                        marcarCampo('fc', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_baixa}</li>`;
-                        contadorSugestoes++;
-                    } else marcarCampo('fc', false);
-                }
+                if (fc > 100) {
+                    marcarCampo('fc', true);
+                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_alta}</li>`;
+                    contadorSugestoes++;
+                } else if (fc >= 60 && fc <= 100) {
+                    marcarCampo('fc', false);
+                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.fc_normo}</li>`;
+                    contadorSugestoes++;
+                } else if (fc < 60) {
+                    marcarCampo('fc', true);
+                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_baixa}</li>`;
+                    contadorSugestoes++;
+                } else marcarCampo('fc', false);
             } else marcarCampo('fc', false);
 
-            if (!isNaN(fr)) {
-                const faixa = obterFaixaEtaria(idade);
-                if (faixa === 'lactente') {
-                    if (fr > 60) {
-                        marcarCampo('fr', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_lactente_alta}</li>`;
-                        contadorSugestoes++;
-                    } else if (fr < 30) {
-                        marcarCampo('fr', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_lactente_baixa}</li>`;
-                        contadorSugestoes++;
-                    } else marcarCampo('fr', false);
-                } else {
-                    if (fr > 20) {
-                        marcarCampo('fr', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_alta}</li>`;
-                        contadorSugestoes++;
-                    } else if (fr < 12) {
-                        marcarCampo('fr', true);
-                        lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_baixa}</li>`;
-                        contadorSugestoes++;
-                    } else marcarCampo('fr', false);
-                }
+              if (!isNaN(fr)) {
+                if (fr > 20) {
+                    marcarCampo('fr', true);
+                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_alta}</li>`;
+                    contadorSugestoes++;
+                } else if (fr >= 12 && fr <= 20) {
+                    marcarCampo('fr', false);
+                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.fr_normo}</li>`;
+                    contadorSugestoes++;
+                } else if (fr < 12) {
+                    marcarCampo('fr', true);
+                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_baixa}</li>`;
+                    contadorSugestoes++;
+                } else marcarCampo('fr', false);
             } else marcarCampo('fr', false);
 
+
             if (contadorSugestoes === 0) {
-                lista.innerHTML = `<li class="sugestao-ok" data-i18n="item_sugestoes_inicial">${i18nData[idiomaAtual].item_sugestoes_inicial}</li>`;
+                lista.innerHTML = `<li class="sugestao-ok">${i18nData[idiomaAtual].item_sugestoes_inicial}</li>`;
             }
         }
-
+        
         /* --- Lógica do Cronômetro com Áudio Sintetizado Web Audio API --- */
         let tempoRestante = 60;
         let timerId = null;
@@ -2025,78 +1875,20 @@
             document.getElementById('btnStop').disabled = true;
         }
 
-        /* --- Lógica do Mapa Leaflet / GPS --- */
-        let mapaObj = null;
-        let marcadorObj = null;
-
-        function initMapa() {
-            try {
-                mapaObj = L.map('map').setView([-15.7801, -47.9292], 4);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '© OpenStreetMap'
-                }).addTo(mapaObj);
-
-                mapaObj.on('click', function(e) {
-                    const lat = e.latlng.lat.toFixed(6);
-                    const lng = e.latlng.lng.toFixed(6);
-                    document.getElementById('latitude').value = lat;
-                    document.getElementById('longitude').value = lng;
-                    atualizarMarcador(lat, lng);
-                });
-            } catch (err) {
-                console.log("Visualização do mapa pendente de conexão:", err);
-            }
-        }
-
-        function atualizarMarcador(lat, lng) {
-            if (!mapaObj) return;
-            if (marcadorObj) {
-                marcadorObj.setLatLng([lat, lng]);
-            } else {
-                marcadorObj = L.marker([lat, lng]).addTo(mapaObj);
-            }
-            mapaObj.setView([lat, lng], 15);
-        }
-
-        function atualizarMapaPorInput() {
-            const lat = parseFloat(document.getElementById('latitude').value);
-            const lng = parseFloat(document.getElementById('longitude').value);
-            if (!isNaN(lat) && !isNaN(lng)) {
-                atualizarMarcador(lat, lng);
-            }
-        }
-
         function obterGeolocalizacaoRapida() {
-            const inputLat = document.getElementById('latitude');
-            const inputLng = document.getElementById('longitude');
-
-            if ("geolocation" in navigator) {
-                inputLat.value = "...";
-                inputLng.value = "...";
-
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const lat = pos.coords.latitude.toFixed(6);
-                        const lng = pos.coords.longitude.toFixed(6);
-                        inputLat.value = lat;
-                        inputLng.value = lng;
-                        atualizarMarcador(lat, lng);
+                    position => {
+                        document.getElementById('latitude').value = position.coords.latitude.toFixed(6);
+                        document.getElementById('longitude').value = position.coords.longitude.toFixed(6);
                     },
-                    (err) => {
-                        alert("Erro ao obter geolocalização: " + err.message);
-                        inputLat.value = "";
-                        inputLng.value = "";
-                    },
-                    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    error => alert("Erro ao capturar GPS: " + error.message),
+                    { enableHighAccuracy: true }
                 );
-            } else {
-                alert("Geolocalização não é suportada por este navegador.");
             }
         }
 
-// ---------------informações do documento a ser exportado-----------------
-         
+        // --- FUNÇÃO EXPORTAR PDF COMPLETA E CORRIGIDA ---
         async function exportarPDF() {
             try {
                 const jsPDFClass = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
@@ -2112,220 +1904,198 @@
                     format: 'a4'
                 });
 
-                // Dicionário do idioma ativo com fallback seguro
                 const idLang = (typeof idiomaAtual !== 'undefined') ? idiomaAtual : 'pt';
                 const dict = (typeof i18nData !== 'undefined' && i18nData[idLang]) ? i18nData[idLang] : {};
 
-                // Data de atendimento formatada (DD/MM/YYYY)
                 const dataMatricula = document.getElementById('dataMatricula')?.value || '';
                 const dataFormatada = dataMatricula ? dataMatricula.split('-').reverse().join('/') : (dict.nao_informado || 'Não informada');
 
+                const defaultTableConfig = {
+                    margin: { left: 15, right: 15, top: 22, bottom: 20 },
+                    pageBreak: 'auto',
+                    theme: 'striped',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
+                    styles: { fontSize: 7, cellPadding: 1.2, overflow: 'linebreak' }
+                };
+
                 // 1. Informações Pessoais
                 const dadosPessoais = [
-                    [dict.pdf_data_atendimento || 'Data do Atendimento', dataFormatada],
-                    [dict.pdf_nome_completo || 'Nome Completo', document.getElementById('nome')?.value.trim() || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_iniciais || 'Iniciais do Nome', document.getElementById('iniciais')?.value.trim() || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_pais || 'País de Origem', document.getElementById('pais')?.value || 'Brasil'],
-                    [dict.pdf_estado || 'Estado / Departamento', document.getElementById('estado')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_cidade || 'Cidade / Localidade', document.getElementById('cidade')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_sexo || 'Sexo Biológico', document.getElementById('biologico')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_fnac || 'Data de Nascimento', document.getElementById('fnac')?.value.trim() || (dict.nao_informado || 'Não informada')],
-                    [dict.pdf_idade || 'Idade Calculada', document.getElementById('edad')?.value ? `${document.getElementById('edad').value} ${dict.pdf_anos || 'anos'}` : (dict.nao_informado || 'Não informada')],
-                    [dict.pdf_repouso || 'Tempo de Repouso Prévio', document.getElementById('minutosRepouso')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_jejum || 'Tempo de Jejum Prévio', document.getElementById('tempoJejum')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_posicao || 'Posição Corporal no Exame', document.getElementById('posicaoCorpo')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_peso || 'Peso Corporal (kg)', document.getElementById('peso')?.value ? `${document.getElementById('peso').value} kg` : (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_altura || 'Altura Corporal (m)', document.getElementById('altura')?.value ? `${document.getElementById('altura').value} m` : (dict.nao_informado || 'Não informada')],
-                    [dict.pdf_imc || 'IMC (Índice de Massa Corporal)', document.getElementById('imc')?.value || (dict.nao_informado || 'Não informado')],
-                    [dict.pdf_latitude || 'Latitude (GPS)', document.getElementById('latitude')?.value.trim() || (dict.pdf_nao_capturada || 'Não capturada')],
-                    [dict.pdf_longitude || 'Longitude (GPS)', document.getElementById('longitude')?.value.trim() || (dict.pdf_nao_capturada || 'Não capturada')]
+                    [dict.lbl_data_atendimento || 'Data do Atendimento', dataFormatada],
+                    [dict.lbl_nome || 'Nome Completo', document.getElementById('nome')?.value.trim() || (dict.nao_informado || 'Não informado')],
+                    [dict.lbl_iniciais || 'Iniciais do Nome', document.getElementById('iniciais')?.value.trim() || (dict.nao_informado || 'Não informado')],
+                    [dict.lbl_sexo || 'Sexo Biológico', document.getElementById('biologico')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.lbl_fnac || 'Data de Nascimento', document.getElementById('fnac')?.value.trim() || (dict.nao_informado || 'Não informada')],
+                    [dict.lbl_idade || 'Idade Calculada', document.getElementById('edad')?.value ? `${document.getElementById('edad').value} ${dict.pdf_anos || 'anos'}` : (dict.nao_informado || 'Não informada')],
+                    [dict.lbl_peso || 'Peso Corporal (kg)', document.getElementById('peso')?.value ? `${document.getElementById('peso').value} kg` : (dict.nao_informado || 'Não informado')],
+                    [dict.lbl_altura || 'Altura Corporal (m)', document.getElementById('altura')?.value ? `${document.getElementById('altura').value} m` : (dict.nao_informado || 'Não informada')],
+                    [dict.lbl_imc || 'IMC (Índice de Massa Corporal)', document.getElementById('imc')?.value || (dict.nao_informado || 'Não informado')],
+                    [dict.lbl_latitude || 'Latitude (GPS)', document.getElementById('latitude')?.value.trim() || (dict.pdf_nao_capturada || 'Não capturada')],
+                    [dict.lbl_longitude || 'Longitude (GPS)', document.getElementById('longitude')?.value.trim() || (dict.pdf_nao_capturada || 'Não capturada')]
                 ];
 
                 // 2. Sinais Vitais com Valores e Referências OMS
                 const dadosSinaisVitais = [
-                    [dict.pdf_pas || 'Pressão Arterial Sistólica (PAS)', document.getElementById('pa_sis')?.value || (dict.nao_informado || 'Não informada'), 'mmHg', '120 mmHg'],
-                    [dict.pdf_pad || 'Pressão Arterial Diastólica (PAD)', document.getElementById('pa_dia')?.value || (dict.nao_informado || 'Não informada'), 'mmHg', '80 mmHg'],
-                    [dict.pdf_gluc_jejum || 'Glicemia em Jejum (Gluc Jejum)', document.getElementById('gluc')?.value || (dict.nao_informado || 'Não informada'), 'mg/dL', '70 – 99 mg/dL'],
-                    [dict.pdf_gluc_ppran || 'Glicemia Pós-Prandial (Gluc PPran)', document.getElementById('gluc_post')?.value || (dict.nao_informado || 'Não informada'), 'mg/dL', '< 140 mg/dL'],
-                    [dict.pdf_temp || 'Temperatura Corporal (Temp)', document.getElementById('temp')?.value || (dict.nao_informado || 'Não informada'), '°C', '36.1 – 37.2 °C'],
-                    [dict.pdf_fc || 'Frequência Cardíaca (FC)', document.getElementById('fc')?.value || (dict.nao_informado || 'Não informada'), 'bpm', '60 – 100 bpm'],
-                    [dict.pdf_fr || 'Frequência Respiratória (FR)', document.getElementById('fr')?.value || (dict.nao_informado || 'Não informada'), 'rpm', '12 – 20 rpm'],
-                    [dict.pdf_sat || 'Saturação de Oxigênio (SatO2)', document.getElementById('sat')?.value || (dict.nao_informado || 'Não informada'), '%', '95 – 100%']
+                    [dict.opt_pas || 'Pressão Arterial Sistólica (PAS)', document.getElementById('pa_sis')?.value || (dict.nao_informado || 'Não informada'), 'mmHg', '120 mmHg'],
+                    [dict.opt_pad || 'Pressão Arterial Diastólica (PAD)', document.getElementById('pa_dia')?.value || (dict.nao_informado || 'Não informada'), 'mmHg', '80 mmHg'],
+                    [dict.lbl_gluc_jejum || 'Glicemia em Jejum', document.getElementById('gluc')?.value || (dict.nao_informado || 'Não informada'), 'mg/dL', '70 – 99 mg/dL'],
+                    [dict.lbl_gluc_ppran || 'Glicemia Pós-Prandial', document.getElementById('gluc_post')?.value || (dict.nao_informado || 'Não informada'), 'mg/dL', '< 140 mg/dL'],
+                    [dict.lbl_temp || 'Temperatura Corporal', document.getElementById('temp')?.value || (dict.nao_informado || 'Não informada'), '°C', '36.1 – 37.2 °C'],
+                    [dict.lbl_fc || 'Frequência Cardíaca', document.getElementById('fc')?.value || (dict.nao_informado || 'Não informada'), 'bpm', '60 – 100 bpm'],
+                    [dict.lbl_fr || 'Frequência Respiratória', document.getElementById('fr')?.value || (dict.nao_informado || 'Não informada'), 'rpm', '12 – 20 rpm'],
+                    [dict.lbl_sat || 'Saturação de Oxigênio', document.getElementById('sat')?.value || (dict.nao_informado || 'Não informada'), '%', '95 – 100%']
                 ];
 
-                // 3. Imunizantes / Vacinas
+                // 3. Fatores Interferentes
+                const interferentesIDs = [
+                    { id: 'interf_med_ansioliticos', nome: dict.interf_med_ansioliticos || 'Ansiolíticos' },
+                    { id: 'interf_med_cardio', nome: dict.interf_med_cardio || 'Cardiovasculares' },
+                    { id: 'interf_med_anticoagulantes', nome: dict.interf_med_anticoagulantes || 'Anticoagulantes / AAS' },
+                    { id: 'interf_med_colesterol', nome: dict.interf_med_colesterol || 'Colesterol (Estatinas/Fibratos)' },
+                    { id: 'interf_med_diabetes', nome: dict.interf_med_diabetes || 'Diabetes / Hipoglicemiantes' },
+                    { id: 'interf_med_antialergicos', nome: dict.interf_med_antialergicos || 'Antialérgicos / Anti-histamínicos' },
+                    { id: 'interf_med_antibioticos', nome: dict.interf_med_antibioticos || 'Antibióticos' },
+                    { id: 'interf_med_antiinflamatorios', nome: dict.interf_med_antiinflamatorios || 'Anti-inflamatório / Corticoides' },
+                    { id: 'interf_estresse', nome: dict.interf_estresse || 'Estresse / ansiedade' },
+                    { id: 'interf_alergia', nome: dict.interf_alergia || 'Crise alérgica ativa' },
+                    { id: 'interf_esf_fisico', nome: dict.interf_esf_fisico || 'Esforço físico recente' },
+                    { id: 'interf_cafeina', nome: dict.interf_cafeina || 'Consumo de cafeína / energético' },
+                    { id: 'interf_alcool', nome: dict.interf_alcool || 'Consumo de bebida alcoólica' },
+                    { id: 'interf_psicoativos', nome: dict.interf_psicoativos || 'Uso de psicoativos / psicotrópicos' },
+                    { id: 'interf_tabagismo', nome: dict.interf_tabagismo || 'Tabagismo' }
+                ];
+                const dadosInterferentes = interferentesIDs.map(item => [
+                    item.nome,
+                    document.getElementById(item.id)?.value || (dict.nao_informado || 'Não informado')
+                ]);
+
+                // 4. Entorno Ecológico
+                const entornoIDs = [
+                    { id: 'entorno_arborizado', nome: dict.entorno_arborizado || 'Ambiente Saudável (Arborizado)' },
+                    { id: 'entorno_lixo', nome: dict.entorno_lixo || 'Presença de lixo / Sem saneamento' },
+                    { id: 'entorno_particulas', nome: dict.entorno_particulas || 'Exposição a partículas em suspensão' },
+                    { id: 'entorno_focos', nome: dict.entorno_focos || 'Focos de infecção / Águas estancadas' },
+                    { id: 'entorno_clima', nome: dict.entorno_clima || 'Exposição a efeitos climáticos externos (calor / frio)' }
+                ];
+                const dadosEntorno = entornoIDs.map(item => [
+                    item.nome,
+                    document.getElementById(item.id)?.value || (dict.nao_informado || 'Não informado')
+                ]);
+
+                // 5. Histórico Vacinal
                 const vacinasIDs = [
-                    { id: 'vac_bcg', nome: dict.vac_bcg || 'BCG (Tuberculose)' },
+                    { id: 'vac_bcg', nome: dict.vac_bcg || 'BCG' },
                     { id: 'vac_dtp', nome: dict.vac_dtp || 'DTP / Pentavalente' },
-                    { id: 'vac_polio', nome: dict.vac_polio || 'Poliomielite (VIP/VOP)' },
+                    { id: 'vac_polio', nome: dict.vac_polio || 'Poliomielite' },
                     { id: 'vac_scr', nome: dict.vac_scr || 'Tríplice Viral (SCR)' },
                     { id: 'vac_hepb', nome: dict.vac_hepb || 'Hepatite B' },
-                    { id: 'vac_hpv', nome: dict.vac_hpv || 'HPV (Papilomavírus)' },
+                    { id: 'vac_hpv', nome: dict.vac_hpv || 'HPV' },
                     { id: 'vac_amarela', nome: dict.vac_amarela || 'Febre Amarela' },
-                    { id: 'vac_influenza', nome: dict.vac_influenza || 'Influenza (Gripe Sazonal)' },
+                    { id: 'vac_influenza', nome: dict.vac_influenza || 'Influenza' },
                     { id: 'vac_pneumo', nome: dict.vac_pneumo || 'Pneumocócica' },
                     { id: 'vac_rotavirus', nome: dict.vac_rotavirus || 'Rotavírus' },
                     { id: 'vac_malaria', nome: dict.vac_malaria || 'Malária' },
                     { id: 'vac_covid', nome: dict.vac_covid || 'Covid-19' }
                 ];
-                const dadosVacinas = vacinasIDs.map(v => [v.nome, document.getElementById(v.id)?.value || (dict.nao_informado || 'Não Informado')]);
+                const dadosVacinas = vacinasIDs.map(item => [
+                    item.nome,
+                    document.getElementById(item.id)?.value || (dict.opt_nao_informado || 'Não Informado')
+                ]);
 
-                // 4. Fatores Interferentes e Entorno Ecológico
-                const interferentesIDs = [
-                    { id: 'interf_esf_fisico', nome: dict.interf_esf_fisico || 'Esforço Físico Recente' },
-                    { id: 'interf_cafeina', nome: dict.interf_cafeina || 'Consumo de Cafeína / Energético' },
-                    { id: 'interf_alcool', nome: dict.interf_alcool || 'Consumo de Bebida Alcoólica' },
-                    { id: 'interf_psicoativos', nome: dict.interf_psicoativos || 'Uso de Psicoativos / Psicotrópicos' },
-                    { id: 'interf_tabagismo', nome: dict.interf_tabagismo || 'Tabagismo' },
-                    { id: 'interf_estresse', nome: dict.interf_estresse || 'Estresse / Ansiedade' },
-                    { id: 'interf_alergia', nome: dict.interf_alergia || 'Crise Alérgica Ativa' },
-                    { id: 'interf_med_ansioliticos', nome: dict.interf_med_ansioliticos || 'Med. Ansiolíticos' },
-                    { id: 'interf_med_cardio', nome: dict.interf_med_cardio || 'Med. Cardiovasculares' },
-                    { id: 'interf_med_anticoagulantes', nome: dict.interf_med_anticoagulantes || 'Med. Anticoagulantes / AAS' },
-                    { id: 'interf_med_colesterol', nome: dict.interf_med_colesterol || 'Med. para Colesterol (estatinas/fibratos)' },
-                    { id: 'interf_med_diabetes', nome: dict.interf_med_diabetes || 'Med. para Diabetes / Hipoglicemiantes' },
-                    { id: 'interf_med_antialergicos', nome: dict.interf_med_antialergicos || 'Med. Antialérgicos / Anti-histamínicos' },
-                    { id: 'interf_med_antibioticos', nome: dict.interf_med_antibioticos || 'Med. Antibióticos' },
-                    { id: 'interf_med_antiinflamatorios', nome: dict.interf_med_antiinflamatorios || 'Med. Anti-inflamatório / Corticoides' }
-                ];
-                const dadosInterferentes = interferentesIDs.map(i => [i.nome, document.getElementById(i.id)?.value || (dict.nao_informado || 'Não informado')]);
-
-                const entornoIDs = [
-                    { id: 'entorno_arborizado', nome: dict.entorno_arborizado || 'Ambiente Saudável (Arborizado)' },
-                    { id: 'entorno_lixo', nome: dict.entorno_lixo || 'Presença de Lixo / Sem Saneamento' },
-                    { id: 'entorno_particulas', nome: dict.entorno_particulas || 'Exposição a Partículas em Suspensão' },
-                    { id: 'entorno_focos', nome: dict.entorno_focos || 'Focos de Infecção / Águas Estancadas' },
-                    { id: 'entorno_clima', nome: dict.entorno_clima || 'Exposição a Efeitos Climáticos Extremos' }
-                ];
-                const dadosEntorno = entornoIDs.map(e => [e.nome, document.getElementById(e.id)?.value || (dict.nao_informado || 'Não informado')]);
-
-                // Sugestões Automáticas (OMS) Sanitizadas
-                const sugestoesItems = document.querySelectorAll('#lista-sugestoes li');
-                let sugestoesStr = "";
-                sugestoesItems.forEach((li) => {
-                    let txt = li.innerText || li.textContent;
-                    if (!txt.includes("Insira os sinais vitais")) {
-                        txt = txt.replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '')
-                                 .replace(/[^\x00-\x7F\u00C0-\u00FF]/g, '')
-                                 .trim();
-                        if (txt) sugestoesStr += `- ${txt}\n`;
-                    }
-                });
-                if (sugestoesStr === "") {
-                    sugestoesStr = dict.pdf_sem_sugestoes || "Nenhum sinal vital alterado para gerar sugestões.";
+                // 6. Sugestões Automáticas
+                const listaSugestoesEl = document.querySelectorAll('#lista-sugestoes li');
+                const dadosSugestoes = Array.from(listaSugestoesEl).map(li => [li.innerText.trim()]);
+                if (dadosSugestoes.length === 0) {
+                    dadosSugestoes.push([dict.pdf_sem_sugestoes || 'Nenhum sinal vital alterado para gerar sugestões.']);
                 }
 
-                // Cabeçalho PDF Verde
-                doc.setFillColor(0, 104, 71); 
-                doc.rect(0, 0, 210, 18, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(12);
-                doc.text(dict.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 105, 12, { align: "center" });
+                // GERAÇÃO DAS TABELAS NO PDF
+                let currentY = 15;
 
                 // Tabela 1: Informações Pessoais
                 doc.autoTable({
-                    startY: 22,
-                    margin: { left: 15, right: 15 },
+                    ...defaultTableConfig,
+                    startY: currentY,
                     head: [[dict.pdf_th_parametro || 'PARÂMETRO / DADO', dict.pdf_th_registro || 'REGISTRO']],
-                    body: dadosPessoais,
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { 
-                        fontSize: 7, 
-                        cellPadding: 1.2,
-                        overflow: 'linebreak'
-                    },
-                    columnStyles: { 
-                        0: { cellWidth: 50, fontStyle: 'bold' },
-                        1: { cellWidth: 120 } // 50 + 120 = 170mm
-                    }
+                    body: dadosPessoais
                 });
-                
+                currentY = doc.lastAutoTable.finalY + 6;
+
                 // Tabela 2: Sinais Vitais
                 doc.autoTable({
-                    startY: doc.lastAutoTable.finalY + 3,
-                    margin: { left: 15, right: 15 },
-                    head: [[dict.pdf_th_sinal || 'SINAL VITAL', dict.pdf_th_valor || 'VALOR MEDIDO', dict.pdf_th_unidade || 'UNIDADE', dict.pdf_th_referencia || 'REFERÊNCIA OMS']],
-                    body: dadosSinaisVitais,
-                    theme: 'grid',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { 
-                        fontSize: 7, 
-                        cellPadding: 1.2,
-                        overflow: 'linebreak' // Adicionado para impedir estouro
-                    },
-                    columnStyles: { 
-                        0: { cellWidth: 55, fontStyle: 'bold' },
-                        1: { cellWidth: 30 },
-                        2: { cellWidth: 25 },
-                        3: { cellWidth: 60 } // 55 + 30 + 25 + 60 = 170mm
-                    }
+                    ...defaultTableConfig,
+                    startY: currentY,
+                    head: [[
+                        dict.pdf_th_sinal || 'SINAL VITAL',
+                        dict.pdf_th_valor || 'VALOR MEDIDO',
+                        dict.pdf_th_unidade || 'UNIDADE',
+                        dict.pdf_th_referencia || 'REFERÊNCIA OMS'
+                    ]],
+                    body: dadosSinaisVitais
                 });
-                
-                // Tabela 3: Histórico de Vacinação
+                currentY = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 3: Fatores Interferentes
                 doc.autoTable({
-                    startY: doc.lastAutoTable.finalY + 3,
-                    margin: { left: 15, right: 15 },
-                    head: [[dict.pdf_th_vacina || 'IMUNIZANTE / VACINA', dict.pdf_th_status || 'STATUS DE VACINAÇÃO']],
-                    body: dadosVacinas,
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { 
-                        fontSize: 7, 
-                        cellPadding: 1.2,
-                        overflow: 'linebreak' // Adicionado para impedir estouro
-                    },
-                    columnStyles: { 
-                        0: { cellWidth: 50, fontStyle: 'bold' },
-                        1: { cellWidth: 120 } // 50 + 120 = 170mm
-                    }
+                    ...defaultTableConfig,
+                    startY: currentY,
+                    head: [[dict.pdf_th_interferentes || 'FATORES INTERFERENTES', dict.pdf_th_detalhes || 'DETALHES']],
+                    body: dadosInterferentes
                 });
-                
-                // Tabela 4: Fatores Interferentes, Entorno e Sugestões OMS
+                currentY = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 4: Entorno Ecológico
                 doc.autoTable({
-                    startY: doc.lastAutoTable.finalY + 3,
-                    margin: { left: 15, right: 15 },
-                    head: [[dict.pdf_th_interferentes || 'FATORES INTERFERENTES E ENTORNO ECOLÓGICO', dict.pdf_th_detalhes || 'DETALHES']],
-                    body: [
-                        ...dadosInterferentes, 
-                        ...dadosEntorno, 
-                        [dict.pdf_acoes_sugeridas || 'Ações Sugeridas (OMS)', sugestoesStr.trim()]
-                    ],
-                    theme: 'striped',
-                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold' },
-                    styles: { 
-                        fontSize: 7, 
-                        cellPadding: 1.2, 
-                        overflow: 'linebreak' 
-                    },
-                    columnStyles: { 
-                        0: { cellWidth: 50, fontStyle: 'bold' },
-                        1: { cellWidth: 120 } // 50 + 120 = 170mm
-                    }
+                    ...defaultTableConfig,
+                    startY: currentY,
+                    head: [[dict.pdf_th_entorno || 'ENTORNO ECOLÓGICO', dict.pdf_th_condicao || 'CONDIÇÃO']],
+                    body: dadosEntorno
+                });
+                currentY = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 5: Vacinas
+                doc.autoTable({
+                    ...defaultTableConfig,
+                    startY: currentY,
+                    head: [[dict.pdf_th_vacina || 'VACINA / IMUNIZANTE', dict.pdf_th_status || 'STATUS']],
+                    body: dadosVacinas
+                });
+                currentY = doc.lastAutoTable.finalY + 6;
+
+                // Tabela 6: Sugestões Automáticas
+                doc.autoTable({
+                    ...defaultTableConfig,
+                    startY: currentY,
+                    head: [[dict.pdf_th_sugestoes || 'SUGESTÕES AUTOMÁTICAS (OMS)']],
+                    body: dadosSugestoes
                 });
 
-                // Rodapé Legal do Documento
-                let y = doc.lastAutoTable.finalY + 6;
-                doc.setFontSize(7);
-                doc.setTextColor(80, 80, 80);
-                doc.setFont("helvetica", "normal");
+                // FORMATAR CABEÇALHO E RODAPÉ EM TODAS AS PÁGINAS
+                const totalPages = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= totalPages; i++) {
+                    doc.setPage(i);
+                    
+                    // Cabeçalho
+                    doc.setFontSize(8);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 104, 71);
+                    doc.text(dict.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 15, 12);
+                    doc.setDrawColor(0, 104, 71);
+                    doc.setLineWidth(0.3);
+                    doc.line(15, 14, 195, 14);
 
-                const advTitulo = dict.adv_titulo || '';
-                const advTexto = dict.adv_texto || 'Declaro que concordo com os Termos de Uso - educativo para o autocuidado na atenção primária - e entendo que este app não substitui a consulta com meu médico.';
-                const footerLinha3 = dict.footer_linha3 || 'Formulário filantrópico www.vitalsig.info - sem custos | Leia 1 Cor. 13.2';
-                const footerAutor = dict.footer_autor || '';
-
-                if (advTitulo || advTexto) {
-                    doc.text(`${advTitulo} ${advTexto}`.trim(), 105, y, { maxWidth: 180, align: "center" });
-                    y += 6;
-                }
-                
-                if (footerLinha3 || footerAutor) {
-                    doc.text(`${footerLinha3} ${footerAutor}`.trim(), 105, y, { maxWidth: 180, align: "center" });
+                    // Rodapé
+                    doc.setFontSize(7);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(100, 100, 100);
+                    doc.line(15, 280, 195, 280);
+                    
+                    const strPagina = `Página ${i} de ${totalPages}`;
+                    doc.text(strPagina, 195, 284, { align: 'right' });
+                    doc.text("TRAVASSOS, L.R.; 2026 | Formulario Filantrópico - Sem custos", 15, 284);
                 }
 
-                // Nome do Arquivo
+                // Nome do arquivo gerado
+
                 const campoIniciais = document.getElementById('iniciais')?.value.trim().toUpperCase().replace(/\s+/g, '') || 'NC';
                 const agora = new Date();
                 const dataHoraFormatada = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}-${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}`;
@@ -2363,5 +2133,5 @@
                 }
              }
           </script>
-    </body>
+      </body>
 </html>
