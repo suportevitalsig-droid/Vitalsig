@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta Tags Anti-Cache para forçar atualização no celular -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
     <title data-i18n="titulo_pagina">V I T A L s i g . i n f o</title>
 
     <!-- Configurações PWA -->
@@ -23,12 +29,30 @@
     <meta property="og:url" content="https://www.vitalsig.info" />
     <meta property="og:type" content="website" />
 
+    <!-- CÓDIGO NOVO COM LIMPEZA DE CACHE -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker registrado:', reg))
-                    .catch(err => console.error('Erro no Service Worker:', err));
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    // Força a verificação de nova versão na Vercel
+                    reg.update();
+    
+                    reg.onupdatefound = () => {
+                        const novoWorker = reg.installing;
+                        novoWorker.onstatechange = () => {
+                            if (novoWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Limpa todos os caches antigos salvos no dispositivo do utilizador
+                                caches.keys().then(names => {
+                                    for (let name of names) {
+                                        caches.delete(name);
+                                    }
+                                });
+                                // Recarrega a página automaticamente com a nova versão
+                                window.location.reload();
+                            }
+                        };
+                    };
+                }).catch(err => console.error('Erro no Service Worker:', err));
             });
         }
     </script>
