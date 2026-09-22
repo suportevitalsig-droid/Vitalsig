@@ -511,17 +511,17 @@
         </div>
 
         <!-- Modal / Popup de Permissão do GPS -->
-        <div id="modal-gps" class="modal-gps-overlay" style="display: none;">
-            <div class="modal-gps-card">
-                <div class="modal-gps-icon">📍</div>
-                <h3>Ativar Localização</h3>
-                <p>Para registrar com precisão seus sinais vitais e localização, precisamos do acesso ao seu GPS.</p>
-                <div class="modal-gps-botoes">
-                    <button type="button" class="btn-gps-permitir" onclick="confirmarEAtivarGPS()">Permitir GPS</button>
-                    <button type="button" class="btn-gps-negar" onclick="fecharModalGPS()">Agora Não</button>
-                </div>
-            </div>
-        </div>
+      <!-- Modal de GPS -->
+      <div id="modal-gps" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
+          <div style="background: #fff; padding: 20px; border-radius: 8px; text-align: center; max-width: 320px; width: 90%;">
+              <h3>Ativar Localização</h3>
+              <p>Para registrar com precisão seus sinais vitais e localização, precisamos do acesso ao seu GPS.</p>
+              <div style="display: flex; gap: 10px; margin-top: 15px;">
+                  <button id="btn-permitir-gps" type="button" style="flex: 1; padding: 10px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer;">Permitir GPS</button>
+                  <button id="btn-agora-nao" type="button" style="flex: 1; padding: 10px; background: #e5e7eb; color: #374151; border: none; border-radius: 4px; cursor: pointer;">Agora Não</button>
+              </div>
+          </div>
+      </div>
 
         <form id="formMed">
             <fieldset>
