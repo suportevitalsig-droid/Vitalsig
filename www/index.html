@@ -1266,6 +1266,41 @@
             }
         }
         
+        // Função para fechar o modal e liberar a tela
+        function fecharModalGps() {
+            const modalGps = document.getElementById('modal-gps');
+            if (modalGps) {
+                modalGps.style.display = 'none';
+            }
+        }
+        
+        // 1. Ação do botão "Agora Não"
+        document.getElementById('btn-agora-nao')?.addEventListener('click', () => {
+            fecharModalGps();
+        });
+        
+        // 2. Ação do botão "Permitir GPS"
+        document.getElementById('btn-permitir-gps')?.addEventListener('click', () => {
+            fecharModalGps(); // Fecha o modal imediatamente para liberar a tela
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        
+                        // Preenche os campos e atualiza o mapa
+                        document.getElementById('latitude').value = lat.toFixed(6);
+                        document.getElementById('longitude').value = lng.toFixed(6);
+                        atualizarMarcadorMapa(lat, lng);
+                    },
+                    (err) => {
+                        console.warn('Erro ou permissão negada no GPS:', err);
+                    }
+                );
+            }
+        });
+        
         // Evento disparado assim que o HTML da página é carregado
         window.addEventListener('DOMContentLoaded', () => {
             preencherSelectsSinais();
@@ -1375,30 +1410,31 @@
             popularSelect('fr', 5, 60, 1, 'rpm', 'opt_selecione');
             popularSelect('sat', 50, 100, 1, '%', 'opt_selecione');
         }
-        function inicializarMapa() {
-            if (typeof L === 'undefined') return;
-            const container = document.getElementById('map');
-            if (!container) return;
-        
-            leafletMap = L.map('map').setView([-15.77972, -47.92972], 4);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            }).addTo(leafletMap);
-        
-            leafletMap.on('click', function(e) {
-                const lat = e.latlng.lat.toFixed(6);
-                const lng = e.latlng.lng.toFixed(6);
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lng;
-                atualizarMarcadorMapa(lat, lng);
-            });
-        
-            // CORREÇÃO PARA CELULAR: recalcula o tamanho do mapa após o carregamento da tela
-            setTimeout(() => {
-                leafletMap.invalidateSize();
-            }, 400);
-        }
+
+      function inicializarMapa() {
+          if (typeof L === 'undefined') return;
+          const container = document.getElementById('map');
+          if (!container) return;
+      
+          leafletMap = L.map('map').setView([-15.77972, -47.92972], 4);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '© OpenStreetMap'
+          }).addTo(leafletMap);
+      
+          leafletMap.on('click', function(e) {
+              const lat = e.latlng.lat.toFixed(6);
+              const lng = e.latlng.lng.toFixed(6);
+              document.getElementById('latitude').value = lat;
+              document.getElementById('longitude').value = lng;
+              atualizarMarcadorMapa(lat, lng);
+          });
+      
+          // CORREÇÃO PARA CELULAR: recalcula o tamanho do mapa após o carregamento da tela
+          setTimeout(() => {
+              leafletMap.invalidateSize();
+          }, 400);
+      }
 
         function atualizarMarcadorMapa(lat, lng) {
             if (!leafletMap) return;
