@@ -1266,11 +1266,17 @@
             }
         }
         
-        // Função para fechar o modal e liberar a tela
         function fecharModalGps() {
             const modalGps = document.getElementById('modal-gps');
             if (modalGps) {
-                modalGps.style.display = 'none';
+                modalGps.style.display = 'none'; // Fecha a janela do modal e remove a camada escura
+            }
+        
+            // Força o Leaflet a recalcular as dimensões e exibir o mapa no celular
+            if (typeof leafletMap !== 'undefined' && leafletMap) {
+                setTimeout(() => {
+                    leafletMap.invalidateSize();
+                }, 300);
             }
         }
         
