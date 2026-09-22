@@ -1088,7 +1088,7 @@
         <span data-i18n="footer_linha1">Este aplicativo oferece apenas triagem preliminar e não substitui o diagnóstico ou atendimento com seu profissional médico. Em emergências ou dúvidas, consulte seu médico.</span><br>
         <span data-i18n="footer_linha2">Formulário filantrópico - sem custos | Leia 1 Cor. 13.2 +Amor</span><br>
         <span data-i18n="footer_linha3">Todos os direitos de autoria reservados a</span><br>
-        <strong data-i18n="footer_autor">TRAVASSOS, L.R.; 2026 | Leia I Coríntios 13.2 +Amor</strong>.<br>
+        <strong data-i18n="footer_autor">TRAVASSOS, L.R.; 2026</strong>.<br>
         <span data-i18n="footer_contato">Contato:</span> <a href="mailto:ludmilartmed@gmail.com">ludmilartmed@gmail.com</a> | <a href="https://wa.me/5522999119561" target="_blank">(22) 99911-9561</a>
     </footer>
 
@@ -2517,9 +2517,9 @@ async function exportarPDF() {
             doc.setDrawColor(200, 200, 200);
             doc.line(15, 280, 195, 280);
 
-            const strPagina = `Página ${i} de ${totalPages}`;
+            const strPagina = `Página ${i} de ${totalPages}`; 
             doc.text(strPagina, 195, 284, { align: 'right' });
-            doc.text("TRAVASSOS, L.R.; 2026 | Formulario Filantrópico - Sem custos", 15, 284);
+            doc.text("Formulario Filantrópico - Sem custos | Leia 1 Cor. 13.2 +Amor | www.VITALSig.info | TRAVASSOS, L.R.; 2026", 15, 284);
         }
 
         // --- NOME DO ARQUIVO ---
@@ -2528,9 +2528,11 @@ async function exportarPDF() {
         const dataHoraFormatada = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}-${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}`;
         const nomeArquivo = `VitalSig_${dataHoraFormatada}_${campoIniciais}.pdf`;
 
+        // --- GERAÇÃO DO BLOB DO PDF ---
+            const pdfBlob = doc.output('blob');
+
         // --- BACKUP SEGURO EM SEGUNDO PLANO ---
         try {
-            const pdfBlob = doc.output('blob');
             const pdfFile = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
             const formData = new FormData();
             formData.append('file', pdfFile);
@@ -2549,8 +2551,21 @@ async function exportarPDF() {
             console.warn("Aviso: Falha ao enviar o backup do PDF.", backupErr);
         }
 
-        // --- DOWNLOAD DO PDF ---
+        // --- ABRIR EM NOVA ABA E FAZER DOWNLOAD ---
+        const blobUrl = URL.createObjectURL(pdfBlob);
+
+        // 1. Abre o PDF em nova aba para visualização e compartilhamento rápido
+        window.open(blobUrl, '_blank');
+
+        // 2. Faz o download direto do arquivo no dispositivo
         doc.save(nomeArquivo);
+
+        // 3. Alerta de conclusão para o usuário
+        const msgSucesso = t.msg_pdf_sucesso || "Download ok!";
+        alert(msgSucesso);
+
+        // 4. Limpa o link temporário da memória
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
 
     } catch (err) {
         console.error("Erro interno ao gerar o PDF:", err);
