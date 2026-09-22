@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vital-v2'; // Incrementado para forçar a atualização
+const CACHE_NAME = 'vital-v3.0.0'; // Incrementado para forçar a atualização
 
 // Lista de arquivos locais essenciais para o funcionamento offline
 const ASSETS_TO_CACHE = [
