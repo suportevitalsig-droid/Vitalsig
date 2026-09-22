@@ -337,7 +337,7 @@
     
     /* Tamanho Padrão para Celulares */
     #map { 
-        height: 280px; 
+        height: 300px; 
         width: 100%; 
         background: #e5e3df; 
         touch-action: pan-x pan-y;
@@ -1258,6 +1258,32 @@
             }
         };
 
+        // Função para exibir o modal de autorização do GPS automaticamente
+        function solicitarGeolocalizacaoAoCarregar() {
+            const modalGps = document.getElementById('modal-gps');
+            if (modalGps) {
+                modalGps.style.display = 'flex';
+            }
+        }
+        
+        // Evento disparado assim que o HTML da página é carregado
+        window.addEventListener('DOMContentLoaded', () => {
+            preencherSelectsSinais();
+            atualizarValoresReferencia(18);
+            validarSinais();
+        
+            const hoje = new Date().toISOString().split('T')[0];
+            const dataMatricula = document.getElementById('dataMatricula');
+            if (dataMatricula) dataMatricula.value = hoje;
+            
+            atualizarStatusRede();
+            inicializarMapa();
+        
+            // Chamada para abrir a solicitação de GPS imediatamente
+            solicitarGeolocalizacaoAoCarregar();
+        });
+
+
         function trocarIdioma(langCode) {
             if (!i18nData[langCode]) return;
             idiomaAtual = langCode;
@@ -1349,18 +1375,17 @@
             popularSelect('fr', 5, 60, 1, 'rpm', 'opt_selecione');
             popularSelect('sat', 50, 100, 1, '%', 'opt_selecione');
         }
-
         function inicializarMapa() {
             if (typeof L === 'undefined') return;
             const container = document.getElementById('map');
             if (!container) return;
-
+        
             leafletMap = L.map('map').setView([-15.77972, -47.92972], 4);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap'
             }).addTo(leafletMap);
-
+        
             leafletMap.on('click', function(e) {
                 const lat = e.latlng.lat.toFixed(6);
                 const lng = e.latlng.lng.toFixed(6);
@@ -1368,6 +1393,11 @@
                 document.getElementById('longitude').value = lng;
                 atualizarMarcadorMapa(lat, lng);
             });
+        
+            // CORREÇÃO PARA CELULAR: recalcula o tamanho do mapa após o carregamento da tela
+            setTimeout(() => {
+                leafletMap.invalidateSize();
+            }, 400);
         }
 
         function atualizarMarcadorMapa(lat, lng) {
