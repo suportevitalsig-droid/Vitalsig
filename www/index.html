@@ -1258,54 +1258,93 @@
             }
         };
 
-        // Função para exibir o modal de autorização do GPS automaticamente
-        function solicitarGeolocalizacaoAoCarregar() {
-            const modalGps = document.getElementById('modal-gps');
-            if (modalGps) {
-                modalGps.style.display = 'flex';
+            // 1. Função para exibir o modal de ativação do GPS
+            function solicitarGeolocalizacaoAoCarregar() {
+                const modalGps = document.getElementById('modal-gps');
+                if (modalGps) {
+                    modalGps.style.display = 'flex';
+                }
             }
-        }
-        
-        function fecharModalGps() {
-            const modalGps = document.getElementById('modal-gps');
-            if (modalGps) {
-                modalGps.style.display = 'none'; // Fecha a janela do modal e remove a camada escura
+            
+            // 2. Função para fechar o modal e atualizar o renderizador do Leaflet
+            function fecharModalGps() {
+                const modalGps = document.getElementById('modal-gps');
+                if (modalGps) {
+                    modalGps.style.display = 'none';
+                }
+                if (typeof leafletMap !== 'undefined' && leafletMap) {
+                    setTimeout(() => {
+                        leafletMap.invalidateSize();
+                    }, 300);
+                }
             }
-        
-            // Força o Leaflet a recalcular as dimensões e exibir o mapa no celular
-            if (typeof leafletMap !== 'undefined' && leafletMap) {
+            
+            // 3. Função para solicitar a permissão nativa do GPS
+            function solicitarLocalizacaoGPS() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                            const lat = pos.coords.latitude.toFixed(6);
+                            const lng = pos.coords.longitude.toFixed(6);
+                            
+                            document.getElementById('latitude').value = lat;
+                            document.getElementById('longitude').value = lng;
+                            atualizarMarcadorMapa(lat, lng);
+                        },
+                        (err) => {
+                            console.warn('Erro ou permissão negada no GPS:', err);
+                        }
+                    );
+                }
+            }
+            
+            // 4. Atualização do marcador e recálculo da imagem do mapa
+            function atualizarMarcadorMapa(lat, lng) {
+                if (!leafletMap) return;
+                const latNum = parseFloat(lat);
+                const lngNum = parseFloat(lng);
+                if (isNaN(latNum) || isNaN(lngNum)) return;
+            
+                if (mapMarker) leafletMap.removeLayer(mapMarker);
+                mapMarker = L.marker([latNum, lngNum]).addTo(leafletMap);
+                leafletMap.setView([latNum, lngNum], 15);
+            
+                // Força o descarregamento das imagens (tiles) do Leaflet no telemóvel
                 setTimeout(() => {
                     leafletMap.invalidateSize();
-                }, 300);
+                }, 200);
             }
-        }
-        
-        // 1. Ação do botão "Agora Não"
-        document.getElementById('btn-agora-nao')?.addEventListener('click', () => {
-            fecharModalGps();
-        });
-        
-        // 2. Ação do botão "Permitir GPS"
-        document.getElementById('btn-permitir-gps')?.addEventListener('click', () => {
-            fecharModalGps(); // Fecha o modal imediatamente para liberar a tela
             
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => {
-                        const lat = pos.coords.latitude;
-                        const lng = pos.coords.longitude;
-                        
-                        // Preenche os campos e atualiza o mapa
-                        document.getElementById('latitude').value = lat.toFixed(6);
-                        document.getElementById('longitude').value = lng.toFixed(6);
-                        atualizarMarcadorMapa(lat, lng);
-                    },
-                    (err) => {
-                        console.warn('Erro ou permissão negada no GPS:', err);
-                    }
-                );
-            }
-        });
+            // 5. Eventos disparados ao carregar a página
+            window.addEventListener('DOMContentLoaded', () => {
+                preencherSelectsSinais();
+                atualizarValoresReferencia(18);
+                validarSinais();
+            
+                const hoje = new Date().toISOString().split('T')[0];
+                const dataMatricula = document.getElementById('dataMatricula');
+                if (dataMatricula) dataMatricula.value = hoje;
+                
+                atualizarStatusRede();
+                inicializarMapa();
+            
+                // Configuração dos cliques do modal
+                const btnAgoraNao = document.getElementById('btn-agora-nao');
+                if (btnAgoraNao) {
+                    btnAgoraNao.addEventListener('click', fecharModalGps);
+                }
+            
+                const btnPermitirGps = document.getElementById('btn-permitir-gps');
+                if (btnPermitirGps) {
+                    btnPermitirGps.addEventListener('click', () => {
+                        fecharModalGps();
+                        solicitarLocalizacaoGPS();
+                    });
+                }
+            
+                // Abre o modal automaticamente assim que o ecra carrega
+                solicitarGeolocalizacaoAoCarregar();
+            });
         
         // Evento disparado assim que o HTML da página é carregado
         window.addEventListener('DOMContentLoaded', () => {
@@ -1319,6 +1358,20 @@
             
             atualizarStatusRede();
             inicializarMapa();
+        
+                // Vínculo dos botões do modal de GPS
+            const btnAgoraNao = document.getElementById('btn-agora-nao');
+            if (btnAgoraNao) {
+                btnAgoraNao.addEventListener('click', fecharModalGps);
+            }
+        
+            const btnPermitirGps = document.getElementById('btn-permitir-gps');
+            if (btnPermitirGps) {
+                btnPermitirGps.addEventListener('click', () => {
+                    fecharModalGps();
+                    solicitarLocalizacaoGPS();
+                });
+            }
         
             // Chamada para abrir a solicitação de GPS imediatamente
             solicitarGeolocalizacaoAoCarregar();
