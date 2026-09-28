@@ -1642,91 +1642,121 @@
             document.getElementById('ref-fr').textContent = `${ref.fr} rpm`;
         }
 
-        function calcularIMC() {
-            const pesoEl = document.getElementById("peso");
-            const alturaEl = document.getElementById("altura");
-            const imcEl = document.getElementById("imc");
-            const legendaEl = document.getElementById("imc-legenda");
+ function calcularIMC() {
+    const pesoEl = document.getElementById("peso");
+    const alturaEl = document.getElementById("altura");
+    const imcEl = document.getElementById("imc");
+    const legendaEl = document.getElementById("imc-legenda");
 
-            if (!pesoEl || !alturaEl || !imcEl) return;
+    if (!pesoEl || !alturaEl || !imcEl) return;
 
-            let peso = parseFloat(pesoEl.value.replace(",", "."));
-            let altura = parseFloat(alturaEl.value.replace(",", "."));
+    // Sanitização e conversão de vírgula para ponto
+    let pesoStr = pesoEl.value.replace(",", ".").trim();
+    let alturaStr = alturaEl.value.replace(",", ".").trim();
 
-            if (!isNaN(peso) && !isNaN(altura) && peso > 0 && altura > 0) {
-                if (altura > 3) {
-                    altura = altura / 100;
-                }
+    let peso = parseFloat(pesoStr);
+    let altura = parseFloat(alturaStr);
 
-                let imc = peso / (altura * altura);
-                imcEl.value = imc.toFixed(1);
-
-                let resultado = classificarIMC(imc);
-
-                if (legendaEl) {
-                    legendaEl.innerText = resultado.mensagem;
-                    legendaEl.className = "imc-status status-" + resultado.tipo;
-                }
-
-                if (typeof validarSinais === "function") validarSinais();
-                return resultado;
-            } else {
-                imcEl.value = "--";
-                if (legendaEl) legendaEl.innerText = "";
-                if (typeof validarSinais === "function") validarSinais();
-            }
+    if (!isNaN(peso) && !isNaN(altura) && peso > 0 && altura > 0) {
+        // Converte centímetros para metros caso seja digitado ex: 154
+        if (altura > 3) {
+            altura = altura / 100;
         }
 
-        function classificarIMC(imc) {
-            let alterado = false;
-            let mensagem = "";
-            let tipo = "ok";
+        let imc = peso / (altura * altura);
+        imcEl.value = imc.toFixed(1);
 
-            const lang = (typeof idiomaAtual !== "undefined" && idiomaAtual) ? idiomaAtual : "pt";
+        // Captura a idade preenchida no formulário (padrão 18 anos se vazio)
+        let idade = parseInt(document.getElementById('edad')?.value) || 18;
 
-            const txtEsl = {
-                pt: {
-                    abaixo: "IMC - Abaixo do peso (< 18.5 kg/m²). SUGESTÃO: Avaliar estado nutricional.",
-                    norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGESTÃO: Manter hábitos saudáveis.",
-                    sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGESTÃO: Reeducação alimentar e exercício.",
-                    ob1: "IMC - Obesidade Grau I (30.0–34.9 kg/m²). SUGESTÃO: Acompanhamento nutricional e médico.",
-                    ob2: "IMC - Obesidade Grau II (35.0–39.9 kg/m²). SUGESTÃO: Consulta médica especializada.",
-                    ob3: "IMC - Obesidade Grau III / Mórbida (≥ 40.0 kg/m²). SUGESTÃO: Acompanhamento médico intensivo."
-                },
-                es: {
-                    abaixo: "IMC - Bajo peso (< 18.5 kg/m²). SUGERENCIA: Evaluar estado nutricional.",
-                    norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGERENCIA: Mantener hábitos saludables.",
-                    sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGERENCIA: Reeducación alimentaria y ejercicio.",
-                    ob1: "IMC - Obesidad Grado I (30.0–34.9 kg/m²). SUGERENCIA: Control nutricional y médico.",
-                    ob2: "IMC - Obesidad Grado II (35.0–39.9 kg/m²). SUGERENCIA: Consulta médica especializada.",
-                    ob3: "IMC - Obesidad Grado III / Mórbida (≥ 40.0 kg/m²). SUGERENCIA: Control médico intensivo."
-                },
-                en: {
-                    abaixo: "BMI - Underweight (< 18.5 kg/m²). RECOMMENDATION: Evaluate nutritional status.",
-                    norm: "BMI - Normal weight (18.5–24.9 kg/m²). RECOMMENDATION: Maintain healthy habits.",
-                    sobrepeso: "BMI - Overweight (25.0–29.9 kg/m²). RECOMMENDATION: Diet re-education and exercise.",
-                    ob1: "BMI - Obesity Class I (30.0–34.9 kg/m²). RECOMMENDATION: Nutritional and medical follow-up.",
-                    ob2: "BMI - Obesity Class II (35.0–39.9 kg/m²). RECOMMENDATION: Specialized medical consultation.",
-                    ob3: "BMI - Obesity Class III / Severe (≥ 40.0 kg/m²). RECOMMENDATION: Intensive medical monitoring."
-                }
-            }[lang];
+        let resultado = classificarIMC(imc, idade);
 
+        if (legendaEl) {
+            legendaEl.innerText = resultado.mensagem;
+            legendaEl.className = "imc-status status-" + resultado.tipo;
+        }
+
+        if (typeof validarSinais === "function") validarSinais();
+        return resultado;
+    } else {
+        imcEl.value = "--";
+        if (legendaEl) legendaEl.innerText = "";
+        if (typeof validarSinais === "function") validarSinais();
+    }
+}
+
+    function classificarIMC(imc, idade = 18) {
+        let alterado = false;
+        let mensagem = "";
+        let tipo = "ok";
+    
+        const lang = (typeof idiomaAtual !== "undefined" && idiomaAtual) ? idiomaAtual : "pt";
+    
+        // Textos multilingues para classificação
+        const txtDict = {
+            pt: {
+                abaixo: "IMC - Abaixo do peso (< 18.5 kg/m²). SUGESTÃO: Avaliar estado nutricional.",
+                norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGESTÃO: Manter hábitos saudáveis.",
+                sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGESTÃO: Reeducação alimentar e exercício.",
+                ob1: "IMC - Obesidade Grau I (30.0–34.9 kg/m²). SUGESTÃO: Acompanhamento nutricional e médico.",
+                ob2: "IMC - Obesidade Grau II (35.0–39.9 kg/m²). SUGESTÃO: Consulta médica especializada.",
+                ob3: "IMC - Obesidade Grau III / Mórbida (≥ 40.0 kg/m²). SUGESTÃO: Acompanhamento médico intensivo.",
+                idoso_baixo: "IMC (Idoso) - Baixo peso (< 22.0 kg/m²). SUGESTÃO: Avaliar risco nutricional e sarcopenia.",
+                idoso_norm: "IMC (Idoso) - Adequado / Eutrófico (22.0–27.0 kg/m²). SUGESTÃO: Manter acompanhamento de rotina.",
+                idoso_sobre: "IMC (Idoso) - Sobrepeso / Obesidade (> 27.0 kg/m²). SUGESTÃO: Avaliar composição corporal."
+            },
+            es: {
+                abaixo: "IMC - Bajo peso (< 18.5 kg/m²). SUGERENCIA: Evaluar estado nutricional.",
+                norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGERENCIA: Mantener hábitos saludables.",
+                sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGERENCIA: Reeducación alimentaria y ejercicio.",
+                ob1: "IMC - Obesidad Grado I (30.0–34.9 kg/m²). SUGERENCIA: Control nutricional y médico.",
+                ob2: "IMC - Obesidad Grado II (35.0–39.9 kg/m²). SUGERENCIA: Consulta médica especializada.",
+                ob3: "IMC - Obesidad Grado III / Mórbida (≥ 40.0 kg/m²). SUGERENCIA: Control médico intensivo.",
+                idoso_baixo: "IMC (Adulto mayor) - Bajo peso (< 22.0 kg/m²). SUGERENCIA: Evaluar riesgo nutricional.",
+                idoso_norm: "IMC (Adulto mayor) - Adecuado (22.0–27.0 kg/m²). SUGERENCIA: Mantener control de rutina.",
+                idoso_sobre: "IMC (Adulto mayor) - Sobrepeso / Obesidad (> 27.0 kg/m²). SUGERENCIA: Evaluar composición corporal."
+            },
+            en: {
+                abaixo: "BMI - Underweight (< 18.5 kg/m²). RECOMMENDATION: Evaluate nutritional status.",
+                norm: "BMI - Normal weight (18.5–24.9 kg/m²). RECOMMENDATION: Maintain healthy habits.",
+                sobrepeso: "BMI - Overweight (25.0–29.9 kg/m²). RECOMMENDATION: Diet re-education and exercise.",
+                ob1: "BMI - Obesity Class I (30.0–34.9 kg/m²). RECOMMENDATION: Nutritional and medical follow-up.",
+                ob2: "BMI - Obesity Class II (35.0–39.9 kg/m²). RECOMMENDATION: Specialized medical consultation.",
+                ob3: "BMI - Obesity Class III / Severe (≥ 40.0 kg/m²). RECOMMENDATION: Intensive medical monitoring.",
+                idoso_baixo: "BMI (Elderly) - Underweight (< 22.0 kg/m²). RECOMMENDATION: Evaluate nutritional risk.",
+                idoso_norm: "BMI (Elderly) - Adequate / Normal (22.0–27.0 kg/m²). RECOMMENDATION: Maintain routine checkups.",
+                idoso_sobre: "BMI (Elderly) - Overweight / Obesity (> 27.0 kg/m²). RECOMMENDATION: Evaluate body composition."
+            }
+        }[lang] || txtDict.pt;
+    
+        // Tabela Adultos (< 60 anos) - OMS
+        if (idade < 60) {
             if (imc < 18.5) {
-                alterado = true; mensagem = txtEsl.abaixo; tipo = "aviso";
+                alterado = true; mensagem = txtDict.abaixo; tipo = "aviso";
             } else if (imc < 25.0) {
-                alterado = false; mensagem = txtEsl.norm; tipo = "ok";
+                alterado = false; mensagem = txtDict.norm; tipo = "ok";
             } else if (imc < 30.0) {
-                alterado = true; mensagem = txtEsl.sobrepeso; tipo = "aviso";
+                alterado = true; mensagem = txtDict.sobrepeso; tipo = "aviso";
             } else if (imc < 35.0) {
-                alterado = true; mensagem = txtEsl.ob1; tipo = "alerta";
+                alterado = true; mensagem = txtDict.ob1; tipo = "alerta";
             } else if (imc < 40.0) {
-                alterado = true; mensagem = txtEsl.ob2; tipo = "alerta";
+                alterado = true; mensagem = txtDict.ob2; tipo = "alerta";
             } else {
-                alterado = true; mensagem = txtEsl.ob3; tipo = "alerta";
+                alterado = true; mensagem = txtDict.ob3; tipo = "alerta";
             }
-
-            return { imcAlterado: alterado, mensagem, tipo };
+        } else {
+            // Tabela Idosos (≥ 60 anos) - OPAS / Ministério da Saúde
+            if (imc < 22.0) {
+                alterado = true; mensagem = txtDict.idoso_baixo; tipo = "aviso";
+            } else if (imc <= 27.0) {
+                alterado = false; mensagem = txtDict.idoso_norm; tipo = "ok";
+            } else {
+                alterado = true; mensagem = txtDict.idoso_sobre; tipo = "aviso";
+            }
         }
+    
+        return { imcAlterado: alterado, mensagem, tipo };
+    }
 
         function classificarPA(pas, pad, idade) {
             let pasAlterada = false;
