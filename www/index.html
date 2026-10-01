@@ -2604,32 +2604,7 @@ async function exportarPDF() {
     }
 }
 <!-- Bibliotecas carregadas primeiro -->
-  <script src="./lib/html2pdf.bundle.min.js"></script>
-
-  <!-- Seu código de exportação de PDF -->
-  <script>
-    function exportarPDF() {
-      const elemento = document.getElementById('area-relatorio'); // ID do elemento com o formulário/relatório
-      
-      if (!elemento) {
-        alert('Elemento do relatório não encontrado!');
-        return;
-      }
-
-      const opcoes = {
-        margin:       10,
-        filename:     `VITALSIG_Relatorio_${new Date().toISOString().slice(0,10)}.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      // Executa a geração e descarrega o ficheiro diretamente no dispositivo
-      html2pdf().set(opcoes).from(elemento).save();
-    }
-  </script>
-</body>
-</html>
+  <script src="./lib/jspdf.plugin.autotable.min.js"></script>
 
     </script>
 </body>
