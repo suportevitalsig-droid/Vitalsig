@@ -12,6 +12,7 @@ const ASSETS_TO_CACHE = [
   './lib/xlsx.full.min.js',
   './lib/jspdf.umd.min.js',
   './lib/jspdf.plugin.autotable.min.js'
+  ./lib/html2pdf.bundle.min.js'
 ];
 
 // Instalação do Service Worker com tratamento tolerante a falhas individuais
