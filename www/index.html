@@ -57,14 +57,14 @@
         }
     </script>
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-
-    <!-- Bibliotecas JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+   <!-- Leaflet CSS Local -->
+  <link rel="stylesheet" href="./lib/leaflet.css" />
+  
+  <!-- Bibliotecas JS Locais -->
+  <script src="./lib/xlsx.full.min.js"></script>
+  <script src="./lib/jspdf.umd.min.js"></script>
+  <script src="./lib/jspdf.plugin.autotable.min.js"></script>
+  <script src="./lib/leaflet.js"></script>
 
     <style>
         :root { 
@@ -128,17 +128,39 @@
             gap: 12px; 
         }
 
+        .header-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+            gap: 8px;
+        }
+
         .lang-selector-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            margin-bottom: 8px;
             background: rgba(255, 255, 255, 0.15);
             padding: 6px 12px;
             border-radius: 6px;
-            width: 100%;
-            max-width: 250px;
+            flex: 1;
+        }
+
+        .visitor-counter {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            height: 33px;
         }
 
         .lang-buttons { display: flex; gap: 6px; justify-content: center; }
@@ -521,18 +543,24 @@
 <body>
     
     <div class="form-card">
-        <div class="form-header-title">
-            <div class="lang-selector-container">
-                <div class="lang-buttons">
-                    <button class="btn-lang active" id="btn-lang-pt" onclick="trocarIdioma('pt')" data-i18n="btn_pt">PT</button>
-                    <button class="btn-lang" id="btn-lang-es" onclick="trocarIdioma('es')" data-i18n="btn_es">ES</button>
-                    <button class="btn-lang" id="btn-lang-en" onclick="trocarIdioma('en')" data-i18n="btn_en">EN</button>
-                </div>
-            </div>
-
-            <img src="img/meu-logo.png" alt="VITAL" style="max-width: 180px; width: 100%; height: auto; object-fit: contain; margin: 8px auto 4px auto; display: block;" onerror="this.style.display='none'">
-            <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
-        </div>
+      <div class="form-header-title">
+          <div style="position: relative; width: 100%; max-width: 320px; display: flex; align-items: center; justify-content: center; min-height: 30px;">
+              <!-- Seletor de Idiomas Centralizado -->
+              <div class="lang-buttons" style="margin: 0 auto;">
+                  <button class="btn-lang active" id="btn-lang-pt" onclick="trocarIdioma('pt')" data-i18n="btn_pt">PT</button>
+                  <button class="btn-lang" id="btn-lang-es" onclick="trocarIdioma('es')" data-i18n="btn_es">ES</button>
+                  <button class="btn-lang" id="btn-lang-en" onclick="trocarIdioma('en')" data-i18n="btn_en">EN</button>
+              </div>
+      
+              <!-- Contador no Canto Direito (Posicionamento Absoluto) -->
+              <div style="position: absolute; right: 0; background: rgba(255, 255, 255, 0.2); color: white; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; gap: 3px;">
+                  👁️ <span id="visitor-count">319</span>
+              </div>
+          </div>
+      
+          <img src="img/meu-logo.png" alt="VITAL" style="max-width: 180px; width: 100%; height: auto; object-fit: contain; margin: 8px auto 4px auto; display: block;" onerror="this.style.display='none'">
+          <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
+      </div>
 
         <!-- Modal / Popup de Permissão do GPS -->
       <!-- Modal de GPS -->
@@ -1102,6 +1130,7 @@
         const i18nData = {
             pt: {
                 btn_pt: "PT", btn_es: "ES", btn_en: "EN",
+                lbl_acessos: "Acessos:",
                 titulo_pagina: "V I T A L s i g . i n f o",
                 titulo_header: "SINAIS VITAIS",
                 secao_info_pessoais: "Informações Pessoais",
@@ -1154,7 +1183,7 @@
                 imc_abaixo: "Abaixo do peso", imc_eutrofico: "Eutrófico (Peso Normal)", imc_sobrepeso: "Sobrepeso", imc_obesidade: "Obesidade",
                 opt_selecione: "Selecione",
                 nao_informado: "Não informado", pdf_nao_capturada: "Não capturada", pdf_anos: "anos",
-                pdf_titulo_cabecalho: "SINAIS VITAIS | www.VitalSig.info", pdf_th_parametro: "PARÂMETRO / DADO", pdf_th_registro: "REGISTRO",
+                pdf_titulo_cabecalho: "SINAIS VITAIS | www.VitalSig.info", pdf_th_parametro: "PARÂMETRO / DATO", pdf_th_registro: "REGISTRO",
                 pdf_th_sinal: "SINAL VITAL", pdf_th_valor: "VALOR MEDIDO", pdf_th_unidade: "UNIDADE", pdf_th_referencia: "REFERÊNCIA OMS",
                 pdf_th_interferentes: "FATORES INTERFERENTES", pdf_th_detalhes: "DETALHES", pdf_th_entorno: "ENTORNO ECOLÓGICO", pdf_th_condicao: "CONDIÇÃO",
                 pdf_th_vacina: "VACINA / IMUNIZANTE", pdf_th_status: "STATUS", pdf_th_sugestoes: "SUGESTÕES AUTOMÁTICAS (OMS)", pdf_sem_sugestoes: "Nenhum sinal vital alterado para gerar sugestões.",
@@ -1162,6 +1191,7 @@
             },
             es: {
                 btn_pt: "PT", btn_es: "ES", btn_en: "EN",
+                lbl_acessos: "Visitas:",
                 titulo_pagina: "V I T A L s i g . i n f o",
                 titulo_header: "SIGNOS VITALES",
                 secao_info_pessoais: "Información Personal",
@@ -1216,12 +1246,13 @@
                 nao_informado: "No informado", pdf_nao_capturada: "No capturada", pdf_anos: "años",
                 pdf_titulo_cabecalho: "SIGNOS VITALES | www.VitalSig.info", pdf_th_parametro: "PARÁMETRO / DATO", pdf_th_registro: "REGISTRO",
                 pdf_th_sinal: "SIGNO VITAL", pdf_th_valor: "VALOR MEDIDO", pdf_th_unidade: "UNIDAD", pdf_th_referencia: "REFERENCIA OMS",
-                pdf_th_interferentes: "FACTORES INTERFERENTES", pdf_th_detalhes: "DETALLES", pdf_th_entorno: "ENTORNO ECOLÓGICO", pdf_th_condicao: "CONDICIÓN",
+                pdf_th_interferentes: "FACTORES INTERFERENTES", pdf_th_detalhes: "DETALHES", pdf_th_entorno: "ENTORNO ECOLÓGICO", pdf_th_condicao: "CONDICIÓN",
                 pdf_th_vacina: "VACUNA / INMUNIZANTE", pdf_th_status: "ESTADO", pdf_th_sugestoes: "SUGERENCIAS AUTOMÁTICAS (OMS)", pdf_sem_sugestoes: "Ningún signo vital alterado para generar sugerencias.",
                 msg_cronometro_fim: "¡Se ha completado el tiempo de 1 minuto!"
             },
             en: {
                 btn_pt: "PT", btn_es: "ES", btn_en: "EN",
+                lbl_acessos: "Views:",
                 titulo_pagina: "V I T A L s i g . i n f o",
                 titulo_header: "VITAL SIGNS",
                 secao_info_pessoais: "Personal Information",
@@ -1341,6 +1372,19 @@
             
             // 5. Eventos disparados ao carregar a página
             window.addEventListener('DOMContentLoaded', () => {
+                // Inicializar e incrementar o contador de visitantes (mínimo 319)
+                let visitas = localStorage.getItem("vitalsig_visitas");
+                if (!visitas) {
+                    visitas = 319;
+                } else {
+                    visitas = parseInt(visitas) + 1;
+                }
+                localStorage.setItem("vitalsig_visitas", visitas);
+                const contadorEl = document.getElementById("visitor-count");
+                if (contadorEl) {
+                    contadorEl.innerText = visitas;
+                }
+
                 preencherSelectsSinais();
                 atualizarValoresReferencia(18);
                 validarSinais();
@@ -1369,37 +1413,6 @@
                 // Abre o modal automaticamente assim que o ecra carrega
                 solicitarGeolocalizacaoAoCarregar();
             });
-        
-        // Evento disparado assim que o HTML da página é carregado
-        window.addEventListener('DOMContentLoaded', () => {
-            preencherSelectsSinais();
-            atualizarValoresReferencia(18);
-            validarSinais();
-        
-            const hoje = new Date().toISOString().split('T')[0];
-            const dataMatricula = document.getElementById('dataMatricula');
-            if (dataMatricula) dataMatricula.value = hoje;
-            
-            atualizarStatusRede();
-            inicializarMapa();
-        
-                // Vínculo dos botões do modal de GPS
-            const btnAgoraNao = document.getElementById('btn-agora-nao');
-            if (btnAgoraNao) {
-                btnAgoraNao.addEventListener('click', fecharModalGps);
-            }
-        
-            const btnPermitirGps = document.getElementById('btn-permitir-gps');
-            if (btnPermitirGps) {
-                btnPermitirGps.addEventListener('click', () => {
-                    fecharModalGps();
-                    solicitarLocalizacaoGPS();
-                });
-            }
-        
-            // Chamada para abrir a solicitação de GPS imediatamente
-            solicitarGeolocalizacaoAoCarregar();
-        });
 
 
         function trocarIdioma(langCode) {
@@ -1529,19 +1542,6 @@
             mapMarker = L.marker([latNum, lngNum]).addTo(leafletMap);
             leafletMap.setView([latNum, lngNum], 15);
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            preencherSelectsSinais();
-            atualizarValoresReferencia(18);
-            validarSinais();
-
-            const hoje = new Date().toISOString().split('T')[0];
-            const dataMatricula = document.getElementById('dataMatricula');
-            if (dataMatricula) dataMatricula.value = hoje;
-            
-            atualizarStatusRede();
-            inicializarMapa();
-        });
 
         function atualizarStatusRede() {
             const statusEl = document.getElementById('status-rede');
@@ -2266,8 +2266,6 @@
                 },
                 (err) => {
                     console.error("Erro GPS:", err);
-                    // Dica: No carregamento automático, é recomendável usar console.warn em vez de alert 
-                    // para não bloquear a navegação caso o usuário recuse o GPS logo de cara.
                 },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
@@ -2379,7 +2377,7 @@ async function exportarPDF() {
         startY = doc.lastAutoTable.finalY + 4;
 
 // =========================================================================
-        // --- NOVO TRECHO: TABELA DE SUGESTÕES / AVALIAÇÃO CLÍNICA ---
+        // --- TABELA DE SUGESTÕES / AVALIAÇÃO CLÍNICA ---
         // =========================================================================
         const elementosSugestao = document.querySelectorAll('#lista-sugestoes li');
         const sugestoesBody = [];
