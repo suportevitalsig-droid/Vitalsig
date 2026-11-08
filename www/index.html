@@ -21,11 +21,8 @@
 
     <!-- Título que aparece no card -->
     <meta property="og:title" content="VITALSig.info" />
-    <!-- Descrição/Slogan ajustada -->
     <meta property="og:description" content="Proteja a saúde de quem você ama controlando os sinais vitais - APS - Atenção Primária à Saúde." />
-    <!-- Caminho correto para o arquivo dentro da pasta /img/ -->
     <meta property="og:image" content="https://www.vitalsig.info/img/meu-logo-green.png" />
-    <!-- URL do seu site -->
     <meta property="og:url" content="https://www.vitalsig.info" />
     <meta property="og:type" content="website" />
 
@@ -34,20 +31,16 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').then(reg => {
-                    // Força a verificação de nova versão na Vercel
                     reg.update();
-    
                     reg.onupdatefound = () => {
                         const novoWorker = reg.installing;
                         novoWorker.onstatechange = () => {
                             if (novoWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // Limpa todos os caches antigos salvos no dispositivo do utilizador
                                 caches.keys().then(names => {
                                     for (let name of names) {
                                         caches.delete(name);
                                     }
                                 });
-                                // Recarrega a página automaticamente com a nova versão
                                 window.location.reload();
                             }
                         };
@@ -372,137 +365,42 @@
             font-weight: bold;
         }
 
-#map-container {
-    margin-top: 8px;
-    border: 1.5px solid var(--verde-principal);
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-}
-    
-    /* Tamanho Padrão para Celulares */
-    #map { 
-        height: 300px; 
-        width: 100%; 
-        background: #e5e3df; 
-        touch-action: pan-x pan-y;
-    }
-    
-    /* Ajuste para Tablets (Telas acima de 600px de largura) */
-    @media (min-width: 600px) {
-        #map {
-            height: 400px;
+        #map-container {
+            margin-top: 8px;
+            border: 1.5px solid var(--verde-principal);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
         }
-    }
     
-    /* Ajuste para Celulares com telas menores (Até 360px de largura) */
-    @media (max-width: 360px) {
-        #map {
-            height: 220px;
+        #map { 
+            height: 300px; 
+            width: 100%; 
+            background: #e5e3df; 
+            touch-action: pan-x pan-y;
         }
-    }
+        
+        @media (min-width: 600px) {
+            #map { height: 400px; }
+        }
+        
+        @media (max-width: 360px) {
+            #map { height: 220px; }
+        }
     
-    .offline-banner {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 1000;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 10px;
-        pointer-events: none;
-    }
-
-/* Fundo escuro semitransparente */
-.modal-gps-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px); /* Efeito focado no celular */
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-}
-
-/* Caixa/Card do Popup */
-.modal-gps-card {
-    background: #ffffff;
-    padding: 24px 20px;
-    border-radius: 12px;
-    max-width: 380px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    animation: popupEntrar 0.3s ease-out;
-}
-
-@keyframes popupEntrar {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-    
-    .modal-gps-icon {
-        font-size: 38px;
-        margin-bottom: 10px;
-    }
-    
-    .modal-gps-card h3 {
-        margin: 0 0 8px 0;
-        color: #1a1a1a;
-        font-size: 18px;
-    }
-          
-          .modal-gps-card p {
-              font-size: 13px;
-              color: #666;
-              margin: 0 0 20px 0;
-              line-height: 1.4;
-          }
-          
-          /* Botões do Popup */
-          .modal-gps-botoes {
-              display: flex;
-              gap: 10px;
-          }
-                    
-          .btn-gps-permitir {
-              flex: 1;
-              background-color: #d32f2f; /* Vermelho */
-              color: #fff;
-              border: none;
-              padding: 10px 14px;
-              border-radius: 6px;
-              font-weight: bold;
-              font-size: 14px;
-              cursor: pointer;
-              transition: background-color 0.2s ease;
-          }
-          
-          /* Efeito ao passar o mouse ou tocar no celular */
-          .btn-gps-permitir:hover,
-          .btn-gps-permitir:active {
-              background-color: #b71c1c; /* Vermelho um pouco mais escuro */
-          }
-          
-          .btn-gps-negar {
-              flex: 1;
-              background-color: #e0e0e0;
-              color: #333;
-              border: none;
-              padding: 10px 14px;
-              border-radius: 6px;
-              font-size: 14px;
-              cursor: pointer;
-          }
-
+        .offline-banner {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            pointer-events: none;
+        }
 
         .cronometro-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 0; }
         .timer-display { font-size: 2.2em; font-weight: bold; color: var(--verde-principal); font-variant-numeric: tabular-nums; margin-bottom: 10px; }
@@ -552,7 +450,7 @@
                   <button class="btn-lang" id="btn-lang-en" onclick="trocarIdioma('en')" data-i18n="btn_en">EN</button>
               </div>
       
-              <!-- Contador no Canto Direito (Posicionamento Absoluto) -->
+              <!-- Contador no Canto Direito -->
               <div style="position: absolute; right: 0; background: rgba(255, 255, 255, 0.2); color: white; padding: 3px 6px; border-radius: 3px; font-size: 0.7rem; font-weight: bold; display: flex; align-items: center; gap: 3px;">
                   👁️ <span id="visitor-count">319</span>
               </div>
@@ -562,7 +460,6 @@
           <h1 class="header-text-title" data-i18n="titulo_header">SINAIS VITAIS</h1>
       </div>
 
-        <!-- Modal / Popup de Permissão do GPS -->
       <!-- Modal de GPS -->
       <div id="modal-gps" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center;">
           <div style="background: #fff; padding: 20px; border-radius: 8px; text-align: center; max-width: 320px; width: 90%;">
@@ -597,7 +494,7 @@
                 <div class="flex-row" style="margin-bottom: 10px;">
                     <div class="form-group" style="flex: 1; min-width: 60px;">
                         <label for="biologico" data-i18n="lbl_sexo">Sexo:</label>
-                        <select id="biologico">
+                        <select id="biologico" onchange="calcularCircunferenciaAbdominal()">
                             <option value="Masculino" data-i18n="sexo_m">M</option>
                             <option value="Feminino" data-i18n="sexo_f">F</option>
                         </select>
@@ -628,6 +525,14 @@
                         <label for="imc" data-i18n="lbl_imc">IMC:</label>
                         <input type="text" id="imc" readonly placeholder="--" style="text-align:center; font-weight:bold;">
                         <span id="imc-legenda" class="imc-status"></span>
+                    </div>
+                    
+                    <!-- Campo de Circunferência Abdominal -->
+                    <div class="form-group" style="margin-top: 8px; width: 100%;">
+                        <label for="circunferencia_abdominal" data-i18n="lbl_circunferencia">Circunferência Abdominal (cm):</label>
+                        <input type="tel" id="circunferencia_abdominal" placeholder="00.0" maxlength="6" oninput="calcularCircunferenciaAbdominal()" style="text-align:center; font-weight:bold;">
+                        <span id="circunferencia-legenda" class="imc-status"></span>
+                        <div id="feedback-circunferencia" class="form-text text-muted" data-i18n="desc_circunferencia">Digite o valor medido na altura da cicatriz umbilical.</div>
                     </div>
                 </div>
             </fieldset>
@@ -726,7 +631,6 @@
                 </div>
             </fieldset>
 
-            <!-- SEÇÃO SEPARADA E DESTACADA PARA MEDICAMENTOS EM USO -->
             <fieldset>
                 <legend data-i18n="secao_interferentes">Medicamentos em Uso</legend>
                 <div class="category-header" data-i18n="cat_medicamentos">Medicamentos em Uso</div>
@@ -1099,9 +1003,6 @@
                     <span class="offline-banner" id="status-rede" data-i18n="status_rede_verificando">Verificando rede...</span>
                     <div id="map"></div>
                 </div>
-                <div class="map-instructions" data-i18n="instrucoes_mapa">
-                    * O GPS físico do celular funciona sem internet. A visualização gráfica do mapa exige conexão para o registro de coordenadas.
-                </div>
             </fieldset>
 
             <div class="advertencia-box">
@@ -1140,6 +1041,11 @@
                 lbl_sexo: "Sexo:", sexo_m: "M", sexo_f: "F",
                 lbl_fnac: "Data de Nascimento:", lbl_idade: "Idade:",
                 lbl_peso: "Peso (kg):", lbl_altura: "Altura (m):", lbl_imc: "IMC:",
+                lbl_circunferencia: "Circunferência Abdominal (cm):",
+                desc_circunferencia: "Digite o valor medido na altura da cicatriz umbilical.",
+                circ_normal: "Circunferência abdominal adequada segundo os parâmetros da OMS.",
+                circ_risco: "Circunferência abdominal com Risco Aumentado para complicações metabólicas.",
+                circ_alto: "Circunferência abdominal com Alto Risco Metabólico. Recomenda-se avaliação clínica.",
                 secao_sinais_vitais: "Sinais Vitais",
                 th_dato: "Dado", th_valor: "Valor", th_ref_oms: "Ref. OMS",
                 lbl_pa: "Pressão Arterial (Sist / Diast)", opt_pas: "PAS", opt_pad: "PAD",
@@ -1201,6 +1107,11 @@
                 lbl_sexo: "Sexo:", sexo_m: "M", sexo_f: "F",
                 lbl_fnac: "Fecha de Nacimiento:", lbl_idade: "Edad:",
                 lbl_peso: "Peso (kg):", lbl_altura: "Altura (m):", lbl_imc: "IMC:",
+                lbl_circunferencia: "Circunferencia Abdominal (cm):",
+                desc_circunferencia: "Ingrese el valor medido a la altura de la cicatriz umbilical.",
+                circ_normal: "Circunferencia abdominal adecuada según los parámetros de la OMS.",
+                circ_risco: "Circunferencia abdominal con Riesgo Aumentado de complicaciones metabólicas.",
+                circ_alto: "Circunferencia abdominal con Alto Riesgo Metabólico. Se recomienda evaluación clínica.",
                 secao_sinais_vitais: "Signos Vitales",
                 th_dato: "Dato", th_valor: "Valor", th_ref_oms: "Ref. OMS",
                 lbl_pa: "Presión Arterial (Sist / Diast)", opt_pas: "PAS", opt_pad: "PAD",
@@ -1262,6 +1173,11 @@
                 lbl_sexo: "Sex:", sexo_m: "M", sexo_f: "F",
                 lbl_fnac: "Date of Birth:", lbl_idade: "Age:",
                 lbl_peso: "Weight (kg):", lbl_altura: "Height (m):", lbl_imc: "BMI:",
+                lbl_circunferencia: "Waist Circumference (cm):",
+                desc_circunferencia: "Enter the measured value at the umbilical scar level.",
+                circ_normal: "Waist circumference appropriate according to WHO parameters.",
+                circ_risco: "Waist circumference with Increased Risk for metabolic complications.",
+                circ_alto: "Waist circumference with High Metabolic Risk. Clinical evaluation recommended.",
                 secao_sinais_vitais: "Vital Signs",
                 th_dato: "Metric", th_valor: "Value", th_ref_oms: "WHO Ref.",
                 lbl_pa: "Blood Pressure (Syst / Diast)", opt_pas: "SBP", opt_pad: "DBP",
@@ -1313,47 +1229,34 @@
             }
         };
 
-            // 1. Função para exibir o modal de ativação do GPS
             function solicitarGeolocalizacaoAoCarregar() {
                 const modalGps = document.getElementById('modal-gps');
-                if (modalGps) {
-                    modalGps.style.display = 'flex';
-                }
+                if (modalGps) { modalGps.style.display = 'flex'; }
             }
             
-            // 2. Função para fechar o modal e atualizar o renderizador do Leaflet
             function fecharModalGps() {
                 const modalGps = document.getElementById('modal-gps');
-                if (modalGps) {
-                    modalGps.style.display = 'none';
-                }
+                if (modalGps) { modalGps.style.display = 'none'; }
                 if (typeof leafletMap !== 'undefined' && leafletMap) {
-                    setTimeout(() => {
-                        leafletMap.invalidateSize();
-                    }, 300);
+                    setTimeout(() => { leafletMap.invalidateSize(); }, 300);
                 }
             }
             
-            // 3. Função para solicitar a permissão nativa do GPS
             function solicitarLocalizacaoGPS() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
                             const lat = pos.coords.latitude.toFixed(6);
                             const lng = pos.coords.longitude.toFixed(6);
-                            
                             document.getElementById('latitude').value = lat;
                             document.getElementById('longitude').value = lng;
                             atualizarMarcadorMapa(lat, lng);
                         },
-                        (err) => {
-                            console.warn('Erro ou permissão negada no GPS:', err);
-                        }
+                        (err) => { console.warn('Erro ou permissão negada no GPS:', err); }
                     );
                 }
             }
             
-            // 4. Atualização do marcador e recálculo da imagem do mapa
             function atualizarMarcadorMapa(lat, lng) {
                 if (!leafletMap) return;
                 const latNum = parseFloat(lat);
@@ -1364,56 +1267,60 @@
                 mapMarker = L.marker([latNum, lngNum]).addTo(leafletMap);
                 leafletMap.setView([latNum, lngNum], 15);
             
-                // Força o descarregamento das imagens (tiles) do Leaflet no telemóvel
-                setTimeout(() => {
-                    leafletMap.invalidateSize();
-                }, 200);
+                setTimeout(() => { leafletMap.invalidateSize(); }, 200);
             }
             
-            // 5. Eventos disparados ao carregar a página
-            window.addEventListener('DOMContentLoaded', () => {
-                // Inicializar e incrementar o contador de visitantes (mínimo 319)
-                let visitas = localStorage.getItem("vitalsig_visitas");
-                if (!visitas) {
-                    visitas = 319;
-                } else {
-                    visitas = parseInt(visitas) + 1;
-                }
-                localStorage.setItem("vitalsig_visitas", visitas);
-                const contadorEl = document.getElementById("visitor-count");
-                if (contadorEl) {
-                    contadorEl.innerText = visitas;
-                }
-
-                preencherSelectsSinais();
-                atualizarValoresReferencia(18);
-                validarSinais();
-            
-                const hoje = new Date().toISOString().split('T')[0];
-                const dataMatricula = document.getElementById('dataMatricula');
-                if (dataMatricula) dataMatricula.value = hoje;
+                window.addEventListener('DOMContentLoaded', async () => {
+                    const contadorEl = document.getElementById("visitor-count");
+                    
+                    // Configurado com o seu Workspace e Counter do painel
+                    const WORKSPACE = 'vital-suportes-workspace'; 
+                    const COUNTER = 'first-counter';     
                 
-                atualizarStatusRede();
-                inicializarMapa();
-            
-                // Configuração dos cliques do modal
-                const btnAgoraNao = document.getElementById('btn-agora-nao');
-                if (btnAgoraNao) {
-                    btnAgoraNao.addEventListener('click', fecharModalGps);
-                }
-            
-                const btnPermitirGps = document.getElementById('btn-permitir-gps');
-                if (btnPermitirGps) {
-                    btnPermitirGps.addEventListener('click', () => {
-                        fecharModalGps();
-                        solicitarLocalizacaoGPS();
-                    });
-                }
-            
-                // Abre o modal automaticamente assim que o ecra carrega
-                solicitarGeolocalizacaoAoCarregar();
-            });
-
+                    try {
+                        // Faz a chamada à API do CounterAPI para incrementar (+1) a cada visita real ao site
+                        const response = await fetch(`https://api.counterapi.dev/v1/${WORKSPACE}/${COUNTER}/up`);
+                        const data = await response.json();
+                        
+                        if (data && typeof data.count !== 'undefined') {
+                            const valorExibido = data.count; 
+                            contadorEl.innerText = valorExibido;
+                            localStorage.setItem("vitalsig_visitas_global", valorExibido);
+                        }
+                    } catch (e) {
+                        console.warn("Modo offline ou erro ao carregar o contador da API. Usando cache local.", e);
+                        // Plano de contingência para funcionamento offline no campo
+                        let visitasLocais = localStorage.getItem("vitalsig_visitas_global") || 319;
+                        if (contadorEl) {
+                            contadorEl.innerText = visitasLocais;
+                        }
+                    }
+                
+                    // Inicialização normal dos restantes elementos do formulário
+                    preencherSelectsSinais();
+                    atualizarValoresReferencia(18);
+                    validarSinais();
+                
+                    const hoje = new Date().toISOString().split('T')[0];
+                    const dataMatricula = document.getElementById('dataMatricula');
+                    if (dataMatricula) dataMatricula.value = hoje;
+                    
+                    atualizarStatusRede();
+                    inicializarMapa();
+                
+                    const btnAgoraNao = document.getElementById('btn-agora-nao');
+                    if (btnAgoraNao) { btnAgoraNao.addEventListener('click', fecharModalGps); }
+                
+                    const btnPermitirGps = document.getElementById('btn-permitir-gps');
+                    if (btnPermitirGps) {
+                        btnPermitirGps.addEventListener('click', () => {
+                            fecharModalGps();
+                            solicitarLocalizacaoGPS();
+                        });
+                    }
+                
+                    solicitarGeolocalizacaoAoCarregar();
+                });
 
         function trocarIdioma(langCode) {
             if (!i18nData[langCode]) return;
@@ -1425,16 +1332,12 @@
 
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (i18nData[langCode][key]) {
-                    el.textContent = i18nData[langCode][key];
-                }
+                if (i18nData[langCode][key]) { el.textContent = i18nData[langCode][key]; }
             });
 
             document.querySelectorAll('[data-i18n-ph]').forEach(el => {
                 const key = el.getAttribute('data-i18n-ph');
-                if (i18nData[langCode][key]) {
-                    el.placeholder = i18nData[langCode][key];
-                }
+                if (i18nData[langCode][key]) { el.placeholder = i18nData[langCode][key]; }
             });
 
             const edadVal = document.getElementById('edad').value;
@@ -1442,6 +1345,7 @@
             preencherSelectsSinais();
             atualizarValoresReferencia(idadeAnos);
             calcularIMC();
+            calcularCircunferenciaAbdominal();
             validarSinais();
             atualizarStatusRede();
         }
@@ -1507,40 +1411,26 @@
             popularSelect('sat', 50, 100, 1, '%', 'opt_selecione');
         }
 
-      function inicializarMapa() {
-          if (typeof L === 'undefined') return;
-          const container = document.getElementById('map');
-          if (!container) return;
-      
-          leafletMap = L.map('map').setView([-15.77972, -47.92972], 4);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 19,
-              attribution: '© OpenStreetMap'
-          }).addTo(leafletMap);
-      
-          leafletMap.on('click', function(e) {
-              const lat = e.latlng.lat.toFixed(6);
-              const lng = e.latlng.lng.toFixed(6);
-              document.getElementById('latitude').value = lat;
-              document.getElementById('longitude').value = lng;
-              atualizarMarcadorMapa(lat, lng);
-          });
-      
-          // CORREÇÃO PARA CELULAR: recalcula o tamanho do mapa após o carregamento da tela
-          setTimeout(() => {
-              leafletMap.invalidateSize();
-          }, 400);
-      }
-
-        function atualizarMarcadorMapa(lat, lng) {
-            if (!leafletMap) return;
-            const latNum = parseFloat(lat);
-            const lngNum = parseFloat(lng);
-            if (isNaN(latNum) || isNaN(lngNum)) return;
-
-            if (mapMarker) leafletMap.removeLayer(mapMarker);
-            mapMarker = L.marker([latNum, lngNum]).addTo(leafletMap);
-            leafletMap.setView([latNum, lngNum], 15);
+        function inicializarMapa() {
+            if (typeof L === 'undefined') return;
+            const container = document.getElementById('map');
+            if (!container) return;
+        
+            leafletMap = L.map('map').setView([-15.77972, -47.92972], 4);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(leafletMap);
+        
+            leafletMap.on('click', function(e) {
+                const lat = e.latlng.lat.toFixed(6);
+                const lng = e.latlng.lng.toFixed(6);
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+                atualizarMarcadorMapa(lat, lng);
+            });
+        
+            setTimeout(() => { leafletMap.invalidateSize(); }, 400);
         }
 
         function atualizarStatusRede() {
@@ -1642,121 +1532,152 @@
             document.getElementById('ref-fr').textContent = `${ref.fr} rpm`;
         }
 
- function calcularIMC() {
-    const pesoEl = document.getElementById("peso");
-    const alturaEl = document.getElementById("altura");
-    const imcEl = document.getElementById("imc");
-    const legendaEl = document.getElementById("imc-legenda");
+        function calcularIMC() {
+            const pesoEl = document.getElementById("peso");
+            const alturaEl = document.getElementById("altura");
+            const imcEl = document.getElementById("imc");
+            const legendaEl = document.getElementById("imc-legenda");
 
-    if (!pesoEl || !alturaEl || !imcEl) return;
+            if (!pesoEl || !alturaEl || !imcEl) return;
 
-    // Sanitização e conversão de vírgula para ponto
-    let pesoStr = pesoEl.value.replace(",", ".").trim();
-    let alturaStr = alturaEl.value.replace(",", ".").trim();
+            let pesoStr = pesoEl.value.replace(",", ".").trim();
+            let alturaStr = alturaEl.value.replace(",", ".").trim();
 
-    let peso = parseFloat(pesoStr);
-    let altura = parseFloat(alturaStr);
+            let peso = parseFloat(pesoStr);
+            let altura = parseFloat(alturaStr);
 
-    if (!isNaN(peso) && !isNaN(altura) && peso > 0 && altura > 0) {
-        // Converte centímetros para metros caso seja digitado ex: 154
-        if (altura > 3) {
-            altura = altura / 100;
-        }
+            if (!isNaN(peso) && !isNaN(altura) && peso > 0 && altura > 0) {
+                if (altura > 3) { altura = altura / 100; }
 
-        let imc = peso / (altura * altura);
-        imcEl.value = imc.toFixed(1);
+                let imc = peso / (altura * altura);
+                imcEl.value = imc.toFixed(1);
 
-        // Captura a idade preenchida no formulário (padrão 18 anos se vazio)
-        let idade = parseInt(document.getElementById('edad')?.value) || 18;
+                let idade = parseInt(document.getElementById('edad')?.value) || 18;
+                let resultado = classificarIMC(imc, idade);
 
-        let resultado = classificarIMC(imc, idade);
+                if (legendaEl) {
+                    legendaEl.innerText = resultado.mensagem;
+                    legendaEl.className = "imc-status status-" + resultado.tipo;
+                }
 
-        if (legendaEl) {
-            legendaEl.innerText = resultado.mensagem;
-            legendaEl.className = "imc-status status-" + resultado.tipo;
-        }
-
-        if (typeof validarSinais === "function") validarSinais();
-        return resultado;
-    } else {
-        imcEl.value = "--";
-        if (legendaEl) legendaEl.innerText = "";
-        if (typeof validarSinais === "function") validarSinais();
-    }
-}
-
-    function classificarIMC(imc, idade = 18) {
-        let alterado = false;
-        let mensagem = "";
-        let tipo = "ok";
-    
-        const lang = (typeof idiomaAtual !== "undefined" && idiomaAtual) ? idiomaAtual : "pt";
-    
-        // Textos multilingues para classificação
-        const txtDict = {
-            pt: {
-                abaixo: "IMC - Abaixo do peso (< 18.5 kg/m²). SUGESTÃO: Avaliar estado nutricional.",
-                norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGESTÃO: Manter hábitos saudáveis.",
-                sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGESTÃO: Reeducação alimentar e exercício.",
-                ob1: "IMC - Obesidade Grau I (30.0–34.9 kg/m²). SUGESTÃO: Acompanhamento nutricional e médico.",
-                ob2: "IMC - Obesidade Grau II (35.0–39.9 kg/m²). SUGESTÃO: Consulta médica especializada.",
-                ob3: "IMC - Obesidade Grau III / Mórbida (≥ 40.0 kg/m²). SUGESTÃO: Acompanhamento médico intensivo.",
-                idoso_baixo: "IMC (Idoso) - Baixo peso (< 22.0 kg/m²). SUGESTÃO: Avaliar risco nutricional e sarcopenia.",
-                idoso_norm: "IMC (Idoso) - Adequado / Eutrófico (22.0–27.0 kg/m²). SUGESTÃO: Manter acompanhamento de rotina.",
-                idoso_sobre: "IMC (Idoso) - Sobrepeso / Obesidade (> 27.0 kg/m²). SUGESTÃO: Avaliar composição corporal."
-            },
-            es: {
-                abaixo: "IMC - Bajo peso (< 18.5 kg/m²). SUGERENCIA: Evaluar estado nutricional.",
-                norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGERENCIA: Mantener hábitos saludables.",
-                sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGERENCIA: Reeducación alimentaria y ejercicio.",
-                ob1: "IMC - Obesidad Grado I (30.0–34.9 kg/m²). SUGERENCIA: Control nutricional y médico.",
-                ob2: "IMC - Obesidad Grado II (35.0–39.9 kg/m²). SUGERENCIA: Consulta médica especializada.",
-                ob3: "IMC - Obesidad Grado III / Mórbida (≥ 40.0 kg/m²). SUGERENCIA: Control médico intensivo.",
-                idoso_baixo: "IMC (Adulto mayor) - Bajo peso (< 22.0 kg/m²). SUGERENCIA: Evaluar riesgo nutricional.",
-                idoso_norm: "IMC (Adulto mayor) - Adecuado (22.0–27.0 kg/m²). SUGERENCIA: Mantener control de rutina.",
-                idoso_sobre: "IMC (Adulto mayor) - Sobrepeso / Obesidad (> 27.0 kg/m²). SUGERENCIA: Evaluar composición corporal."
-            },
-            en: {
-                abaixo: "BMI - Underweight (< 18.5 kg/m²). RECOMMENDATION: Evaluate nutritional status.",
-                norm: "BMI - Normal weight (18.5–24.9 kg/m²). RECOMMENDATION: Maintain healthy habits.",
-                sobrepeso: "BMI - Overweight (25.0–29.9 kg/m²). RECOMMENDATION: Diet re-education and exercise.",
-                ob1: "BMI - Obesity Class I (30.0–34.9 kg/m²). RECOMMENDATION: Nutritional and medical follow-up.",
-                ob2: "BMI - Obesity Class II (35.0–39.9 kg/m²). RECOMMENDATION: Specialized medical consultation.",
-                ob3: "BMI - Obesity Class III / Severe (≥ 40.0 kg/m²). RECOMMENDATION: Intensive medical monitoring.",
-                idoso_baixo: "BMI (Elderly) - Underweight (< 22.0 kg/m²). RECOMMENDATION: Evaluate nutritional risk.",
-                idoso_norm: "BMI (Elderly) - Adequate / Normal (22.0–27.0 kg/m²). RECOMMENDATION: Maintain routine checkups.",
-                idoso_sobre: "BMI (Elderly) - Overweight / Obesity (> 27.0 kg/m²). RECOMMENDATION: Evaluate body composition."
-            }
-        }[lang] || txtDict.pt;
-    
-        // Tabela Adultos (< 60 anos) - OMS
-        if (idade < 60) {
-            if (imc < 18.5) {
-                alterado = true; mensagem = txtDict.abaixo; tipo = "aviso";
-            } else if (imc < 25.0) {
-                alterado = false; mensagem = txtDict.norm; tipo = "ok";
-            } else if (imc < 30.0) {
-                alterado = true; mensagem = txtDict.sobrepeso; tipo = "aviso";
-            } else if (imc < 35.0) {
-                alterado = true; mensagem = txtDict.ob1; tipo = "alerta";
-            } else if (imc < 40.0) {
-                alterado = true; mensagem = txtDict.ob2; tipo = "alerta";
+                if (typeof validarSinais === "function") validarSinais();
+                return resultado;
             } else {
-                alterado = true; mensagem = txtDict.ob3; tipo = "alerta";
-            }
-        } else {
-            // Tabela Idosos (≥ 60 anos) - OPAS / Ministério da Saúde
-            if (imc < 22.0) {
-                alterado = true; mensagem = txtDict.idoso_baixo; tipo = "aviso";
-            } else if (imc <= 27.0) {
-                alterado = false; mensagem = txtDict.idoso_norm; tipo = "ok";
-            } else {
-                alterado = true; mensagem = txtDict.idoso_sobre; tipo = "aviso";
+                imcEl.value = "--";
+                if (legendaEl) legendaEl.innerText = "";
+                if (typeof validarSinais === "function") validarSinais();
             }
         }
-    
-        return { imcAlterado: alterado, mensagem, tipo };
-    }
+
+        function classificarIMC(imc, idade = 18) {
+            let alterado = false;
+            let mensagem = "";
+            let tipo = "ok";
+            const lang = (typeof idiomaAtual !== "undefined" && idiomaAtual) ? idiomaAtual : "pt";
+        
+            const txtDict = {
+                pt: {
+                    abaixo: "IMC - Abaixo do peso (< 18.5 kg/m²). SUGESTÃO: Avaliar estado nutricional.",
+                    norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGESTÃO: Manter hábitos saudáveis.",
+                    sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGESTÃO: Reeducação alimentar e exercício.",
+                    ob1: "IMC - Obesidade Grau I (30.0–34.9 kg/m²). SUGESTÃO: Acompanhamento nutricional e médico.",
+                    ob2: "IMC - Obesidade Grau II (35.0–39.9 kg/m²). SUGESTÃO: Consulta médica especializada.",
+                    ob3: "IMC - Obesidade Grau III / Mórbida (≥ 40.0 kg/m²). SUGESTÃO: Acompanhamento médico intensivo.",
+                    idoso_baixo: "IMC (Idoso) - Baixo peso (< 22.0 kg/m²). SUGESTÃO: Avaliar risco nutricional e sarcopenia.",
+                    idoso_norm: "IMC (Idoso) - Adequado / Eutrófico (22.0–27.0 kg/m²). SUGESTÃO: Manter acompanhamento de rotina.",
+                    idoso_sobre: "IMC (Idoso) - Sobrepeso / Obesidade (> 27.0 kg/m²). SUGESTÃO: Avaliar composição corporal."
+                },
+                es: {
+                    abaixo: "IMC - Bajo peso (< 18.5 kg/m²). SUGERENCIA: Evaluar estado nutricional.",
+                    norm: "IMC - Peso ideal / Eutrófico (18.5–24.9 kg/m²). SUGERENCIA: Mantener hábitos saludables.",
+                    sobrepeso: "IMC - Sobrepeso (25.0–29.9 kg/m²). SUGERENCIA: Reeducación alimentaria y ejercicio.",
+                    ob1: "IMC - Obesidad Grado I (30.0–34.9 kg/m²). SUGERENCIA: Control nutricional y médico.",
+                    ob2: "IMC - Obesidad Grado II (35.0–39.9 kg/m²). SUGERENCIA: Consulta médica especializada.",
+                    ob3: "IMC - Obesidad Grado III / Mórbida (≥ 40.0 kg/m²). SUGERENCIA: Control médico intensivo.",
+                    idoso_baixo: "IMC (Adulto mayor) - Bajo peso (< 22.0 kg/m²). SUGERENCIA: Evaluar riesgo nutricional.",
+                    idoso_norm: "IMC (Adulto mayor) - Adecuado (22.0–27.0 kg/m²). SUGERENCIA: Mantener control de rutina.",
+                    idoso_sobre: "IMC (Adulto mayor) - Sobrepeso / Obesidad (> 27.0 kg/m²). SUGERENCIA: Evaluar composición corporal."
+                },
+                en: {
+                    abaixo: "BMI - Underweight (< 18.5 kg/m²). RECOMMENDATION: Evaluate nutritional status.",
+                    norm: "BMI - Normal weight (18.5–24.9 kg/m²). RECOMMENDATION: Maintain healthy habits.",
+                    sobrepeso: "BMI - Overweight (25.0–29.9 kg/m²). RECOMMENDATION: Diet re-education and exercise.",
+                    ob1: "BMI - Obesity Class I (30.0–34.9 kg/m²). RECOMMENDATION: Nutritional and medical follow-up.",
+                    ob2: "BMI - Obesity Class II (35.0–39.9 kg/m²). RECOMMENDATION: Specialized medical consultation.",
+                    ob3: "BMI - Obesity Class III / Severe (≥ 40.0 kg/m²). RECOMMENDATION: Intensive medical monitoring.",
+                    idoso_baixo: "BMI (Elderly) - Underweight (< 22.0 kg/m²). RECOMMENDATION: Evaluate nutritional risk.",
+                    idoso_norm: "BMI (Elderly) - Adequate / Normal (22.0–27.0 kg/m²). RECOMMENDATION: Maintain routine checkups.",
+                    idoso_sobre: "BMI (Elderly) - Overweight / Obesity (> 27.0 kg/m²). RECOMMENDATION: Evaluate body composition."
+                }
+            }[lang] || txtDict.pt;
+        
+            if (idade < 60) {
+                if (imc < 18.5) { alterado = true; mensagem = txtDict.abaixo; tipo = "aviso"; }
+                else if (imc < 25.0) { alterado = false; mensagem = txtDict.norm; tipo = "ok"; }
+                else if (imc < 30.0) { alterado = true; mensagem = txtDict.sobrepeso; tipo = "aviso"; }
+                else if (imc < 35.0) { alterado = true; mensagem = txtDict.ob1; tipo = "alerta"; }
+                else if (imc < 40.0) { alterado = true; mensagem = txtDict.ob2; tipo = "alerta"; }
+                else { alterado = true; mensagem = txtDict.ob3; tipo = "alerta"; }
+            } else {
+                if (imc < 22.0) { alterado = true; mensagem = txtDict.idoso_baixo; tipo = "aviso"; }
+                else if (imc <= 27.0) { alterado = false; mensagem = txtDict.idoso_norm; tipo = "ok"; }
+                else { alterado = true; mensagem = txtDict.idoso_sobre; tipo = "aviso"; }
+            }
+            return { imcAlterado: alterado, mensagem, tipo };
+        }
+
+        // --- FUNÇÃO DE CIRCUNFERÊNCIA ABDOMINAL ISOLADA E CORRETA ---
+        function calcularCircunferenciaAbdominal() {
+            const circInput = document.getElementById('circunferencia_abdominal');
+            const legendaEl = document.getElementById('circunferencia-legenda');
+            const circVal = circInput ? parseFloat(circInput.value.replace(",", ".")) : NaN;
+            const sexoBiologico = document.getElementById('biologico')?.value || 'Masculino';
+            
+            if (!isNaN(circVal) && circVal > 0) {
+                let riscoCirc = "";
+                let tipoCirc = "ok";
+                const t = i18nData[idiomaAtual] || i18nData.pt;
+
+                if (sexoBiologico === 'Feminino') {
+                    if (circVal >= 88) {
+                        riscoCirc = t.circ_alto;
+                        tipoCirc = "alerta";
+                    } else if (circVal >= 80) {
+                        riscoCirc = t.circ_risco;
+                        tipoCirc = "aviso";
+                    } else {
+                        riscoCirc = t.circ_normal;
+                        tipoCirc = "ok";
+                    }
+                } else { // Masculino
+                    if (circVal >= 102) {
+                        riscoCirc = t.circ_alto;
+                        tipoCirc = "alerta";
+                    } else if (circVal >= 94) {
+                        riscoCirc = t.circ_risco;
+                        tipoCirc = "aviso";
+                    } else {
+                        riscoCirc = t.circ_normal;
+                        tipoCirc = "ok";
+                    }
+                }
+
+                marcarCampo('circunferencia_abdominal', tipoCirc !== 'ok');
+
+                if (legendaEl) {
+                    legendaEl.innerText = riscoCirc;
+                    legendaEl.className = "imc-status status-" + tipoCirc;
+                }
+
+                if (typeof validarSinais === "function") validarSinais();
+                return { circAlterada: tipoCirc !== 'ok', mensagem: riscoCirc, tipo: tipoCirc };
+            } else {
+                marcarCampo('circunferencia_abdominal', false);
+                if (legendaEl) legendaEl.innerText = "";
+                if (typeof validarSinais === "function") validarSinais();
+                return null;
+            }
+        }
 
         function classificarPA(pas, pad, idade) {
             let pasAlterada = false;
@@ -1835,7 +1756,6 @@
                     mensagem = txtEsl.norm; tipo = "ok";
                 }
             }
-
             return { pasAlterada, padAlterada, mensagem, tipo };
         }
 
@@ -1846,9 +1766,8 @@
             else el.classList.remove('campo-alterado');
         }
 
-      // ----------INÍCIO -- FORMATAR SUGESTÕES----------------------------------
-
-        function validarSinais() {
+        // ---------- FUNÇÃO PRINCIPAL DE VALIDAÇÃO DE SINAIS (COM CIRCUNFERÊNCIA INTEGRADA) ----------
+function validarSinais() {
             const pas = parseFloat(document.getElementById('pa_sis').value);
             const pad = parseFloat(document.getElementById('pa_dia').value);
             const gluc = parseFloat(document.getElementById('gluc').value);
@@ -1862,12 +1781,18 @@
             const imcEl = document.getElementById("imc");
             const imcVal = imcEl ? parseFloat(imcEl.value.replace(",", ".")) : NaN;
 
+            const circInput = document.getElementById('circunferencia_abdominal');
+            const circVal = circInput ? parseFloat(circInput.value.replace(",", ".")) : NaN;
+
             const lista = document.getElementById('lista-sugestoes');
+            if (!lista) return;
+            
             lista.innerHTML = '';
             let contadorSugestoes = 0;
 
+            // 1. Validação do IMC
             if (!isNaN(imcVal) && imcVal > 0) {
-                const resImc = classificarIMC(imcVal); 
+                const resImc = classificarIMC(imcVal, idade); 
                 marcarCampo('imc', resImc.imcAlterado);
                 
                 if (resImc && resImc.mensagem) {
@@ -1878,6 +1803,57 @@
                 marcarCampo('imc', false);
             }
 
+// 2. Validação direta e inclusão da Circunferência Abdominal no Painel OMS
+            if (!isNaN(circVal) && circVal > 0) {
+                let riscoCirc = "";
+                let tipoCirc = "ok";
+                const t = i18nData[idiomaAtual] || i18nData.pt;
+                const sexoBiologico = document.getElementById('biologico')?.value || 'Masculino';
+
+                if (sexoBiologico === 'Feminino') {
+                    if (circVal >= 88) {
+                        riscoCirc = t.circ_alto;
+                        tipoCirc = "alerta";
+                    } else if (circVal >= 80) {
+                        riscoCirc = t.circ_risco;
+                        tipoCirc = "aviso";
+                    } else {
+                        riscoCirc = t.circ_normal;
+                        tipoCirc = "ok";
+                    }
+                } else { // Masculino
+                    if (circVal >= 102) {
+                        riscoCirc = t.circ_alto;
+                        tipoCirc = "alerta";
+                    } else if (circVal >= 94) {
+                        riscoCirc = t.circ_risco;
+                        tipoCirc = "aviso";
+                    } else {
+                        riscoCirc = t.circ_normal;
+                        tipoCirc = "ok";
+                    }
+                }
+
+                marcarCampo('circunferencia_abdominal', tipoCirc !== 'ok');
+
+                const legendaEl = document.getElementById('circunferencia-legenda');
+                if (legendaEl) {
+                    legendaEl.innerText = riscoCirc;
+                    legendaEl.className = "imc-status status-" + tipoCirc;
+                }
+
+                // Injeta diretamente na lista de sugestões OMS se houver risco/aviso (ou todas se preferir)
+                if (tipoCirc !== 'ok' && riscoCirc) {
+                    lista.innerHTML += `<li class="sugestao-${tipoCirc}">${riscoCirc}</li>`;
+                    contadorSugestoes++;
+                }
+            } else {
+                marcarCampo('circunferencia_abdominal', false);
+                const legendaEl = document.getElementById('circunferencia-legenda');
+                if (legendaEl) legendaEl.innerText = "";
+            }
+
+            // 3. Validação da Pressão Arterial
             if (!isNaN(pas) && !isNaN(pad)) {
                 const resPA = classificarPA(pas, pad, idade);
                 marcarCampo('pa_sis', resPA.pasAlterada);
@@ -1899,26 +1875,21 @@
                     gluc_normo: "Glicose de Jejum Normal (71 a 99 mg/dL).",
                     gluc_pre: "Glicose de Jejum em Nível de Pré-Diabetes (100 a 125 mg/dL).",
                     gluc_diab: "Glicose de Jejum Elevada (≥ 126 mg/dL): Indicativo de Diabetes.",
-                    
                     gluc_post_hipo: "Glicose Pós-Prandial muito baixa (< 70 mg/dL).",
                     gluc_post_normo: "Glicose Pós-Prandial Normal (71 a 140 mg/dL).",
                     gluc_post_pre: "Glicose Pós-Prandial Alterada / Pré-Diabetes (141 a 199 mg/dL).",
                     gluc_post_diab: "Glicose Pós-Prandial Elevada (≥ 200 mg/dL): Indicativo de Diabetes.",
-                    
                     temp_hipo: "Hipotermia (< 35,5°C): Manter aquecido.",
                     temp_normo: "Temperatura Normal (35,6°C a 37,2°C).",
                     temp_febril: "Estado Febril / Subfebril (37,3°C a 37,7°C): Acompanhar.",
                     temp_febre: "Febre (37,8°C a 39,0°C): Recomenda-se repouso e hidratação.",
                     temp_hiper: "Hipertermia grave (> 39,0°C): Requer atenção médica imediata.",
-                    
                     sat_hipoxia: "Saturação de Oxigênio CRÍTICA (< 89%): Hipoxia severa.",
                     sat_lim: "Saturação Limítrofe (90 - 94%): Monitorar atentamente.",
                     sat_normo: "Saturação de Oxigênio Normal (95 - 100%).",
-                    
                     fc_baixa: "Bradicardia (< 59 bpm): Consultar cardiologista.",
                     fc_normo: "Frequência Cardíaca Normal (60 a 100 bpm).",
                     fc_alta: "Taquicardia (> 101 bpm): Consultar cardiologista.",
-                    
                     fr_baixa: "Bradipneia (< 11 rpm): Consultar médico.",
                     fr_normo: "Frequência Respiratória Normal (12 a 20 rpm).",
                     fr_alta: "Taquipneia (> 21 rpm): Consultar médico."
@@ -1928,26 +1899,21 @@
                     gluc_normo: "Glucosa en Ayunas Normal (71 a 99 mg/dL).",
                     gluc_pre: "Glucosa en ayunas en nivel de Pre-Diabetes (100 a 125 mg/dL).",
                     gluc_diab: "Glucosa en ayunas elevada (≥ 126 mg/dL): Indicativo de Diabetes.",
-                    
                     gluc_post_hipo: "Glucosa Postprandial muy baja (< 70 mg/dL).",
                     gluc_post_normo: "Glucosa Postprandial Normal (71 a 140 mg/dL).",
                     gluc_post_pre: "Glucosa Postprandial Alterada / Pre-Diabetes (141 a 199 mg/dL).",
                     gluc_post_diab: "Glucosa Postprandial Elevada (≥ 200 mg/dL): Indicativo de Diabetes.",
-                    
                     temp_hipo: "Hipotermia (< 35,5°C): Mantener al paciente abrigado.",
                     temp_normo: "Temperatura Normal (35,6°C a 37,2°C).",
                     temp_febril: "Subfebril (37,3°C a 37,7°C): Monitorear.",
                     temp_febre: "Fiebre (37,8°C a 39,0°C): Se recomienda reposo e hidratación.",
                     temp_hiper: "Hipertermia grave (> 39,0°C): Atención médica inmediata.",
-                    
                     sat_hipoxia: "Saturación de Oxígeno CRÍTICA (< 89%): Hipoxia severa.",
                     sat_lim: "Saturación Limítrofe (90 - 94%): Monitorear atentamente.",
                     sat_normo: "Saturación de Oxígeno Normal (95 - 100%).",
-                    
                     fc_baixa: "Bradicardia (< 59 bpm): Consulte al cardiólogo.",
                     fc_normo: "Frecuencia Cardíaca Normal (60 a 100 bpm).",
                     fc_alta: "Taquicardia (> 101 bpm): Consulte al cardiólogo.",
-                    
                     fr_baixa: "Bradipnea (< 11 rpm): Consulte a un médico.",
                     fr_normo: "Frecuencia Respiratoria Normal (12 a 20 rpm).",
                     fr_alta: "Taquipnea (> 21 rpm): Consulte a un médico."
@@ -1957,26 +1923,21 @@
                     gluc_normo: "Normal Fasting Glucose (71 to 99 mg/dL).",
                     gluc_pre: "Fasting Glucose in Pre-Diabetes range (100 to 125 mg/dL).",
                     gluc_diab: "High Fasting Glucose (≥ 126 mg/dL): Diabetes indicator.",
-                    
                     gluc_post_hipo: "Very low Postprandial Glucose (< 70 mg/dL).",
                     gluc_post_normo: "Normal Postprandial Glucose (71 a 140 mg/dL).",
                     gluc_post_pre: "Altered Postprandial Glucose / Pre-Diabetes (141 to 199 mg/dL).",
                     gluc_post_diab: "High Postprandial Glucose (≥ 200 mg/dL): Diabetes indicator.",
-                    
                     temp_hipo: "Hypothermia (< 35.5°C): Keep patient warm.",
                     temp_normo: "Normal Temperature (35.6°C to 37.2°C).",
                     temp_febril: "Low-grade Fever (37.3°C to 37.7°C): Monitor.",
                     temp_febre: "Fever (37.8°C to 39.0°C): Rest and hydration recommended.",
                     temp_hiper: "Severe Hyperthermia (> 39.0°C): Immediate medical care.",
-                    
                     sat_hipoxia: "CRITICAL Oxygen Saturation (< 89%): Severe hypoxia.",
                     sat_lim: "Borderline Oxygen Saturation (90 - 94%): Monitor closely.",
                     sat_normo: "Normal Oxygen Saturation (95 - 100%).",
-                    
                     fc_baixa: "Bradycardia (< 59 bpm): Consult your cardiologist.",
                     fc_normo: "Normal Heart Rate (60 to 100 bpm).",
                     fc_alta: "Tachycardia (> 101 bpm): Consult your cardiologist.",
-                    
                     fr_baixa: "Bradypnea (< 11 rpm): Consult your doctor.",
                     fr_normo: "Normal Respiratory Rate (12 to 20 rpm).",
                     fr_alta: "Tachypnea (> 21 rpm): Consult your doctor."
@@ -1984,162 +1945,55 @@
             }[idiomaAtual];
 
             if (!isNaN(gluc)) {
-                if (gluc < 70) {
-                    marcarCampo('gluc', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_hipo}</li>`;
-                    contadorSugestoes++;
-                } else if (gluc >= 70 && gluc <= 99) {
-                    marcarCampo('gluc', false);
-                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.gluc_normo}</li>`;
-                    contadorSugestoes++;
-                } else if (gluc >= 100 && gluc <= 125) {
-                    marcarCampo('gluc', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.gluc_pre}</li>`;
-                    contadorSugestoes++;
-                } else if (gluc >= 126) {
-                    marcarCampo('gluc', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_diab}</li>`;
-                    contadorSugestoes++;
-                } else marcarCampo('gluc', false);
+                if (gluc < 70) { marcarCampo('gluc', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_hipo}</li>`; contadorSugestoes++; }
+                else if (gluc >= 70 && gluc <= 99) { marcarCampo('gluc', false); lista.innerHTML += `<li class="sugestao-ok">${txtDict.gluc_normo}</li>`; contadorSugestoes++; }
+                else if (gluc >= 100 && gluc <= 125) { marcarCampo('gluc', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.gluc_pre}</li>`; contadorSugestoes++; }
+                else if (gluc >= 126) { marcarCampo('gluc', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_diab}</li>`; contadorSugestoes++; }
+                else marcarCampo('gluc', false);
             } else marcarCampo('gluc', false);
 
             if (!isNaN(glucPost)) {
-                if (glucPost < 70) {
-                    marcarCampo('gluc_post', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_post_hipo}</li>`;
-                    contadorSugestoes++;
-                } else if (glucPost >= 71 && glucPost <= 140) {
-                    marcarCampo('gluc_post', false);
-                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.gluc_post_normo}</li>`;
-                    contadorSugestoes++;
-                } else if (glucPost >= 141 && glucPost <= 199) {
-                    marcarCampo('gluc_post', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.gluc_post_pre}</li>`;
-                    contadorSugestoes++;
-                } else if (glucPost >= 200) {
-                    marcarCampo('gluc_post', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_post_diab}</li>`;
-                    contadorSugestoes++;
-                } else marcarCampo('gluc_post', false);
+                if (glucPost < 70) { marcarCampo('gluc_post', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_post_hipo}</li>`; contadorSugestoes++; }
+                else if (glucPost >= 71 && glucPost <= 140) { marcarCampo('gluc_post', false); lista.innerHTML += `<li class="sugestao-ok">${txtDict.gluc_post_normo}</li>`; contadorSugestoes++; }
+                else if (glucPost >= 141 && glucPost <= 199) { marcarCampo('gluc_post', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.gluc_post_pre}</li>`; contadorSugestoes++; }
+                else if (glucPost >= 200) { marcarCampo('gluc_post', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.gluc_post_diab}</li>`; contadorSugestoes++; }
+                else marcarCampo('gluc_post', false);
             } else marcarCampo('gluc_post', false);
 
             if (!isNaN(temp)) {
-                if (temp < 36.1) {
-                    marcarCampo('temp', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.temp_hipo}</li>`;
-                    contadorSugestoes++;
-                } else if (temp >= 36.1 && temp <= 37.2) {
-                    marcarCampo('temp', false);
-                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.temp_normo}</li>`;
-                    contadorSugestoes++;
-                } else if (temp >= 37.3 && temp <= 37.7) {
-                    marcarCampo('temp', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.temp_febril}</li>`;
-                    contadorSugestoes++;
-                } else if (temp >= 37.8 && temp <= 39.0) {
-                    marcarCampo('temp', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.temp_febre}</li>`;
-                    contadorSugestoes++;
-                } else if (temp > 39.0) {
-                    marcarCampo('temp', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.temp_hiper}</li>`;
-                    contadorSugestoes++;
-                } else marcarCampo('temp', false);
+                if (temp < 36.1) { marcarCampo('temp', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.temp_hipo}</li>`; contadorSugestoes++; }
+                else if (temp >= 36.1 && temp <= 37.2) { marcarCampo('temp', false); lista.innerHTML += `<li class="sugestao-ok">${txtDict.temp_normo}</li>`; contadorSugestoes++; }
+                else if (temp >= 37.3 && temp <= 37.7) { marcarCampo('temp', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.temp_febril}</li>`; contadorSugestoes++; }
+                else if (temp >= 37.8 && temp <= 39.0) { marcarCampo('temp', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.temp_febre}</li>`; contadorSugestoes++; }
+                else if (temp > 39.0) { marcarCampo('temp', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.temp_hiper}</li>`; contadorSugestoes++; }
+                else marcarCampo('temp', false);
             } else marcarCampo('temp', false);
 
             if (!isNaN(sat)) {
-                if (sat < 90) {
-                    marcarCampo('sat', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.sat_hipoxia}</li>`;
-                    contadorSugestoes++;
-                } else if (sat >= 90 && sat <= 94) {
-                    marcarCampo('sat', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.sat_lim}</li>`;
-                    contadorSugestoes++;
-                } else if (sat >= 95) {
-                    marcarCampo('sat', false);
-                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.sat_normo}</li>`;
-                    contadorSugestoes++;
-                } else marcarCampo('sat', false);
+                if (sat < 90) { marcarCampo('sat', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.sat_hipoxia}</li>`; contadorSugestoes++; }
+                else if (sat >= 90 && sat <= 94) { marcarCampo('sat', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.sat_lim}</li>`; contadorSugestoes++; }
+                else if (sat >= 95) { marcarCampo('sat', false); lista.innerHTML += `<li class="sugestao-ok">${txtDict.sat_normo}</li>`; contadorSugestoes++; }
+                else marcarCampo('sat', false);
             } else marcarCampo('sat', false);
 
             if (!isNaN(fc)) {
-                if (fc < 60) {
-                    marcarCampo('fc', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.fc_baixa}</li>`;
-                    contadorSugestoes++;
-                } else if (fc >= 60 && fc <= 100) {
-                    marcarCampo('fc', false);
-                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.fc_normo}</li>`;
-                    contadorSugestoes++;
-                } else if (fc > 100) {
-                    marcarCampo('fc', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_alta}</li>`;
-                    contadorSugestoes++;
-                } else marcarCampo('fc', false);
+                if (fc < 60) { marcarCampo('fc', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.fc_baixa}</li>`; contadorSugestoes++; }
+                else if (fc >= 60 && fc <= 100) { marcarCampo('fc', false); lista.innerHTML += `<li class="sugestao-ok">${txtDict.fc_normo}</li>`; contadorSugestoes++; }
+                else if (fc > 100) { marcarCampo('fc', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fc_alta}</li>`; contadorSugestoes++; }
+                else marcarCampo('fc', false);
             } else marcarCampo('fc', false);
 
             if (!isNaN(fr)) {
-                if (fr < 12) {
-                    marcarCampo('fr', true);
-                    lista.innerHTML += `<li class="sugestao-aviso">${txtDict.fr_baixa}</li>`;
-                    contadorSugestoes++;
-                } else if (fr >= 12 && fr <= 20) {
-                    marcarCampo('fr', false);
-                    lista.innerHTML += `<li class="sugestao-ok">${txtDict.fr_normo}</li>`;
-                    contadorSugestoes++;
-                } else if (fr > 20) {
-                    marcarCampo('fr', true);
-                    lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_alta}</li>`;
-                    contadorSugestoes++;
-                } else marcarCampo('fr', false);
+                if (fr < 12) { marcarCampo('fr', true); lista.innerHTML += `<li class="sugestao-aviso">${txtDict.fr_baixa}</li>`; contadorSugestoes++; }
+                else if (fr >= 12 && fr <= 20) { marcarCampo('fr', false); lista.innerHTML += `<li class="sugestao-ok">${txtDict.fr_normo}</li>`; contadorSugestoes++; }
+                else if (fr > 20) { marcarCampo('fr', true); lista.innerHTML += `<li class="sugestao-alerta">${txtDict.fr_alta}</li>`; contadorSugestoes++; }
+                else marcarCampo('fr', false);
             } else marcarCampo('fr', false);
 
             if (contadorSugestoes === 0) {
                 lista.innerHTML = `<li>${i18nData[idiomaAtual].item_sugestoes_inicial}</li>`;
             }
         }
-
-                // -----------FINAL DA FORMATAÇÃO DAS SUGESTÕES---------------
-
-
-        function iniciarCronometro() {
-            if (cronometroInterval) return;
-            
-            document.getElementById('btnPlay').disabled = true;
-            document.getElementById('btnPause').disabled = false;
-            document.getElementById('btnStop').disabled = false;
-
-            cronometroInterval = setInterval(() => {
-                tempoRestante--;
-                atualizarDisplayCronometro();
-
-                if (tempoRestante <= 0) {
-                    pararCronometro();
-                    alert(i18nData[idiomaAtual].msg_cronometro_fim);
-                }
-            }, 1000);
-        }
-
-        function pausarCronometro() {
-            clearInterval(cronometroInterval);
-            cronometroInterval = null;
-            document.getElementById('btnPlay').disabled = false;
-            document.getElementById('btnPause').disabled = true;
-        }
-
-        function pararCronometro() {
-            clearInterval(cronometroInterval);
-            cronometroInterval = null;
-            tempoRestante = 60;
-            atualizarDisplayCronometro();
-
-            document.getElementById('btnPlay').disabled = false;
-            document.getElementById('btnPause').disabled = true;
-            document.getElementById('btnStop').disabled = true;
-        }
-        
-// --- LÓGICA DO CRONÔMETRO COM BEEP SONORO ---
 
         function emitirBeep(frequencia = 800, duracao = 0.1, volume = 0.02) {
             try {
@@ -2149,8 +2003,6 @@
         
                 oscillator.type = 'sine';
                 oscillator.frequency.value = frequencia;
-                
-                // Volume ajustado para ser bem suave por padrão (0.02)
                 gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duracao);
         
@@ -2159,9 +2011,7 @@
         
                 oscillator.start();
                 oscillator.stop(audioCtx.currentTime + duracao);
-            } catch (e) {
-                console.warn("Áudio não suportado ou bloqueado pelo navegador", e);
-            }
+            } catch (e) { console.warn("Áudio não suportado", e); }
         }
         
         function atualizarDisplayCronometro() {
@@ -2171,9 +2021,7 @@
             const segStr = String(segundos).padStart(2, '0');
             
             const display = document.getElementById('displayCronometro');
-            if (display) {
-                display.textContent = `${minStr}:${segStr}`;
-            }
+            if (display) { display.textContent = `${minStr}:${segStr}`; }
         }
         
         function iniciarCronometro() {
@@ -2188,7 +2036,6 @@
             document.getElementById('btnPause').disabled = false;
             document.getElementById('btnStop').disabled = false;
         
-            // Beep inicial de confirmação
             emitirBeep(880, 0.1, 0.03);
         
             cronometroInterval = setInterval(() => {
@@ -2196,21 +2043,16 @@
                 atualizarDisplayCronometro();
         
                 if (tempoRestante > 0) {
-                    // A cada 10 segundos toca um beep mais agudo (1200Hz)
                     if (tempoRestante % 10 === 0) {
                         emitirBeep(1200, 0.25, 0.05); 
                     } else {
-                        // Segundos normais: beep suave e curto (500Hz)
                         emitirBeep(500, 0.04, 0.015); 
                     }
                 }
         
-                // Quando o tempo esgota (00:00)
                 if (tempoRestante <= 0) {
                     clearInterval(cronometroInterval);
                     cronometroInterval = null;
-        
-                    // Beep de encerramento
                     emitirBeep(1500, 0.5, 0.06);
         
                     document.getElementById('btnPlay').disabled = false;
@@ -2227,10 +2069,8 @@
             if (cronometroInterval) {
                 clearInterval(cronometroInterval);
                 cronometroInterval = null;
-                
                 document.getElementById('btnPlay').disabled = false;
                 document.getElementById('btnPause').disabled = true;
-                
                 emitirBeep(400, 0.1, 0.02);
             }
         }
@@ -2239,19 +2079,16 @@
             pausarCronometro();
             tempoRestante = 60;
             atualizarDisplayCronometro();
-        
             document.getElementById('btnPlay').disabled = false;
             document.getElementById('btnPause').disabled = true;
             document.getElementById('btnStop').disabled = true;
         }
+
         function obterGeolocalizacaoRapida() {
             const latInput = document.getElementById('latitude');
             const lngInput = document.getElementById('longitude');
 
-            if (!navigator.geolocation) {
-                alert("Geolocalização não é suportada neste navegador/dispositivo.");
-                return;
-            }
+            if (!navigator.geolocation) { return; }
 
             latInput.placeholder = i18nData[idiomaAtual].ph_gps;
             lngInput.placeholder = i18nData[idiomaAtual].ph_gps;
@@ -2264,343 +2101,305 @@
                     lngInput.value = lng;
                     atualizarMarcadorMapa(lat, lng);
                 },
-                (err) => {
-                    console.error("Erro GPS:", err);
-                },
+                (err) => { console.error("Erro GPS:", err); },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         }
 
-        // --- DISPARA AUTOMATICAMENTE AO ENTRAR NA PÁGINA ---
         document.addEventListener("DOMContentLoaded", function () {
             obterGeolocalizacaoRapida();
         });
 
-async function exportarPDF() {
-    try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('p', 'mm', 'a4');
-        const t = i18nData[idiomaAtual] || i18nData.pt;
-
-        // --- CABEÇALHO DA PRIMEIRA PÁGINA ---
-        doc.setFillColor(0, 104, 71); // Verde #006847
-        doc.rect(0, 0, 210, 20, 'F');
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text(t.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 105, 13, { align: "center" });
-
-        // --- DADOS PESSOAIS ---
-        doc.setFillColor(240, 240, 240);
-        doc.rect(10, 24, 190, 6, 'F');
-        doc.setTextColor(0, 104, 71);
-        doc.setFontSize(10);
-        doc.text((t.secao_info_pessoais || "Informações Pessoais").toUpperCase(), 12, 28.5);
-
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(9);
+        // --- EXPORTAR PDF ---
+        async function exportarPDF() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const t = i18nData[idiomaAtual] || i18nData.pt;
+                const naoInf = t.nao_informado || "Não informado";
         
-        const dataAtend = document.getElementById('dataMatricula')?.value || '-';
-        const nome = document.getElementById('nome')?.value || '-';
-        const iniciais = document.getElementById('iniciais')?.value || '-';
-        const sexo = document.getElementById('biologico')?.value || '-';
-        const fnac = document.getElementById('fnac')?.value || '-';
-        const idade = document.getElementById('edad')?.value || '-';
-        const peso = document.getElementById('peso')?.value || '-';
-        const altura = document.getElementById('altura')?.value || '-';
-        const imc = document.getElementById('imc')?.value || '-';
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`${t.lbl_data_atendimento || 'Data:'}`, 10, 36);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${dataAtend}`, 50, 36);
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`${t.lbl_nome || 'Nome:'}`, 10, 42);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${nome} (${iniciais})`, 50, 42);
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`${t.lbl_sexo || 'Sexo:'}`, 10, 48);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${sexo}`, 50, 48);
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`${t.lbl_fnac || 'Data Nac.:'}`, 10, 54);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${fnac} (${idade} ${t.pdf_anos || 'anos'})`, 50, 54);
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`${t.lbl_peso || 'Peso'} / ${t.lbl_altura || 'Altura'}`, 10, 60);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${peso} kg / ${altura} m`, 50, 60);
-
-        doc.setFont("helvetica", "bold");
-        doc.text(`${t.lbl_imc || 'IMC:'}`, 10, 66);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${imc}`, 50, 66);
-
-        let startY = 72;
-
-        const autoTableOptions = {
-            theme: 'grid',
-            headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 },
-            bodyStyles: { fontSize: 8, textColor: [30, 30, 30] },
-            alternateRowStyles: { fillColor: [248, 249, 250] },
-            margin: { left: 10, right: 10 }
-        };
-
-        const getVal = (id) => document.getElementById(id)?.value || '-';
-
-        // --- TABELA 1: SINAIS VITAIS ---
-        const paSis = document.getElementById('pa_sis')?.value;
-        const paDia = document.getElementById('pa_dia')?.value;
-        const paVal = (paSis && paDia) ? `${paSis}/${paDia}` : '-';
-
-        const svData = [
-            [t.lbl_pa || 'PA', paVal, 'mmHg'],
-            [t.lbl_gluc_jejum || 'Glicemia Jejum', getVal('gluc'), 'mg/dL'],
-            [t.lbl_gluc_ppran || 'Glicemia Pós-prandial', getVal('gluc_post'), 'mg/dL'],
-            [t.lbl_temp || 'Temperatura', getVal('temp'), '°C'],
-            [t.lbl_fc || 'Frequência Cardíaca', getVal('fc'), 'bpm'],
-            [t.lbl_sat || 'Saturação O2', getVal('sat'), '%'],
-            [t.lbl_fr || 'Frequência Respiratória', getVal('fr'), 'rpm']
-        ];
-
-        doc.autoTable({
-            ...autoTableOptions,
-            startY: startY,
-            head: [[t.pdf_th_sinal || 'Sinal Vital', t.pdf_th_valor || 'Valor', t.pdf_th_unidade || 'Unidade']],
-            body: svData
-        });
-
-        startY = doc.lastAutoTable.finalY + 4;
-
-// =========================================================================
-        // --- TABELA DE SUGESTÕES / AVALIAÇÃO CLÍNICA ---
-        // =========================================================================
-        const elementosSugestao = document.querySelectorAll('#lista-sugestoes li');
-        const sugestoesBody = [];
-
-        elementosSugestao.forEach((li) => {
-            const textoLimpo = li.innerText || li.textContent;
-            if (textoLimpo) {
-                sugestoesBody.push([`• ${textoLimpo}`]);
-            }
-        });
-
-        if (sugestoesBody.length === 0) {
-            sugestoesBody.push([t.item_sugestoes_inicial || "Sem observações registradas."]);
-        }
-
-        doc.autoTable({
-            ...autoTableOptions,
-            startY: startY,
-            head: [[(t.secao_sugestoes || "Sugestões").toUpperCase()]],
-            body: sugestoesBody,
-            headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 }
-        });
-
-        startY = doc.lastAutoTable.finalY + 4;
-        // =========================================================================
-
-
-        // --- TABELA 2: MEDICAMENTOS EM USO ---
-        const medData = [
-            [t.interf_med_ansioliticos, getVal('interf_med_ansioliticos')],
-            [t.interf_med_cardio, getVal('interf_med_cardio')],
-            [t.interf_med_anticoagulantes, getVal('interf_med_anticoagulantes')],
-            [t.interf_med_colesterol, getVal('interf_med_colesterol')],
-            [t.interf_med_diabetes, getVal('interf_med_diabetes')],
-            [t.interf_med_antialergicos, getVal('interf_med_antialergicos')],
-            [t.interf_med_antibioticos, getVal('interf_med_antibioticos')],
-            [t.interf_med_antiinflamatorios, getVal('interf_med_antiinflamatorios')]
-        ];
-
-        doc.autoTable({
-            ...autoTableOptions,
-            startY: startY,
-            head: [[(t.secao_interferentes || "Medicamentos").toUpperCase(), t.pdf_th_detalhes || 'Detalhes']],
-            body: medData
-        });
-
-        startY = doc.lastAutoTable.finalY + 4;
-
-        // --- TABELA 3: FATORES INTERFERENTES ---
-        const interfData = [
-            [t.interf_estresse, getVal('interf_estresse')],
-            [t.interf_alergia, getVal('interf_alergia')],
-            [t.interf_esf_fisico, getVal('interf_esf_fisico')],
-            [t.interf_cafeina, getVal('interf_cafeina')],
-            [t.interf_alcool, getVal('interf_alcool')],
-            [t.interf_psicoativos, getVal('interf_psicoativos')],
-            [t.interf_tabagismo, getVal('interf_tabagismo')]
-        ];
-
-        doc.autoTable({
-            ...autoTableOptions,
-            startY: startY,
-            head: [[t.pdf_th_interferentes || 'Fatores Interferentes', t.pdf_th_detalhes || 'Detalhes']],
-            body: interfData
-        });
-
-        startY = doc.lastAutoTable.finalY + 4;
-
-        // --- TABELA 4: ENTORNO ECOLÓGICO ---
-        const entornoData = [
-            [t.entorno_arborizado, getVal('entorno_arborizado')],
-            [t.entorno_lixo, getVal('entorno_lixo')],
-            [t.entorno_particulas, getVal('entorno_particulas')],
-            [t.entorno_focos, getVal('entorno_focos')],
-            [t.entorno_clima, getVal('entorno_clima')]
-        ];
-
-        doc.autoTable({
-            ...autoTableOptions,
-            startY: startY,
-            head: [[t.pdf_th_entorno || 'Entorno Ecológico', t.pdf_th_condicao || 'Condição']],
-            body: entornoData
-        });
-
-        startY = doc.lastAutoTable.finalY + 4;
-
-        // --- TABELA 5: VACINA / IMUNIZANTE ---
-        const vacData = [
-            [t.vac_bcg, getVal('vac_bcg')],
-            [t.vac_dtp, getVal('vac_dtp')],
-            [t.vac_polio, getVal('vac_polio')],
-            [t.vac_scr, getVal('vac_scr')],
-            [t.vac_hepb, getVal('vac_hepb')],
-            [t.vac_hpv, getVal('vac_hpv')],
-            [t.vac_amarela, getVal('vac_amarela')],
-            [t.vac_influenza, getVal('vac_influenza')],
-            [t.vac_pneumo, getVal('vac_pneumo')],
-            [t.vac_rotavirus, getVal('vac_rotavirus')],
-            [t.vac_malaria, getVal('vac_malaria')],
-            [t.vac_covid, getVal('vac_covid')]
-        ];
-
-        doc.autoTable({
-            ...autoTableOptions,
-            startY: startY,
-            head: [[t.pdf_th_vacina || 'Vacina', t.pdf_th_status || 'Status']],
-            body: vacData
-        });
-
-        startY = doc.lastAutoTable.finalY + 4;
-
-        // --- GEORREFERENCIAMENTO & LOCALIZAÇÃO ---
-        const lat = getVal('latitude');
-        const lng = getVal('longitude');
-
-        doc.setFillColor(240, 240, 240);
-        doc.rect(10, startY, 190, 6, 'F');
-        doc.setTextColor(0, 104, 71);
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "bold");
-        doc.text((t.secao_geolocalizacao || "Geolocalização").toUpperCase(), 12, startY + 4.5);
-
-        startY += 9;
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(8.5);
-        doc.setFont("helvetica", "normal");
-        doc.text(`${t.lbl_latitude || 'Lat:'} ${lat}`, 10, startY);
-        doc.text(`${t.lbl_longitude || 'Lng:'} ${lng}`, 80, startY);
-
-        startY += 8;
-
-        // --- ADVERTÊNCIA ---
-        if (t.adv_titulo && t.adv_texto) {
-            doc.setFontSize(7.5);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(139, 0, 0);
-            doc.text(t.adv_titulo, 10, startY);
-
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(60, 60, 60);
-            const advLines = doc.splitTextToSize(t.adv_texto, 145);
-            doc.text(advLines, 48, startY);
-        }
-
-        // --- FORMATAR CABEÇALHO E RODAPÉ EM TODAS AS PÁGINAS ---
-        const totalPages = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= totalPages; i++) {
-            doc.setPage(i);
-
-            // Cabeçalho (Páginas subsequentes)
-            if (i > 1) {
-                doc.setFontSize(8);
-                doc.setFont('helvetica', 'bold');
+                const getVal = (id) => {
+                    const el = document.getElementById(id);
+                    if (!el || !el.value || el.value.trim() === "") return naoInf;
+                    return el.value;
+                };
+        
+                doc.setFillColor(0, 104, 71);
+                doc.rect(0, 0, 210, 20, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                doc.text(t.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 105, 13, { align: "center" });
+        
+                doc.setFillColor(240, 240, 240);
+                doc.rect(10, 24, 190, 6, 'F');
                 doc.setTextColor(0, 104, 71);
-                doc.text(t.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 15, 12);
-                doc.setDrawColor(0, 104, 71);
-                doc.setLineWidth(0.3);
-                doc.line(15, 14, 195, 14);
+                doc.setFontSize(10);
+                doc.text((t.secao_info_pessoais || "Informações Pessoais").toUpperCase(), 12, 28.5);
+        
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(9);
+                
+                const dataAtend = getVal('dataMatricula');
+                const nome = getVal('nome');
+                const iniciais = getVal('iniciais');
+                const sexo = getVal('biologico');
+                const fnac = getVal('fnac');
+                const idade = getVal('edad');
+                const peso = getVal('peso');
+                const altura = getVal('altura');
+                const imc = getVal('imc');
+                const circunferencia = getVal('circunferencia_abdominal'); // <-- Variável corrigida corretamente aqui
+        
+                doc.setFont("helvetica", "bold");
+                doc.text(`${t.lbl_data_atendimento || 'Data:'}`, 10, 36);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${dataAtend}`, 50, 36);
+        
+                doc.setFont("helvetica", "bold");
+                doc.text(`${t.lbl_nome || 'Nome:'}`, 10, 42);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${nome} (${iniciais})`, 50, 42);
+        
+                doc.setFont("helvetica", "bold");
+                doc.text(`${t.lbl_sexo || 'Sexo:'}`, 10, 48);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${sexo}`, 50, 48);
+        
+                doc.setFont("helvetica", "bold");
+                doc.text(`${t.lbl_fnac || 'Data Nac.:'}`, 10, 54);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${fnac} (${idade} ${t.pdf_anos || 'anos'})`, 50, 54);
+        
+                doc.setFont("helvetica", "bold");
+                doc.text(`${t.lbl_peso || 'Peso'} / ${t.lbl_altura || 'Altura'}`, 10, 60);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${peso} kg / ${altura} m`, 50, 60);
+        
+                doc.setFont("helvetica", "bold");
+                doc.text(`${t.lbl_imc || 'IMC:'}`, 10, 66);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${imc}`, 50, 66);
+        
+                let startY = 72;
+        
+                const autoTableOptions = {
+                    theme: 'grid',
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 },
+                    bodyStyles: { fontSize: 8, textColor: [30, 30, 30] },
+                    alternateRowStyles: { fillColor: [248, 249, 250] },
+                    margin: { left: 10, right: 10 }
+                };
+        
+                const paSis = document.getElementById('pa_sis')?.value;
+                const paDia = document.getElementById('pa_dia')?.value;
+                const paVal = (paSis && paDia) ? `${paSis}/${paDia}` : naoInf;
+        
+                const svData = [
+                    [t.lbl_pa || 'PA', paVal, 'mmHg'],
+                    [t.lbl_circunferencia || 'Circunferência Abdominal', circunferencia !== naoInf ? `${circunferencia} cm` : naoInf, 'cm'],            
+                    [t.lbl_gluc_jejum || 'Glicemia Jejum', getVal('gluc'), 'mg/dL'],
+                    [t.lbl_gluc_ppran || 'Glicemia Pós-prandial', getVal('gluc_post'), 'mg/dL'],
+                    [t.lbl_temp || 'Temperatura', getVal('temp'), '°C'],
+                    [t.lbl_fc || 'Frequência Cardíaca', getVal('fc'), 'bpm'],
+                    [t.lbl_sat || 'Saturação O2', getVal('sat'), '%'],
+                    [t.lbl_fr || 'Frequência Respiratória', getVal('fr'), 'rpm']
+                ];
+        
+                doc.autoTable({
+                    ...autoTableOptions,
+                    startY: startY,
+                    head: [[t.pdf_th_sinal || 'Sinal Vital', t.pdf_th_valor || 'Valor', t.pdf_th_unidade || 'Unidade']],
+                    body: svData
+                });
+        
+                startY = doc.lastAutoTable.finalY + 4;
+        
+                const elementosSugestao = document.querySelectorAll('#lista-sugestoes li');
+                const sugestoesBody = [];
+        
+                elementosSugestao.forEach((li) => {
+                    const textoLimpo = li.innerText || li.textContent;
+                    if (textoLimpo) { sugestoesBody.push([`• ${textoLimpo}`]); }
+                });
+        
+                if (sugestoesBody.length === 0) {
+                    sugestoesBody.push([t.item_sugestoes_inicial || "Sem observações registradas."]);
+                }
+        
+                doc.autoTable({
+                    ...autoTableOptions,
+                    startY: startY,
+                    head: [[(t.secao_sugestoes || "Sugestões").toUpperCase()]],
+                    body: sugestoesBody,
+                    headStyles: { fillColor: [0, 104, 71], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 }
+                });
+        
+                startY = doc.lastAutoTable.finalY + 4;
+        
+                const medData = [
+                    [t.interf_med_ansioliticos, getVal('interf_med_ansioliticos')],
+                    [t.interf_med_cardio, getVal('interf_med_cardio')],
+                    [t.interf_med_anticoagulantes, getVal('interf_med_anticoagulantes')],
+                    [t.interf_med_colesterol, getVal('interf_med_colesterol')],
+                    [t.interf_med_diabetes, getVal('interf_med_diabetes')],
+                    [t.interf_med_antialergicos, getVal('interf_med_antialergicos')],
+                    [t.interf_med_antibioticos, getVal('interf_med_antibioticos')],
+                    [t.interf_med_antiinflamatorios, getVal('interf_med_antiinflamatorios')]
+                ];
+        
+                doc.autoTable({
+                    ...autoTableOptions,
+                    startY: startY,
+                    head: [[(t.secao_interferentes || "Medicamentos").toUpperCase(), t.pdf_th_detalhes || 'Detalhes']],
+                    body: medData
+                });
+        
+                startY = doc.lastAutoTable.finalY + 4;
+        
+                const interfData = [
+                    [t.interf_estresse, getVal('interf_estresse')],
+                    [t.interf_alergia, getVal('interf_alergia')],
+                    [t.interf_esf_fisico, getVal('interf_esf_fisico')],
+                    [t.interf_cafeina, getVal('interf_cafeina')],
+                    [t.interf_alcool, getVal('interf_alcool')],
+                    [t.interf_psicoativos, getVal('interf_psicoativos')],
+                    [t.interf_tabagismo, getVal('interf_tabagismo')]
+                ];
+        
+                doc.autoTable({
+                    ...autoTableOptions,
+                    startY: startY,
+                    head: [[t.pdf_th_interferentes || 'Fatores Interferentes', t.pdf_th_detalhes || 'Detalhes']],
+                    body: interfData
+                });
+        
+                startY = doc.lastAutoTable.finalY + 4;
+        
+                const entornoData = [
+                    [t.entorno_arborizado, getVal('entorno_arborizado')],
+                    [t.entorno_lixo, getVal('entorno_lixo')],
+                    [t.entorno_particulas, getVal('entorno_particulas')],
+                    [t.entorno_focos, getVal('entorno_focos')],
+                    [t.entorno_clima, getVal('entorno_clima')]
+                ];
+        
+                doc.autoTable({
+                    ...autoTableOptions,
+                    startY: startY,
+                    head: [[t.pdf_th_entorno || 'Entorno Ecológico', t.pdf_th_condicao || 'Condição']],
+                    body: entornoData
+                });
+        
+                startY = doc.lastAutoTable.finalY + 4;
+        
+                const vacData = [
+                    [t.vac_bcg, getVal('vac_bcg')],
+                    [t.vac_dtp, getVal('vac_dtp')],
+                    [t.vac_polio, getVal('vac_polio')],
+                    [t.vac_scr, getVal('vac_scr')],
+                    [t.vac_hepb, getVal('vac_hepb')],
+                    [t.vac_hpv, getVal('vac_hpv')],
+                    [t.vac_amarela, getVal('vac_amarela')],
+                    [t.vac_influenza, getVal('vac_influenza')],
+                    [t.vac_pneumo, getVal('vac_pneumo')],
+                    [t.vac_rotavirus, getVal('vac_rotavirus')],
+                    [t.vac_malaria, getVal('vac_malaria')],
+                    [t.vac_covid, getVal('vac_covid')]
+                ];
+        
+                doc.autoTable({
+                    ...autoTableOptions,
+                    startY: startY,
+                    head: [[t.pdf_th_vacina || 'Vacina', t.pdf_th_status || 'Status']],
+                    body: vacData
+                });
+        
+                startY = doc.lastAutoTable.finalY + 4;
+        
+                const lat = getVal('latitude');
+                const lng = getVal('longitude');
+        
+                doc.setFillColor(240, 240, 240);
+                doc.rect(10, startY, 190, 6, 'F');
+                doc.setTextColor(0, 104, 71);
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");
+                doc.text((t.secao_geolocalizacao || "Geolocalização").toUpperCase(), 12, startY + 4.5);
+        
+                startY += 9;
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(8.5);
+                doc.setFont("helvetica", "normal");
+                doc.text(`${t.lbl_latitude || 'Lat:'} ${lat}`, 10, startY);
+                doc.text(`${t.lbl_longitude || 'Lng:'} ${lng}`, 80, startY);
+        
+                startY += 8;
+        
+                if (t.adv_titulo && t.adv_texto) {
+                    doc.setFontSize(7.5);
+                    doc.setFont("helvetica", "bold");
+                    doc.setTextColor(139, 0, 0);
+                    doc.text(t.adv_titulo, 10, startY);
+        
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(60, 60, 60);
+                    const advLines = doc.splitTextToSize(t.adv_texto, 145);
+                    doc.text(advLines, 48, startY);
+                }
+        
+                const totalPages = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= totalPages; i++) {
+                    doc.setPage(i);
+                    if (i > 1) {
+                        doc.setFontSize(8);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(0, 104, 71);
+                        doc.text(t.pdf_titulo_cabecalho || "SINAIS VITAIS | www.VitalSig.info", 15, 12);
+                        doc.setDrawColor(0, 104, 71);
+                        doc.setLineWidth(0.3);
+                        doc.line(15, 14, 195, 14);
+                    }
+        
+                    doc.setFontSize(7);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(100, 100, 100);
+                    doc.setDrawColor(200, 200, 200);
+                    doc.line(15, 280, 195, 280);
+        
+                    const strPagina = `Página ${i} de ${totalPages}`; 
+                    doc.text(strPagina, 195, 284, { align: 'right' });
+                    doc.text("Formulario Filantrópico - Sem custos | Leia 1 Cor. 13.2 +Amor | www.VITALSig.info | TRAVASSOS, L.R.; 2026", 15, 284);
+                }
+        
+                const campoIniciais = document.getElementById('iniciais')?.value.trim().toUpperCase().replace(/\s+/g, '') || 'NC';
+                const agora = new Date();
+                const dataHoraFormatada = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}-${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}`;
+                const nomeArquivo = `VitalSig_${dataHoraFormatada}_${campoIniciais}.pdf`;
+        
+                const pdfBlob = doc.output('blob');
+        
+                try {
+                    const pdfFile = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
+                    const formData = new FormData();
+                    formData.append('file', pdfFile);
+        
+                    await fetch('/api/salvar-pdf', { method: 'POST', body: formData });
+                } catch (backupErr) {
+                    console.warn("Aviso: Falha ao enviar o backup do PDF.", backupErr);
+                }
+        
+                const blobUrl = URL.createObjectURL(pdfBlob);
+                window.open(blobUrl, '_blank');
+                doc.save(nomeArquivo);
+        
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        
+            } catch (err) {
+                console.error("Erro interno ao gerar o PDF:", err);
+                alert("Erro ao exportar o PDF. Verifique se os dados estão completos.");
             }
-
-            // Rodapé
-            doc.setFontSize(7);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(100, 100, 100);
-            doc.setDrawColor(200, 200, 200);
-            doc.line(15, 280, 195, 280);
-
-            const strPagina = `Página ${i} de ${totalPages}`; 
-            doc.text(strPagina, 195, 284, { align: 'right' });
-            doc.text("Formulario Filantrópico - Sem custos | Leia 1 Cor. 13.2 +Amor | www.VITALSig.info | TRAVASSOS, L.R.; 2026", 15, 284);
         }
-
-        // --- NOME DO ARQUIVO ---
-        const campoIniciais = document.getElementById('iniciais')?.value.trim().toUpperCase().replace(/\s+/g, '') || 'NC';
-        const agora = new Date();
-        const dataHoraFormatada = `${agora.getFullYear()}${String(agora.getMonth() + 1).padStart(2, '0')}${String(agora.getDate()).padStart(2, '0')}-${String(agora.getHours()).padStart(2, '0')}${String(agora.getMinutes()).padStart(2, '0')}`;
-        const nomeArquivo = `VitalSig_${dataHoraFormatada}_${campoIniciais}.pdf`;
-
-        // --- GERAÇÃO DO BLOB DO PDF ---
-            const pdfBlob = doc.output('blob');
-
-        // --- BACKUP SEGURO EM SEGUNDO PLANO ---
-        try {
-            const pdfFile = new File([pdfBlob], nomeArquivo, { type: 'application/pdf' });
-            const formData = new FormData();
-            formData.append('file', pdfFile);
-
-            const response = await fetch('/api/salvar-pdf', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                console.log("PDF enviado com sucesso para a nuvem!");
-            } else {
-                console.warn("Aviso: Falha na resposta do servidor.", response.status);
-            }
-        } catch (backupErr) {
-            console.warn("Aviso: Falha ao enviar o backup do PDF.", backupErr);
-        }
-
-        // --- ABRIR EM NOVA ABA E FAZER DOWNLOAD ---
-        const blobUrl = URL.createObjectURL(pdfBlob);
-
-        // 1. Abre o PDF em nova aba para visualização e compartilhamento rápido
-        window.open(blobUrl, '_blank');
-
-        // 2. Faz o download direto do arquivo no dispositivo
-        doc.save(nomeArquivo);
-
-        // 3. Alerta de conclusão para o usuário
-        const msgSucesso = t.msg_pdf_sucesso || "Download ok!";
-        alert(msgSucesso);
-
-        // 4. Limpa o link temporário da memória
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
-
-    } catch (err) {
-        console.error("Erro interno ao gerar o PDF:", err);
-        const msgErro = i18nData[idiomaAtual]?.msg_pdf_erro || "Erro ao exportar o PDF. Verifique se os dados estão completos.";
-        alert(msgErro);
-    }
-}
     </script>
 </body>
 </html>
